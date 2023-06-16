@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import BackButton from "./BackButton";
 
 function SignIn() {
   const [inputId, setInputId] = useState("");
@@ -58,27 +59,34 @@ function SignIn() {
   // }, []);
 
   return (
-    <div>
-      <h2>로그인</h2>
-      <div>
-        <label htmlFor="input_id">ID : </label>
+    <div className="signin">
+      <BackButton />
+      <div className="signin-together">
+        같이
+        <br />
+        먹자
+      </div>
+      <div className="signin-together2">외로운 혼밥러들을 위해</div>
+
+      <div className="signin-forms">
         <input
+          className="signin-id"
           type="text"
-          name="input_id"
           value={inputId}
           onChange={handleInputId}
+          placeholder="아이디"
         />
-      </div>
-      <div>
-        <label htmlFor="input_pw">PW : </label>
+
         <input
+          className="signin-pw"
           type="password"
-          name="input_pw"
           value={inputPw}
           onChange={handleInputPw}
+          placeholder="비밀번호"
         />
       </div>
-      <div>
+
+      <div className="signin-submit">
         <button type="button" onClick={onClickSignIn}>
           로그인
         </button>

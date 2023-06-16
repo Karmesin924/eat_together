@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useState } from "react";
+import BackButton from "./BackButton";
 
 const SignUp = () => {
-  // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일, 전화번호, 생년월일
+  // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일
   const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,6 +16,7 @@ const SignUp = () => {
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
+
   // 유효성 검사
   const [isId, setIsId] = useState(false);
   const [isname, setIsName] = useState(false);
@@ -68,7 +70,7 @@ const SignUp = () => {
     const currentPasswordConfirm = e.target.value;
     setPasswordConfirm(currentPasswordConfirm);
     if (password !== currentPasswordConfirm) {
-      setPasswordConfirmMessage("비밀번호가 똑같지 않아요!");
+      setPasswordConfirmMessage("비밀번호가 똑같지 않습니다.");
       setIsPasswordConfirm(false);
     } else {
       setPasswordConfirmMessage("똑같은 비밀번호를 입력했습니다.");
@@ -82,7 +84,7 @@ const SignUp = () => {
       /^[A-Za-z0-9_]+[A-Za-z0-9]*[@]{1}[A-Za-z0-9]+[A-Za-z0-9]*[.]{1}[A-Za-z]{1,3}$/;
 
     if (!emailRegExp.test(currentEmail)) {
-      setEmailMessage("이메일의 형식이 올바르지 않습니다!");
+      setEmailMessage("이메일의 형식이 올바르지 않습니다.");
       setIsEmail(false);
     } else {
       setEmailMessage("사용 가능한 이메일 입니다.");
@@ -108,7 +110,8 @@ const SignUp = () => {
   };
 
   return (
-    <>
+    <div className="signup">
+      <BackButton />
       <h3>회원가입</h3>
       <div className="form">
         <div className="form-el">
@@ -158,7 +161,7 @@ const SignUp = () => {
           가입하기
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

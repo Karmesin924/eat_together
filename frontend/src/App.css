@@ -1,0 +1,44 @@
+.signin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.signup {
+    display: grid;
+    justify-content: center;
+}
+.signin-together {
+    padding-top: 30px;
+    width: 200%;
+    height: 150%;
+    font-size: 300%;
+    text-align: center;
+
+}
+
+.signin-together2 {
+    width: 200%;
+    height: 50px;
+    font-size: 90%;
+    text-align: center;
+
+}
+
+.signin-forms {
+    display: grid;
+    width: 200px;
+    height: 130%;
+    font-size: 15px;
+    clear: both;
+}
+
+.signin-forms *{
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.signin-submit {
+    width: 200px;
+}
