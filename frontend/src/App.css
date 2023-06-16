@@ -1,3 +1,5 @@
+/* 로그인 */
+
 .signin {
     display: flex;
     flex-direction: column;
@@ -5,10 +7,6 @@
     align-items: center;
 }
 
-.signup {
-    display: grid;
-    justify-content: center;
-}
 .signin-together {
     padding-top: 30px;
     width: 200%;
@@ -33,11 +31,24 @@
     clear: both;
 }
 
-.signin-forms *{
+.signin-id{
     margin-top: 5px;
     margin-bottom: 5px;
 }
 
+.signin-pw{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    
+}
+
 .signin-submit {
     width: 200px;
+}
+
+/* 회원가입 */
+
+.signup {
+    display: grid;
+    justify-content: center;
 }
