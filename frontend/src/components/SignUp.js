@@ -79,7 +79,6 @@ const SignUp = () => {
     axios.post(
       "API",
       {
-        user_id: id,
         user_email: email,
         user_password: password,
         user_name: name,
