@@ -24,22 +24,25 @@
 }
 
 .signin-forms {
-    display: grid;
-    width: 200px;
-    height: 130%;
-    font-size: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     clear: both;
 }
 
 .signin-id{
     margin-top: 5px;
     margin-bottom: 5px;
+    width: 200px;
+    font-size: 15px;
 }
 
 .signin-pw{
     margin-top: 5px;
     margin-bottom: 5px;
-    
+    width: 200px;
+    font-size: 15px;
 }
 
 .signin-submit {
