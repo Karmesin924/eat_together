@@ -4,39 +4,22 @@ import BackButton from "./BackButton";
 
 const SignUp = () => {
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일
-  const [id, setId] = useState("");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
   // 오류메세지 상태 저장
-  const [idMessage, setIdMessage] = useState("");
   const [nameMessage, setNameMessage] = useState("");
   const [passwordMessage, setPasswordMessage] = useState("");
   const [passwordConfirmMessage, setPasswordConfirmMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
 
   // 유효성 검사
-  const [isId, setIsId] = useState(false);
   const [isname, setIsName] = useState(false);
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isEmail, setIsEmail] = useState(false);
-
-  const onChangeId = (e) => {
-    const currentId = e.target.value;
-    setId(currentId);
-    const idRegExp = /^[a-zA-z0-9]{4,12}$/;
-
-    if (!idRegExp.test(currentId)) {
-      setIdMessage("4-12사이 대소문자 또는 숫자만 입력해 주세요!");
-      setIsId(false);
-    } else {
-      setIdMessage("사용가능한 아이디 입니다.");
-      setIsId(true);
-    }
-  };
 
   const onChangeName = (e) => {
     const currentName = e.target.value;
@@ -114,11 +97,6 @@ const SignUp = () => {
       <BackButton />
       <h3>회원가입</h3>
       <div className="form">
-        <div className="form-el">
-          <label htmlFor="id">아이디</label> <br />
-          <input id="id" name="id" value={id} onChange={onChangeId} />
-          <p className="message"> {idMessage} </p>
-        </div>
         <div className="form-el">
           <label htmlFor="email">이메일</label> <br />
           <input
