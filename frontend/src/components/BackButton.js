@@ -9,7 +9,7 @@ const BackButton = () => {
           navigate(-1);
         }}
       >
-        .
+        뒤로가기
       </button>
     </div>
   );
