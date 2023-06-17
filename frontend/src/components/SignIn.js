@@ -25,7 +25,7 @@ function SignIn() {
       console.log("ID : ", inputEmail);
       console.log("PW : ", inputPassword);
       axios
-        .post("API", JSON.stringify(data), {
+        .post("../backend/users/signin", JSON.stringify(data), {
           headers: {
             "Content-Type": "application/json",
           },
@@ -53,7 +53,10 @@ function SignIn() {
           // 작업 완료 되면 페이지 이동(새로고침)
           document.location.href = "/";
         })
-        .catch();
+        .catch((ex) => {
+          console.log("login request fail: " + ex);
+        })
+        .finally(() => console.log("login request end"));
     } catch (e) {
       console.log(e);
     }
