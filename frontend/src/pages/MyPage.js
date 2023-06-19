@@ -1,11 +1,20 @@
 import { useNavigate } from "react-router-dom";
-import BackButton from "../components/BackButton";
+import MyButton from "../components/MyButton";
+import { useEffect } from "react";
 
 const MyPage = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const getSession = sessionStorage.getItem("email");
+    if (!getSession) {
+      navigate("/SignIn");
+    }
+  }, []);
+
   return (
     <div>
-      <BackButton />
+      <MyButton text={"뒤로가기"} onClick={() => navigate(-1)} />
       <h2>마이페이지</h2>
       <button
         onClick={() => {

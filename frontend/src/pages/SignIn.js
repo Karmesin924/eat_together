@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import BackButton from "./BackButton";
-import MyHeader from "./MyHeader";
+import BackButton from "../components/MyButton";
+import MyHeader from "../components/MyHeader";
 import { useNavigate } from "react-router-dom";
+import MyButton from "../components/MyButton";
 
 function SignIn() {
   const [inputEmail, setinputEmail] = useState("");
@@ -25,15 +26,14 @@ function SignIn() {
       console.log("ID : ", inputEmail);
       console.log("PW : ", inputPassword);
       axios
-        .post("API", JSON.stringify(data), {
+        .post("/backend/users/signin", data, {
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then((res) => {
           console.log(res);
-          console.log("res.data.userId :: ", res.data.userId);
-          console.log("res.data.msg :: ", res.data.msg);
+
           if (res.data.userId === undefined) {
             // id 일치하지 않는 경우 userId = undefined, msg = '입력하신 id 가 일치하지 않습니다.'
             console.log("======================", res.data.msg);
@@ -48,12 +48,16 @@ function SignIn() {
           } else if (res.data.userId === inputEmail) {
             // id, pw 모두 일치 userId = userId1, msg = undefined
             console.log("======================", "로그인 성공");
-            sessionStorage.setItem("user_id", inputEmail);
+            sessionStorage.setItem("email", inputEmail);
+            navigate("/MyPage");
           }
           // 작업 완료 되면 페이지 이동(새로고침)
           document.location.href = "/";
         })
-        .catch();
+        .catch((ex) => {
+          console.log("login request fail: " + ex);
+        })
+        .finally(() => console.log("login request end"));
     } catch (e) {
       console.log(e);
     }
@@ -61,7 +65,17 @@ function SignIn() {
 
   return (
     <div className="signin">
-      <MyHeader headText={"같이 먹자"} leftChild={<BackButton />} />
+      <MyHeader
+        headText={"로그인"}
+        leftChild={
+          <MyButton
+            text={"뒤로가기"}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+        }
+      />
       <div className="signin-together">
         같이
         <br />
@@ -92,15 +106,16 @@ function SignIn() {
           로그인
         </button>
       </div>
-
-      <p
-        onClick={() => {
-          navigate("/SignUp");
-        }}
-      >
-        회원 가입
-      </p>
-      <p>비밀번호를 잊어버리셨나요?</p>
+      <div className="signin-goto">
+        <p
+          onClick={() => {
+            navigate("/SignUp");
+          }}
+        >
+          회원 가입
+        </p>
+        <p>비밀번호를 잊어버리셨나요?</p>
+      </div>
       <button>카카오로그인</button>
       <button>네이버로그인</button>
     </div>

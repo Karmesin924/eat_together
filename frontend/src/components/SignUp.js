@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState } from "react";
-import BackButton from "./BackButton";
+import BackButton from "./MyButton";
 
 const SignUp = () => {
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일
