@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { useEffect, useState } from "react";
 import LetsDo from "./pages/LetsDo";
 import LetsEat from "./pages/LetsEat";
+import BoardDetail from "./pages/BoardDetail";
 
 function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -29,7 +30,8 @@ function App() {
           <Route path="/SignIn" element={<SignIn />} />
           <Route path="/SignUp" element={<SignUp />} />
           <Route path="/LetsEat" element={<LetsEat />} />
-          <Route path="/LetsDo" element={<LetsDo />} />
+          <Route path="/board" element={<LetsDo />} />
+          <Route path="/board/:idx" element={<BoardDetail />} />
         </Routes>
       </div>
     </BrowserRouter>
