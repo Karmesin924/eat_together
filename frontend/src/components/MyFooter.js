@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const MyFooter = () => {
   const navigate = useNavigate();
   return (
-    <div>
+    <footer>
       <div
         onClick={() => {
           navigate("/MyPage");
@@ -13,7 +13,7 @@ const MyFooter = () => {
         마이페이지로가는그림
       </div>
       <div>채팅그림</div>
-    </div>
+    </footer>
   );
 };
 

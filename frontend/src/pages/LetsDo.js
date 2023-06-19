@@ -1,55 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import MyFooter from "../components/MyFooter";
+import axios from "axios";
 
-function LetsDo() {
+const LetsDo = () => {
+  const [boardList, setBoardList] = useState([
+    {
+      idx: 1,
+      title: "첫 번째 게시글",
+      contents: "첫 번째 게시글 내용",
+      createdBy: "User1",
+    },
+    {
+      idx: 2,
+      title: "두 번째 게시글",
+      contents: "두 번째 게시글 내용",
+      createdBy: "User2",
+    },
+    // 추가 데이터
+    {
+      idx: 3,
+      title: "세 번째 게시글",
+      contents: "세 번째 게시글 내용",
+      createdBy: "User3",
+    },
+    {
+      idx: 4,
+      title: "네 번째 게시글",
+      contents: "네 번째 게시글 내용",
+      createdBy: "User4",
+    },
+  ]); //dummyData 시험 후에는 useState([]);로 다시 변경
   const navigate = useNavigate();
-  const [posts, setPosts] = useState([
-    {
-      id: 1,
-      author: "사용자1",
-      content: "첫 번째 게시글입니다.",
-      comments: [
-        { id: 1, author: "사용자2", content: "첫 번째 답변입니다." },
-        { id: 2, author: "사용자3", content: "두 번째 답변입니다." },
-      ],
-    },
-    {
-      id: 2,
-      author: "사용자4",
-      content: "두 번째 게시글입니다.",
-      comments: [],
-    },
-  ]);
-  const [selectedPost, setSelectedPost] = useState(null); // 선택된 게시글을 추적합니다.
-  const [showForm, setShowForm] = useState(false); // 게시글 작성 폼 표시 여부를 추적합니다.
-  const [newPost, setNewPost] = useState("");
-  const [nickname, setNickname] = useState("");
-
-  const handlePostClick = (postId) => {
-    setSelectedPost(postId);
+  const getBoardList = async () => {
+    try {
+      const resp = (await axios.get("backend/posts/board")).data;
+      setBoardList(resp.data);
+      console.log(resp.pagniation);
+    } catch (err) {
+      console.log("게시글 목록을 가져오는데 실패했습니다.", err);
+    }
   };
 
-  const handleWriteButtonClick = () => {
-    setShowForm(true);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    const newPostObject = {
-      id: posts.length + 1,
-      author: nickname,
-      content: newPost,
-      comments: [],
-    };
-
-    setPosts([...posts, newPostObject]);
-    setNewPost("");
-    setNickname("");
-    setShowForm(false);
-  };
+  useEffect(() => {
+    getBoardList();
+  }, []);
 
   return (
     <div>
@@ -64,53 +61,16 @@ function LetsDo() {
           />
         }
       />
-      {/* 게시글 작성 버튼 */}
-      {!showForm && <button onClick={handleWriteButtonClick}>글쓰기</button>}
-
-      {/* 게시글 작성 폼 */}
-      {showForm && (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={newPost}
-            onChange={(e) => setNewPost(e.target.value)}
-            placeholder="글을 작성해주세요"
-          />
-          <input
-            type="text"
-            value={nickname}
-            onChange={(e) => setNickname(e.target.value)}
-            placeholder="닉네임을 입력해주세요"
-          />
-          <button type="submit">글 작성</button>
-        </form>
-      )}
-
-      {/* 게시글 목록 */}
-      {posts.map((post) => (
-        <div key={post.id} onClick={() => handlePostClick(post.id)}>
-          <h3>{post.author}</h3>
-          <p>{post.content}</p>
-        </div>
+      {boardList.map((board) => (
+        <li key={board.idx}>
+          <Link to={`/board/${board.idx}`}>{board.title}</Link>
+        </li>
       ))}
-
-      {/* 선택된 게시글 내용 및 답변 */}
-      {selectedPost && (
-        <div>
-          <h3>{posts[selectedPost - 1].author}</h3>
-          <p>{posts[selectedPost - 1].content}</p>
-
-          {/* 답변 목록 */}
-          {posts[selectedPost - 1].comments.map((comment) => (
-            <div key={comment.id}>
-              <h4>{comment.author}</h4>
-              <p>{comment.content}</p>
-            </div>
-          ))}
-        </div>
-      )}
     </div>
   );
-}
+};
 
+LetsDo.defaultProps = {
+  boardList: [],
+};
 export default LetsDo;

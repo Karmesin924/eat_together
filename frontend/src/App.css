@@ -106,3 +106,10 @@ header .head_btn_right {
     width: 25%;
     justify-content: end;
 }
+
+/* footer */
+footer {
+    display:flex;
+    bottom: 0px;
+    position: absolute;
+}
