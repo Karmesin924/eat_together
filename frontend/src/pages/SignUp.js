@@ -142,7 +142,7 @@ const SignUp = () => {
     };
 
     axios
-      .post("API_ENDPOINT", userData) // API_ENDPOINT를 실제 API 엔드포인트로 대체해주세요
+      .post("/users/signup", userData, { withCredentials: true })
       .then((response) => {
         console.log(response.data);
         navigate("/SignIn"); // 가입 성공 시 이동할 경로를 설정해주세요

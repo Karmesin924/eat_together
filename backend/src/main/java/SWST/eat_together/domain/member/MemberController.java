@@ -16,6 +16,7 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody MemberDTO member) {
+        System.out.println("member = " + member);
         int result = memberService.saveUser(member);
 
         if (result == 0)
@@ -28,7 +29,7 @@ public class MemberController {
     public ResponseEntity login(@RequestBody LoginDTO form, HttpServletRequest request) {
         System.out.println("form = " + form);
 
-        MemberDTO loginMember = memberService.login(form.getLoginId(), form.getPassword());
+        MemberDTO loginMember = memberService.login(form.getEmail(), form.getPassword());
         if (loginMember == null) {
             return ResponseEntity.notFound().build();
         }
@@ -48,17 +49,17 @@ public class MemberController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("/validate") //디버깅용
-    public String validate(HttpServletRequest request){
+    @GetMapping("/validate")
+    public ResponseEntity validate(HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null) {
-            return "세션 없음";
+            return ResponseEntity.badRequest().build();
         }
         MemberDTO loginMember = (MemberDTO) session.getAttribute("member");
 
         if (loginMember == null) {
-            return "세션에 회원 데이터가 없음";
+            return ResponseEntity.notFound().build();
         }
-        return "세션 성공";
+        return ResponseEntity.ok(loginMember);
     }
 }
