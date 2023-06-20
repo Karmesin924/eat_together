@@ -74,53 +74,58 @@
 /* 회원가입 */
 
 .signup {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
 }
 
-.singup-together1 {
-    padding-top: 20px;
-    width: 100%;
-    height: 100%;
-    font-size: 200%;
-    font-weight: bolder;
-    text-align: center;
+.signup-container {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 0;
+
 }
 
-.singup-together2 {
-    padding-top: 10px;
-    width: 100%;
-    height: 100%;
-    font-size: 110%;
-    font-weight: bolder;
-    text-align: center;
-}
-
-.form-box {
-    margin-bottom: 20px;
-    text-align: center;
-}
-
-.form-box input {
-    margin-top: 10x;
-    border-radius: 8px;
-    width: 250px;
-    height: 25px;
-    text-align: center;
-}
-
-.form-box p.message {
-    color: #FF9900
-}
-
-.form button {
-    display: block;
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
     margin: 0 auto;
-    border: none;
-    outline: none;
-    padding: 7px 20px;
-    border-radius: 8px;
 }
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"] {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.message {
+    font-size: 14px;
+    color: #ff0000;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #ff9900;
+    /* 수정: 버튼 색을 #FF9900로 변경 */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
 
 /* Header */
 header {
@@ -159,4 +164,40 @@ footer {
     display: flex;
     bottom: 0px;
     position: absolute;
+}
+
+/* 홈페이지 */
+
+.Home {
+    text-align: center
+}
+
+.Home-LetsEat {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 200%;
+    font-weight: 500;
+    border-radius: 20px;
+    border: 2px solid #FF9900;
+    width: 150px;
+    height: 200px;
+
+}
+
+.Home-LetsDo {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 200%;
+    font-weight: 500;
+    border-radius: 20px;
+    border: 2px solid #FF9900;
+    width: 150px;
+    height: 200px;
+
 }
