@@ -11,10 +11,14 @@ import LetsEat from "./pages/LetsEat";
 import BoardDetail from "./pages/BoardDetail";
 import Write from "./components/Write";
 
+import axios from "axios";
+
 function App() {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
+    axios.get("/users/validate", { withCredentials: true }).then((response) => console.log(response));
+
     if (sessionStorage.getItem("email") === null) {
       console.log("isLogin ?? :: ", isLogin);
     } else {
