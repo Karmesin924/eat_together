@@ -1,9 +1,13 @@
 import axios from "axios";
 import React, { useState } from "react";
-import BackButton from "./MyButton";
+import MyHeader from "../components/MyHeader";
+import MyButton from "../components/MyButton";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   // 초기값 세팅 - 아이디, 닉네임, 비밀번호, 비밀번호확인, 이메일
+
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -93,7 +97,17 @@ const SignUp = () => {
 
   return (
     <div className="signup">
-      <BackButton />
+      <MyHeader
+        headText={"로그인"}
+        leftChild={
+          <MyButton
+            text={"뒤로가기"}
+            onClick={() => {
+              navigate("/");
+            }}
+          />
+        }
+      />
       <h3>회원가입</h3>
       <div className="form">
         <div className="form-el">
