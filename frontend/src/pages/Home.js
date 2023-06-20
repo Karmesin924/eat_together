@@ -7,13 +7,19 @@ const Home = () => {
   return (
     <div className="Home">
       <MyHeader headText={"같이 먹자"} />
+
+      <br />
+      <br />
+
       <div
         className="Home-LetsEat"
         onClick={() => {
           navigate("/LetsEat");
         }}
       >
-        같이 먹자
+        같이
+        <br />
+        먹자
       </div>
       <div
         className="Home-LetsDo"
@@ -21,7 +27,9 @@ const Home = () => {
           navigate("/LetsDo");
         }}
       >
-        같이 하자
+        같이
+        <br />
+        하자
       </div>
       <MyFooter />
     </div>
