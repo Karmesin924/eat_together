@@ -6,46 +6,30 @@ import MyFooter from "../components/MyFooter";
 import axios from "axios";
 
 const LetsDo = () => {
-  const [boardList, setBoardList] = useState([
-    {
-      idx: 1,
-      title: "첫 번째 게시글",
-      contents: "첫 번째 게시글 내용",
-      createdBy: "User1",
-    },
-    {
-      idx: 2,
-      title: "두 번째 게시글",
-      contents: "두 번째 게시글 내용",
-      createdBy: "User2",
-    },
-    // 추가 데이터
-    {
-      idx: 3,
-      title: "세 번째 게시글",
-      contents: "세 번째 게시글 내용",
-      createdBy: "User3",
-    },
-    {
-      idx: 4,
-      title: "네 번째 게시글",
-      contents: "네 번째 게시글 내용",
-      createdBy: "User4",
-    },
-  ]); //dummyData 시험 후에는 useState([]);로 다시 변경
+  const [boardList, setBoardList] = useState([]);
   const navigate = useNavigate();
-  const getBoardList = async () => {
-    try {
-      const resp = (await axios.get("backend/posts/board")).data;
-      setBoardList(resp.data);
-      console.log(resp.pagniation);
-    } catch (err) {
-      console.log("게시글 목록을 가져오는데 실패했습니다.", err);
-    }
-  };
+  // const getBoardList = async () => {
+  //   try {
+  //     const resp = (await axios.get("backend/posts/board")).data;
+  //     setBoardList(resp.data);
+  //     console.log(resp.pagniation);
+  //   } catch (err) {
+  //     console.log("게시글 목록을 가져오는데 실패했습니다.", err);
+  //   }
+  // };
 
+  // useEffect(() => {
+  //   getBoardList();
+  // }, []);
   useEffect(() => {
-    getBoardList();
+    // 더미 데이터 생성
+    const dummyData = [
+      { idx: 1, title: "첫 번째 게시글" },
+      { idx: 2, title: "두 번째 게시글" },
+      { idx: 3, title: "세 번째 게시글" },
+    ];
+
+    setBoardList(dummyData);
   }, []);
 
   return (
@@ -56,7 +40,15 @@ const LetsDo = () => {
           <MyButton
             text={"뒤로가기"}
             onClick={() => {
-              navigate("/");
+              navigate(-1);
+            }}
+          />
+        }
+        rightChild={
+          <MyButton
+            text={"글 쓰기"}
+            onClick={() => {
+              navigate("/write");
             }}
           />
         }
