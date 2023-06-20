@@ -9,7 +9,13 @@ const BoardDetail = () => {
   const navigate = useNavigate();
   const { idx } = useParams();
   const [loading, setLoading] = useState(true);
-  const [board, setBoard] = useState({});
+  const [board, setBoard] = useState({
+    title: "",
+    contents: "",
+    author: "",
+    createdDate: "",
+    replies: [],
+  });
 
   // useEffect(() => {
   //   const getBoard = async () => {
@@ -34,19 +40,45 @@ const BoardDetail = () => {
             idx: 1,
             title: "게시글 제목 1",
             contents: "게시글 내용입니다 1.",
-            createdBy: "작성자 1",
+            author: "작성자 1",
+            createdDate: "2023-06-20",
+            replies: [
+              {
+                id: 1,
+                text: "댓글 내용 1",
+                author: "작성자 1",
+                createdDate: "2023-06-20T12:34:56Z",
+              },
+              {
+                id: 2,
+                text: "댓글 내용 2",
+                author: "작성자 2",
+                createdDate: "2023-06-21T09:12:34Z",
+              },
+            ],
           },
           {
             idx: 2,
             title: "게시글 제목 2",
             contents: "게시글 내용입니다 2.",
-            createdBy: "작성자 2",
+            author: "작성자 2",
+            createdDate: "2023-06-21",
+            replies: [],
           },
           {
             idx: 3,
             title: "게시글 제목 3",
             contents: "게시글 내용입니다 3.",
-            createdBy: "작성자 3",
+            author: "작성자 3",
+            createdDate: "2023-06-22",
+            replies: [
+              {
+                id: 3,
+                text: "댓글 내용 3",
+                author: "작성자 3",
+                createdDate: "2023-06-22T15:45:00Z",
+              },
+            ],
           },
         ];
 
@@ -86,7 +118,9 @@ const BoardDetail = () => {
           idx={board.idx}
           title={board.title}
           contents={board.contents}
-          createdBy={board.createdBy}
+          author={board.author}
+          createdDate={board.createdDate}
+          replies={board.replies}
         />
       )}
     </div>

@@ -74,17 +74,17 @@ const Write = () => {
       <div>
         <input
           type="text"
-          placeholder="제목"
-          value={title}
-          onChange={handleTitleChange}
+          placeholder="닉네임"
+          value={author}
+          onChange={handleAuthorChange}
         />
       </div>
       <div>
         <input
           type="text"
-          placeholder="글쓴이"
-          value={author}
-          onChange={handleAuthorChange}
+          placeholder="제목을 작성하세요!"
+          value={title}
+          onChange={handleTitleChange}
         />
       </div>
       <div>
@@ -96,13 +96,13 @@ const Write = () => {
       </div>
       <div>
         <textarea
-          placeholder="내용"
+          placeholder="내용을 입력하세요!"
           value={contents}
           onChange={handleContentsChange}
         />
       </div>
       <div>
-        <MyButton text={"저장"} onClick={handleSubmit} />
+        <MyButton text={"작성하기"} onClick={handleSubmit} />
       </div>
     </div>
   );
