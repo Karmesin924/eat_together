@@ -1,7 +1,5 @@
 package SWST.eat_together.domain.member;
 
-import SWST.eat_together.domain.member.MemberDTO;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -9,7 +7,7 @@ import java.util.Map;
 
 public class MemberRepository {
     private static Map<Long, MemberDTO> store = new HashMap<>();
-    private static long sequence = 0L;
+    private static long member_sequence = 0L;
 
     private static final MemberRepository instance = new MemberRepository();
 
@@ -22,7 +20,7 @@ public class MemberRepository {
     }
 
     public MemberDTO save(MemberDTO member){
-        member.setId(++sequence);
+        member.setId(++member_sequence);
         store.put(member.getId(), member);
         return member;
     }
