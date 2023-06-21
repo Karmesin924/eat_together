@@ -11,10 +11,13 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
 
   useEffect(() => {
+    let isMounted = true;
+    const source = axios.CancelToken.source();
+
     axios
-      .get("/user/validate")
+      .get("/user/validate", { cancelToken: source.token })
       .then((res) => {
-        if (res.status !== 404) {
+        if (isMounted && res.status !== 404) {
           const {
             name: userName,
             email: userEmail,
@@ -26,11 +29,20 @@ const MyPage = () => {
         }
       })
       .catch((error) => {
+        if (axios.isCancel(error)) {
+          // Request was canceled
+          return;
+        }
         console.log("Failed to validate user:", error);
         alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
         navigate("/SignIn");
       });
-  }, []);
+
+    return () => {
+      isMounted = false;
+      source.cancel("Request canceled");
+    };
+  }, [navigate]);
 
   return (
     <div>

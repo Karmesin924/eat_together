@@ -45,7 +45,7 @@ const Write = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("backend/posts/board", {
+      const response = await axios.post("/posts/add", {
         title,
         contents,
         author,
