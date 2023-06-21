@@ -1,5 +1,7 @@
+import axios from "axios";
 import ReplyForm from "./ReplyForm";
 import ReplyList from "./ReplyList";
+import { useNavigate } from "react-router-dom";
 
 const Board = ({
   idx,
@@ -10,6 +12,7 @@ const Board = ({
   replies,
   isAuthor,
 }) => {
+  const navigate = useNavigate();
   const handleEdit = () => {
     console.log("수정 버튼 클릭");
     // TODO: 수정 버튼 동작 구현
@@ -17,7 +20,15 @@ const Board = ({
 
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
-    // TODO: 삭제 버튼 동작 구현
+    axios
+      .delete(`/posts/${idx}`)
+      .then((res) => {
+        alert("글이 삭제되었습니다!");
+        navigate("/board/1");
+      })
+      .catch((err) => {
+        alert("글 삭제 중 오류가 발생했습니다.");
+      });
   };
 
   return (
