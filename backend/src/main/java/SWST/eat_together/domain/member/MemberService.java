@@ -20,6 +20,7 @@ public class MemberService {
         MemberDTO memberDTO = memberRepository.findByLoginId(loginId);
         if (memberDTO == null) {
             // 오류
+            System.out.println("회원정보 없음");
             return null;
         }
 
