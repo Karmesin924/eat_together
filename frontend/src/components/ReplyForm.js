@@ -15,7 +15,7 @@ const ReplyForm = () => {
     };
 
     try {
-      const response = await axios.post("backend/posts/reply", replyData);
+      const response = await axios.post("/posts/comment/add", replyData);
       // 성공적으로 작성되었을 때의 처리 로직
       console.log("댓글이 성공적으로 작성되었습니다.", response.data);
     } catch (error) {

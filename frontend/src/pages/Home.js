@@ -10,17 +10,17 @@ const Home = () => {
       <MyHeader
         leftChild={"채팅"}
         headText={"같이 먹자"}
-        rightChild={<MyButton
-          text={"마이 페이지"}
-          onClick={() => {
-            navigate("/MyPage");
-          }}
-        />
+        rightChild={
+          <MyButton
+            text={"마이 페이지"}
+            onClick={() => {
+              navigate("/MyPage");
+            }}
+          />
         }
       />
 
-
-      < br />
+      <br />
       <br />
 
       <div
@@ -43,8 +43,7 @@ const Home = () => {
         <br />
         하자
       </div>
-      <MyFooter />
-    </div >
+    </div>
   );
 };
 
