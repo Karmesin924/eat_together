@@ -2,25 +2,29 @@ import React, { useEffect, useState } from "react";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 import { Link, useNavigate } from "react-router-dom";
-import MyFooter from "../components/MyFooter";
 import axios from "axios";
 
 const LetsDo = () => {
   const [boardList, setBoardList] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
-  // const getBoardList = async () => {
-  //   try {
-  //     const resp = (await axios.get("backend/posts/board")).data;
-  //     setBoardList(resp.data);
-  //     console.log(resp.pagniation);
-  //   } catch (err) {
-  //     console.log("게시글 목록을 가져오는데 실패했습니다.", err);
-  //   }
-  // };
+  const [isPreviousDisabled, setIsPreviousDisabled] = useState(true);
+  const [isNextDisabled, setIsNextDisabled] = useState(false);
+
+  const getBoardList = async (page) => {
+    try {
+      const resp = await axios.get(`backend/posts/board/${page}`);
+      setBoardList(resp.data);
+      console.log(resp.pagination);
+    } catch (err) {
+      console.log("게시글 목록을 가져오는데 실패했습니다.", err);
+    }
+  };
 
   // useEffect(() => {
-  //   getBoardList();
-  // }, []);
+  //   getBoardList(currentPage);
+  // }, [currentPage]);
+
   useEffect(() => {
     // 더미 데이터 생성
     const dummyData = [
@@ -31,6 +35,20 @@ const LetsDo = () => {
 
     setBoardList(dummyData);
   }, []);
+
+  useEffect(() => {
+    setIsPreviousDisabled(currentPage === 1);
+  }, [currentPage]);
+
+  const goToPreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const goToNextPage = () => {
+    setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div>
@@ -58,6 +76,23 @@ const LetsDo = () => {
           <Link to={`/board/${board.idx}`}>{board.title}</Link>
         </li>
       ))}
+
+      <div>
+        {isPreviousDisabled ? (
+          <button disabled style={{ backgroundColor: "gray" }}>
+            이전 페이지
+          </button>
+        ) : (
+          <button onClick={goToPreviousPage}>이전 페이지</button>
+        )}
+        {isNextDisabled ? (
+          <button disabled style={{ backgroundColor: "gray" }}>
+            다음 페이지
+          </button>
+        ) : (
+          <button onClick={goToNextPage}>다음 페이지</button>
+        )}
+      </div>
     </div>
   );
 };
