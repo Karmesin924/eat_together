@@ -2,14 +2,14 @@ import axios from "axios";
 import { useState } from "react";
 
 const ReplyForm = () => {
-  const [replyText, setReplyText] = useState("");
+  const [replycontents, setReplycontents] = useState("");
   const [replyAuthor, setReplyAuthor] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const replyData = {
-      text: replyText,
+      contents: replycontents,
       author: replyAuthor,
       createdAt: new Date().toISOString(),
     };
@@ -23,7 +23,7 @@ const ReplyForm = () => {
       console.log("댓글 작성에 실패했습니다.", error);
     }
     // 입력 필드 초기화
-    setReplyText("");
+    setReplycontents("");
     setReplyAuthor("");
   };
 
@@ -34,7 +34,7 @@ const ReplyForm = () => {
         <div>
           <label>작성자:</label>
           <input
-            type="text"
+            type="contents"
             value={replyAuthor}
             onChange={(e) => setReplyAuthor(e.target.value)}
             required
@@ -42,11 +42,11 @@ const ReplyForm = () => {
         </div>
         <div>
           <label>내용:</label>
-          <textarea
-            value={replyText}
-            onChange={(e) => setReplyText(e.target.value)}
+          <contentsarea
+            value={replycontents}
+            onChange={(e) => setReplycontents(e.target.value)}
             required
-          ></textarea>
+          ></contentsarea>
         </div>
         <button type="submit">댓글 작성</button>
       </form>
