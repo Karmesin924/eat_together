@@ -25,9 +25,14 @@ public class PostRepository {
         return post;
     }
 
+    public void delete(long idx){
+        store.remove(idx);
+    }
+
     public PostDTO findByIdx(long idx){
         return store.get(idx);
     }
+
 
     public List<PostDTO> findAll(){
         return new ArrayList<>(store.values());
@@ -35,5 +40,10 @@ public class PostRepository {
 
     public void clearStore(){
         store.clear();
+    }
+
+    public void edit(int idx, String title, String contents) {
+        store.get(Long.valueOf(idx)).setTitle(title);
+        store.get(Long.valueOf(idx)).setContents(contents);
     }
 }
