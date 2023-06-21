@@ -23,6 +23,7 @@ function App() {
           <Route path="/LetsDo" element={<LetsDo />} />
           <Route path="/board/:idx" element={<BoardDetail />} />
           <Route path="/write" element={<Write />} />
+          <Route path="/write/:idx" element={<Write />} />
         </Routes>
       </div>
     </BrowserRouter>

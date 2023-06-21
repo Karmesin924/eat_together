@@ -1,14 +1,17 @@
 import axios from "axios";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 
 const Write = () => {
   const navigate = useNavigate();
+  const { idx } = useParams();
+  const location = useLocation();
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
   const [author, setAuthor] = useState("");
+  const isEditMode = location.state && location.state.isEditMode;
 
   const getCurrentDateTime = () => {
     const now = new Date();
@@ -31,6 +34,39 @@ const Write = () => {
     return `${year}-${month}-${day} (${weekday})`;
   };
 
+  // useEffect(() => {
+  //   // 수정 모드인 경우 기존 글의 내용을 불러옴
+  //   if (isEditMode && idx) {
+  //     axios
+  //       .get(`/posts/${idx}`)
+  //       .then((res) => {
+  //         const { title, contents, author } = res.data;
+  //         setTitle(title);
+  //         setContents(contents);
+  //         setAuthor(author);
+  //       })
+  //       .catch((err) => {
+  //         console.log("글 불러오기에 실패했습니다.", err);
+  //       });
+  //   }
+  // }, [isEditMode, idx]);
+  useEffect(() => {
+    // 더미 데이터
+    const dummyData = {
+      title: "더미 제목",
+      contents: "더미 내용",
+      author: "더미 작성자",
+    };
+
+    // 수정 모드인 경우 기존 글의 내용을 불러옴
+    if (isEditMode) {
+      // 더미 데이터를 사용하여 값 설정
+      setTitle(dummyData.title);
+      setContents(dummyData.contents);
+      setAuthor(dummyData.author);
+    }
+  }, [isEditMode]);
+
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
@@ -45,21 +81,32 @@ const Write = () => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post("/posts/add", {
-        title,
-        contents,
-      });
-      console.log("글이 성공적으로 저장되었습니다.", response.data);
-      navigate("/");
+      if (isEditMode) {
+        // 수정 요청 처리
+        const response = await axios.put(`/posts/${idx}`, {
+          title,
+          contents,
+        });
+        console.log("글이 성공적으로 수정되었습니다.", response.data);
+        navigate("/");
+      } else {
+        // 글 작성 요청 처리
+        const response = await axios.post("/posts/add", {
+          title,
+          contents,
+        });
+        console.log("글이 성공적으로 저장되었습니다.", response.data);
+        navigate("/");
+      }
     } catch (error) {
-      console.log("글 저장에 실패했습니다.", error);
+      console.log("글 저장 또는 수정에 실패했습니다.", error);
     }
   };
 
   return (
     <div>
       <MyHeader
-        headText={"글 쓰기"}
+        headText={isEditMode ? "글 수정" : "글 쓰기"}
         leftChild={
           <MyButton
             text={"뒤로가기"}
@@ -100,7 +147,10 @@ const Write = () => {
         />
       </div>
       <div>
-        <MyButton text={"작성하기"} onClick={handleSubmit} />
+        <MyButton
+          text={isEditMode ? "수정하기" : "작성하기"}
+          onClick={handleSubmit}
+        />
       </div>
     </div>
   );

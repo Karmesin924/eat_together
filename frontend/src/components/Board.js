@@ -13,9 +13,10 @@ const Board = ({
   isAuthor,
 }) => {
   const navigate = useNavigate();
+
   const handleEdit = () => {
     console.log("수정 버튼 클릭");
-    // TODO: 수정 버튼 동작 구현
+    navigate(`/write/${idx}`, { state: { isEditMode: true } });
   };
 
   const handleDelete = () => {
