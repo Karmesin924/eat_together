@@ -71,6 +71,11 @@
 
 }
 
+.OAuth{
+    display: flex;
+    margin: auto;
+}
+
 /* 회원가입 */
 
 .signup {

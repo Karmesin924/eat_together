@@ -16,21 +16,33 @@ const BoardDetail = () => {
     createdDate: "",
     replies: [],
   });
+  const [isAuthor, setIsAuthor] = useState(false);
 
   // useEffect(() => {
   //   const getBoard = async () => {
   //     try {
-  //       const resp = await axios.get(`backend/posts/board/${idx}`);
+  //       const resp = await axios.get(`/posts/board/${idx}`);
   //       setBoard(resp.data);
   //       setLoading(false);
+  //       setIsAuthor(resp.data.isAuthor);
   //     } catch (err) {
   //       console.log("게시글을 가져오는데 실패했습니다.", err);
   //       setLoading(false);
   //     }
   //   };
 
-  //   getBoard();
+  //   const getReplies = async () => {
+  //     try {
+  //       const resp = await axios.get(`/posts/${idx}/replies`);
+  //       setBoard((prevBoard) => ({ ...prevBoard, replies: resp.data }));
+  //     } catch (err) {
+  //       console.log("댓글을 가져오는데 실패했습니다.", err);
+  //     }
+  //   };
+
+  //   Promise.all([getBoard(), getReplies()]); // Fetch board and replies simultaneously
   // }, [idx]);
+
   useEffect(() => {
     const getBoard = async () => {
       try {
@@ -56,6 +68,7 @@ const BoardDetail = () => {
                 createdDate: "2023-06-21T09:12:34Z",
               },
             ],
+            isAuthor: true,
           },
           {
             idx: 2,
@@ -64,6 +77,7 @@ const BoardDetail = () => {
             author: "작성자 2",
             createdDate: "2023-06-21",
             replies: [],
+            isAuthor: false,
           },
           {
             idx: 3,
@@ -79,6 +93,7 @@ const BoardDetail = () => {
                 createdDate: "2023-06-22T15:45:00Z",
               },
             ],
+            isAuthor: true,
           },
         ];
 
@@ -88,6 +103,7 @@ const BoardDetail = () => {
           (item) => item.idx === parseInt(idx)
         );
         setBoard(selectedBoard || {});
+        setIsAuthor(selectedBoard?.isAuthor || false); // 수정: 선택한 게시글의 isAuthor 값을 사용
         setLoading(false);
       } catch (err) {
         console.log("게시글을 가져오는데 실패했습니다.", err);
@@ -121,6 +137,7 @@ const BoardDetail = () => {
           author={board.author}
           createdDate={board.createdDate}
           replies={board.replies}
+          isAuthor={isAuthor}
         />
       )}
     </div>

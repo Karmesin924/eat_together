@@ -42,11 +42,11 @@ const ReplyForm = () => {
         </div>
         <div>
           <label>내용:</label>
-          <contentsarea
+          <input
             value={replycontents}
             onChange={(e) => setReplycontents(e.target.value)}
             required
-          ></contentsarea>
+          ></input>
         </div>
         <button type="submit">댓글 작성</button>
       </form>

@@ -105,8 +105,10 @@ function SignIn() {
         </p>
         <p>비밀번호를 잊어버리셨나요?</p>
       </div>
-      <button>카카오로그인</button>
-      <button>네이버로그인</button>
+      <div className="OAuth">
+        <button className="OAuth-Kakao">카카오로그인</button>
+        <button className="OAuth-Naver">네이버로그인</button>
+      </div>
     </div>
   );
 }
