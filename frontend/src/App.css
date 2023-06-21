@@ -71,7 +71,7 @@
 
 }
 
-.OAuth{
+.OAuth {
     display: flex;
     margin: auto;
 }
@@ -205,4 +205,12 @@ footer {
     width: 150px;
     height: 200px;
 
+}
+
+/* 마이 페이지 */
+
+.title-ex {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
 }
