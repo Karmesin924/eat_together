@@ -143,28 +143,15 @@ const BoardDetail = () => {
       {loading ? (
         <h2>loading...</h2>
       ) : (
-        <>
-          {board.replies && board.replies.length > 0 ? (
-            <Board
-              idx={board.idx}
-              title={board.title}
-              contents={board.contents}
-              nickname={board.nickname}
-              createdDate={board.createdDate}
-              replies={board.replies}
-              isAuthor={isAuthor}
-            />
-          ) : (
-            <Board
-              idx={board.idx}
-              title={board.title}
-              contents={board.contents}
-              nickname={board.nickname}
-              createdDate={board.createdDate}
-              isAuthor={isAuthor}
-            />
-          )}
-        </>
+        <Board
+          idx={board?.idx}
+          title={board?.title}
+          contents={board?.contents}
+          nickname={board?.nickname}
+          createdDate={board?.createdDate}
+          replies={board?.replies || []}
+          isAuthor={isAuthor}
+        />
       )}
     </div>
   );
