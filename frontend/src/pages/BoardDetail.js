@@ -21,13 +21,16 @@ const BoardDetail = () => {
   useEffect(() => {
     const getBoard = async () => {
       try {
-        const resp = await axios.get(`/posts/${idx}`);
+        const resp = await axios.get(`/posts/${String(idx)}`);
         const selectedBoard = resp.data;
         const isAuthor = resp.data.isAuthor || false;
 
         setBoard(selectedBoard || {});
         setIsAuthor(isAuthor);
         setLoading(false);
+
+        // getReplies 함수 호출 후 완료될 때까지 기다림
+        await getReplies();
       } catch (err) {
         console.log("게시글을 가져오는데 실패했습니다.", err);
         setLoading(false);
@@ -36,7 +39,7 @@ const BoardDetail = () => {
 
     const getReplies = async () => {
       try {
-        const resp = await axios.get(`/posts/${idx}/comment`);
+        const resp = await axios.get(`/posts/${String(idx)}/comment`);
         const replyData = resp.data;
         const replies = Array.isArray(replyData) ? replyData : [];
         setBoard((prevBoard) => ({ ...prevBoard, replies }));
@@ -47,7 +50,7 @@ const BoardDetail = () => {
 
     const fetchData = async () => {
       setLoading(true);
-      await Promise.all([getBoard(), getReplies()]);
+      await getBoard();
     };
 
     fetchData();
