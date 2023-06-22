@@ -21,20 +21,20 @@ const LetsDo = () => {
     }
   };
 
-  useEffect(() => {
-    getBoardList(currentPage);
-  }, [currentPage]);
-
   // useEffect(() => {
-  //   // 더미 데이터 생성
-  //   const dummyData = [
-  //     { idx: 1, title: "첫 번째 게시글" },
-  //     { idx: 2, title: "두 번째 게시글" },
-  //     { idx: 3, title: "세 번째 게시글" },
-  //   ];
+  //   getBoardList(currentPage);
+  // }, [currentPage]);
 
-  //   setBoardList(dummyData);
-  // }, []);
+  useEffect(() => {
+    // 더미 데이터 생성
+    const dummyData = [
+      { idx: 1, title: "첫 번째 게시글" },
+      { idx: 2, title: "두 번째 게시글" },
+      { idx: 3, title: "세 번째 게시글" },
+    ];
+
+    setBoardList(dummyData);
+  }, []);
 
   useEffect(() => {
     setIsPreviousDisabled(currentPage === 1);
@@ -71,9 +71,9 @@ const LetsDo = () => {
           />
         }
       />
-      {boardList.map((board) => (
-        <li key={board.idx}>
-          <Link to={`/board/${board.idx}`}>{board.title}</Link>
+      {boardList.map((item) => (
+        <li key={item.idx}>
+          <Link to={`/posts/${item.idx}`}>{item.title}</Link>
         </li>
       ))}
 

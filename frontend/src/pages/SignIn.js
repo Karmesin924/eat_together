@@ -38,6 +38,7 @@ function SignIn() {
             alert("입력하신 이메일과 비밀번호가 일치하지 않습니다.");
           } else if (res.status === 200) {
             console.log("======================", "로그인 성공");
+            alert("로그인 성공!");
             navigate("/MyPage");
           }
           // 작업 완료 되면 페이지 이동(새로고침)

@@ -10,7 +10,7 @@ const Write = () => {
   const location = useLocation();
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
-  const [author, setAuthor] = useState("");
+  const [nickname, setnickname] = useState("");
   const isEditMode = location.state && location.state.isEditMode;
 
   const getCurrentDateTime = () => {
@@ -40,10 +40,10 @@ const Write = () => {
       axios
         .get(`/posts/${idx}`)
         .then((res) => {
-          const { title, contents, author } = res.data;
+          const { title, contents, nickname } = res.data;
           setTitle(title);
           setContents(contents);
-          setAuthor(author);
+          setnickname(nickname);
         })
         .catch((err) => {
           console.log("글 불러오기에 실패했습니다.", err);
@@ -56,7 +56,7 @@ const Write = () => {
   //   const dummyData = {
   //     title: "더미 제목",
   //     contents: "더미 내용",
-  //     author: "더미 작성자",
+  //     nickname: "더미 작성자",
   //   };
 
   //   // 수정 모드인 경우 기존 글의 내용을 불러옴
@@ -64,7 +64,7 @@ const Write = () => {
   //     // 더미 데이터를 사용하여 값 설정
   //     setTitle(dummyData.title);
   //     setContents(dummyData.contents);
-  //     setAuthor(dummyData.author);
+  //     setnickname(dummyData.nickname);
   //   }
   // }, [isEditMode]);
 
@@ -76,8 +76,8 @@ const Write = () => {
     setContents(e.target.value);
   };
 
-  const handleAuthorChange = (e) => {
-    setAuthor(e.target.value);
+  const handleNicknameChange = (e) => {
+    setnickname(e.target.value);
   };
 
   const handleSubmit = async () => {
@@ -89,7 +89,7 @@ const Write = () => {
           contents,
         });
         console.log("글이 성공적으로 수정되었습니다.", response.data);
-        navigate("/");
+        navigate(`/board/${idx}`);
       } else {
         // 글 작성 요청 처리
         const response = await axios.post("/posts/add", {
@@ -97,7 +97,7 @@ const Write = () => {
           contents,
         });
         console.log("글이 성공적으로 저장되었습니다.", response.data);
-        navigate("/");
+        navigate("/LetsDo");
       }
     } catch (error) {
       console.log("글 저장 또는 수정에 실패했습니다.", error);
@@ -121,8 +121,8 @@ const Write = () => {
         <input
           type="text"
           placeholder="닉네임"
-          value={author}
-          onChange={handleAuthorChange}
+          value={nickname}
+          onChange={handleNicknameChange}
         />
       </div>
       <div>
