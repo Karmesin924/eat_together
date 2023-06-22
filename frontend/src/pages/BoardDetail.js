@@ -168,3 +168,6 @@ return (
     )}
   </div>
 );
+};
+
+export default BoardDetail;
