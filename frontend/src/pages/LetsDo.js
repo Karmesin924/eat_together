@@ -73,7 +73,7 @@ const LetsDo = () => {
       />
       {boardList.map((item) => (
         <li key={item.idx}>
-          <Link to={`/posts/${item.idx}`}>{item.title}</Link>
+          <Link to={`/board/${item.idx}`}>{item.title}</Link>
         </li>
       ))}
 

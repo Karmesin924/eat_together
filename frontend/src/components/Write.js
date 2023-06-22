@@ -10,7 +10,8 @@ const Write = () => {
   const location = useLocation();
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
-  const [nickname, setnickname] = useState("");
+  const [nickname, setNickname] = useState("");
+  const [loading, setLoading] = useState(true);
   const isEditMode = location.state && location.state.isEditMode;
 
   const getCurrentDateTime = () => {
@@ -35,19 +36,38 @@ const Write = () => {
   };
 
   useEffect(() => {
+    // 서버에서 유저 정보를 가져와서 닉네임 고정
+    const fetchUserNickname = async () => {
+      try {
+        const response = await axios.get("/users/validate");
+        const { nickname } = response.data;
+        setNickname(nickname);
+        setLoading(false);
+      } catch (error) {
+        console.log("유저 정보를 가져오는데 실패했습니다.", error);
+        setLoading(false);
+      }
+    };
+
+    fetchUserNickname();
+  }, []);
+
+  useEffect(() => {
     // 수정 모드인 경우 기존 글의 내용을 불러옴
     if (isEditMode && idx) {
-      axios
-        .get(`/posts/${idx}`)
-        .then((res) => {
-          const { title, contents, nickname } = res.data;
+      const fetchPost = async () => {
+        try {
+          const response = await axios.get(`/posts/${idx}`);
+          const { title, contents, nickname } = response.data;
           setTitle(title);
           setContents(contents);
-          setnickname(nickname);
-        })
-        .catch((err) => {
-          console.log("글 불러오기에 실패했습니다.", err);
-        });
+          setNickname(nickname);
+        } catch (error) {
+          console.log("글 불러오기에 실패했습니다.", error);
+        }
+      };
+
+      fetchPost();
     }
   }, [isEditMode, idx]);
 
@@ -64,7 +84,6 @@ const Write = () => {
   //     // 더미 데이터를 사용하여 값 설정
   //     setTitle(dummyData.title);
   //     setContents(dummyData.contents);
-  //     setnickname(dummyData.nickname);
   //   }
   // }, [isEditMode]);
 
@@ -76,14 +95,10 @@ const Write = () => {
     setContents(e.target.value);
   };
 
-  const handleNicknameChange = (e) => {
-    setnickname(e.target.value);
-  };
-
   const handleSubmit = async () => {
     try {
       if (isEditMode) {
-        // 수정 요청 처리
+        // 글 수정 요청 처리
         const response = await axios.put(`/posts/${idx}`, {
           title,
           contents,
@@ -101,6 +116,11 @@ const Write = () => {
       }
     } catch (error) {
       console.log("글 저장 또는 수정에 실패했습니다.", error);
+      if (isEditMode) {
+        navigate(`/board/${idx}`);
+      } else {
+        navigate("/LetsDo");
+      }
     }
   };
 
@@ -121,8 +141,8 @@ const Write = () => {
         <input
           type="text"
           placeholder="닉네임"
-          value={nickname}
-          onChange={handleNicknameChange}
+          value={loading ? "" : nickname}
+          readOnly
         />
       </div>
       <div>
