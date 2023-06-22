@@ -104,6 +104,7 @@ const Write = () => {
           contents,
         });
         console.log("글이 성공적으로 수정되었습니다.", response.data);
+        alert("글이 성공적으로 수정되었습니다.");
         navigate(`/board/${idx}`);
       } else {
         // 글 작성 요청 처리
@@ -112,10 +113,12 @@ const Write = () => {
           contents,
         });
         console.log("글이 성공적으로 저장되었습니다.", response.data);
+        alert("글이 성공적으로 저장되었습니다.");
         navigate("/LetsDo");
       }
     } catch (error) {
       console.log("글 저장 또는 수정에 실패했습니다.", error);
+      alert("글 저장 또는 수정에 실패했습니다..");
       if (isEditMode) {
         navigate(`/board/${idx}`);
       } else {
