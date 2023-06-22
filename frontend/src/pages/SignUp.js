@@ -145,16 +145,17 @@ const SignUp = () => {
       .post("/users/signup", userData, { withCredentials: true })
       .then((response) => {
         console.log(response.data);
+        alert("회원가입이 완료되었습니다.");
         navigate("/SignIn"); // 가입 성공 시 이동할 경로를 설정해주세요
       })
       .catch((error) => {
+        alert("오류로 인해 회원가입이 완료되지 않았습니다.");
         console.error(error);
       });
   };
 
   return (
     <div className="signup">
-
       <MyHeader
         headText={"회원가입"}
         leftChild={
@@ -173,15 +174,30 @@ const SignUp = () => {
           <span className="message">{nameMessage}</span>
 
           <label htmlFor="email">이메일</label>
-          <input type="text" id="email" value={email} onChange={onChangeEmail} />
+          <input
+            type="text"
+            id="email"
+            value={email}
+            onChange={onChangeEmail}
+          />
           <span className="message">{emailMessage}</span>
 
           <label htmlFor="birth">생년월일</label>
-          <input type="date" id="birth" value={birth} onChange={onChangeBirth} />
+          <input
+            type="date"
+            id="birth"
+            value={birth}
+            onChange={onChangeBirth}
+          />
           <span className="message">{birthMessage}</span>
 
           <label htmlFor="nickname">닉네임</label>
-          <input type="text" id="nickname" value={nickname} onChange={onChangeNickname} />
+          <input
+            type="text"
+            id="nickname"
+            value={nickname}
+            onChange={onChangeNickname}
+          />
           <span className="message">{nicknameMessage}</span>
 
           <label htmlFor="password">비밀번호</label>
