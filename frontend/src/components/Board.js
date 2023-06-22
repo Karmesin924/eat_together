@@ -25,7 +25,6 @@ const Board = ({
       .delete(`/posts/${idx}`)
       .then((res) => {
         alert("글이 삭제되었습니다!");
-        navigate("/board/1");
       })
       .catch((err) => {
         alert("글 삭제 중 오류가 발생했습니다.");

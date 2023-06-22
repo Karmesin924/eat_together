@@ -12,7 +12,7 @@ const BoardDetail = () => {
   const [board, setBoard] = useState({
     title: "",
     contents: "",
-    author: "",
+    nickname: "",
     createdDate: "",
     replies: [],
   });
@@ -21,10 +21,13 @@ const BoardDetail = () => {
   useEffect(() => {
     const getBoard = async () => {
       try {
-        const resp = await axios.get(`/posts/board/${idx}`);
-        setBoard(resp.data);
+        const resp = await axios.get(`/posts/${idx}`);
+        const selectedBoard = resp.data;
+        const isAuthor = resp.data.isAuthor || false;
+
+        setBoard(selectedBoard || {});
+        setIsAuthor(isAuthor);
         setLoading(false);
-        setIsAuthor(resp.data.isAuthor);
       } catch (err) {
         console.log("게시글을 가져오는데 실패했습니다.", err);
         setLoading(false);
@@ -34,13 +37,20 @@ const BoardDetail = () => {
     const getReplies = async () => {
       try {
         const resp = await axios.get(`/posts/${idx}/comment`);
-        setBoard((prevBoard) => ({ ...prevBoard, replies: resp.data }));
+        const replyData = resp.data;
+        const replies = Array.isArray(replyData) ? replyData : [];
+        setBoard((prevBoard) => ({ ...prevBoard, replies }));
       } catch (err) {
         console.log("댓글을 가져오는데 실패했습니다.", err);
       }
     };
 
-    Promise.all([getBoard(), getReplies()]); // Fetch board and replies simultaneously
+    const fetchData = async () => {
+      setLoading(true);
+      await Promise.all([getBoard(), getReplies()]);
+    };
+
+    fetchData();
   }, [idx]);
 
   // useEffect(() => {
@@ -52,19 +62,19 @@ const BoardDetail = () => {
   //           idx: 1,
   //           title: "게시글 제목 1",
   //           contents: "게시글 내용입니다 1.",
-  //           author: "작성자 1",
+  //           nickname: "작성자 1",
   //           createdDate: "2023-06-20",
   //           replies: [
   //             {
   //               id: 1,
   //               text: "댓글 내용 1",
-  //               author: "작성자 1",
+  //               nickname: "작성자 1",
   //               createdDate: "2023-06-20T12:34:56Z",
   //             },
   //             {
   //               id: 2,
   //               text: "댓글 내용 2",
-  //               author: "작성자 2",
+  //               nickname: "작성자 2",
   //               createdDate: "2023-06-21T09:12:34Z",
   //             },
   //           ],
@@ -74,7 +84,7 @@ const BoardDetail = () => {
   //           idx: 2,
   //           title: "게시글 제목 2",
   //           contents: "게시글 내용입니다 2.",
-  //           author: "작성자 2",
+  //           nickname: "작성자 2",
   //           createdDate: "2023-06-21",
   //           replies: [],
   //           isAuthor: false,
@@ -83,13 +93,13 @@ const BoardDetail = () => {
   //           idx: 3,
   //           title: "게시글 제목 3",
   //           contents: "게시글 내용입니다 3.",
-  //           author: "작성자 3",
+  //           nickname: "작성자 3",
   //           createdDate: "2023-06-22",
   //           replies: [
   //             {
   //               id: 3,
   //               text: "댓글 내용 3",
-  //               author: "작성자 3",
+  //               nickname: "작성자 3",
   //               createdDate: "2023-06-22T15:45:00Z",
   //             },
   //           ],
@@ -134,7 +144,7 @@ const BoardDetail = () => {
           idx={board.idx}
           title={board.title}
           contents={board.contents}
-          author={board.author}
+          nickname={board.nickname}
           createdDate={board.createdDate}
           replies={board.replies}
           isAuthor={isAuthor}
