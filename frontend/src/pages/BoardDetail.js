@@ -127,34 +127,44 @@ const BoardDetail = () => {
   //   getBoard();
   // }, [idx]);
 
-  return (
-    <div>
-      <MyHeader
-        headText={"같이 하자"}
-        leftChild={
-          <MyButton
-            text={"뒤로가기"}
-            onClick={() => {
-              navigate(-1);
-            }}
-          />
-        }
-      />
-      {loading ? (
-        <h2>loading...</h2>
-      ) : (
-        <Board
-          idx={board.idx}
-          title={board.title}
-          contents={board.contents}
-          nickname={board.nickname}
-          createdDate={board.createdDate}
-          replies={board.replies}
-          isAuthor={isAuthor}
+return (
+  <div>
+    <MyHeader
+      headText={"같이 하자"}
+      leftChild={
+        <MyButton
+          text={"뒤로가기"}
+          onClick={() => {
+            navigate(-1);
+          }}
         />
-      )}
-    </div>
-  );
-};
-
-export default BoardDetail;
+      }
+    />
+    {loading ? (
+      <h2>loading...</h2>
+    ) : (
+      <>
+        {board.replies && board.replies.length > 0 ? (
+          <Board
+            idx={board.idx}
+            title={board.title}
+            contents={board.contents}
+            nickname={board.nickname}
+            createdDate={board.createdDate}
+            replies={board.replies}
+            isAuthor={isAuthor}
+          />
+        ) : (
+          <Board
+            idx={board.idx}
+            title={board.title}
+            contents={board.contents}
+            nickname={board.nickname}
+            createdDate={board.createdDate}
+            isAuthor={isAuthor}
+          />
+        )}
+      </>
+    )}
+  </div>
+);
