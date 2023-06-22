@@ -34,39 +34,39 @@ const Write = () => {
     return `${year}-${month}-${day} (${weekday})`;
   };
 
-  // useEffect(() => {
-  //   // 수정 모드인 경우 기존 글의 내용을 불러옴
-  //   if (isEditMode && idx) {
-  //     axios
-  //       .get(`/posts/${idx}`)
-  //       .then((res) => {
-  //         const { title, contents, nickname } = res.data;
-  //         setTitle(title);
-  //         setContents(contents);
-  //         setnickname(nickname);
-  //       })
-  //       .catch((err) => {
-  //         console.log("글 불러오기에 실패했습니다.", err);
-  //       });
-  //   }
-  // }, [isEditMode, idx]);
-
   useEffect(() => {
-    // 더미 데이터
-    const dummyData = {
-      title: "더미 제목",
-      contents: "더미 내용",
-      nickname: "더미 작성자",
-    };
-
     // 수정 모드인 경우 기존 글의 내용을 불러옴
-    if (isEditMode) {
-      // 더미 데이터를 사용하여 값 설정
-      setTitle(dummyData.title);
-      setContents(dummyData.contents);
-      setnickname(dummyData.nickname);
+    if (isEditMode && idx) {
+      axios
+        .get(`/posts/${idx}`)
+        .then((res) => {
+          const { title, contents, nickname } = res.data;
+          setTitle(title);
+          setContents(contents);
+          setnickname(nickname);
+        })
+        .catch((err) => {
+          console.log("글 불러오기에 실패했습니다.", err);
+        });
     }
-  }, [isEditMode]);
+  }, [isEditMode, idx]);
+
+  // useEffect(() => {
+  //   // 더미 데이터
+  //   const dummyData = {
+  //     title: "더미 제목",
+  //     contents: "더미 내용",
+  //     nickname: "더미 작성자",
+  //   };
+
+  //   // 수정 모드인 경우 기존 글의 내용을 불러옴
+  //   if (isEditMode) {
+  //     // 더미 데이터를 사용하여 값 설정
+  //     setTitle(dummyData.title);
+  //     setContents(dummyData.contents);
+  //     setnickname(dummyData.nickname);
+  //   }
+  // }, [isEditMode]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
