@@ -10,53 +10,53 @@ const MyPage = () => {
   const [email, setEmail] = useState("");
   const [nickname, setNickname] = useState("");
 
-  // useEffect(() => {
-  //   let isMounted = true;
-  //   const source = axios.CancelToken.source();
-
-  //   axios
-  //     .get("/users/validate", { cancelToken: source.token })
-  //     .then((res) => {
-  //       if (isMounted && res.status !== 404) {
-  //         const {
-  //           name: userName,
-  //           email: userEmail,
-  //           nickname: userNickname,
-  //         } = res.data;
-  //         setName(userName);
-  //         setEmail(userEmail);
-  //         setNickname(userNickname);
-  //       }
-  //     })
-  //     .catch((error) => {
-  //       if (axios.isCancel(error)) {
-  //         // Request was canceled
-  //         return;
-  //       }
-  //       console.log("Failed to validate user:", error);
-  //       alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
-  //       navigate("/SignIn");
-  //     });
-
-  //   return () => {
-  //     isMounted = false;
-  //     source.cancel("Request canceled");
-  //   };
-  // }, [navigate]);
-
   useEffect(() => {
-    // 더미 데이터 생성
-    const dummyData = {
-      name: "John Doe",
-      email: "johndoe@example.com",
-      nickname: "johndoe123",
-    };
+    let isMounted = true;
+    const source = axios.CancelToken.source();
 
-    // 더미 데이터 설정
-    setName(dummyData.name);
-    setEmail(dummyData.email);
-    setNickname(dummyData.nickname);
-  }, []);
+    axios
+      .get("/users/validate", { cancelToken: source.token })
+      .then((res) => {
+        if (isMounted && res.status !== 404) {
+          const {
+            name: userName,
+            email: userEmail,
+            nickname: userNickname,
+          } = res.data;
+          setName(userName);
+          setEmail(userEmail);
+          setNickname(userNickname);
+        }
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          // Request was canceled
+          return;
+        }
+        console.log("Failed to validate user:", error);
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        navigate("/SignIn");
+      });
+
+    return () => {
+      isMounted = false;
+      source.cancel("Request canceled");
+    };
+  }, [navigate]);
+
+  // useEffect(() => {
+  //   // 더미 데이터 생성
+  //   const dummyData = {
+  //     name: "John Doe",
+  //     email: "johndoe@example.com",
+  //     nickname: "johndoe123",
+  //   };
+
+  //   // 더미 데이터 설정
+  //   setName(dummyData.name);
+  //   setEmail(dummyData.email);
+  //   setNickname(dummyData.nickname);
+  // }, []);
 
   const onClickLogout = () => {
     axios
