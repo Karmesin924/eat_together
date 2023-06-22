@@ -22,19 +22,13 @@ const BoardDetail = () => {
     const getBoard = async () => {
       try {
         const boardData = await axios.get(`/posts/${String(idx)}`);
+        console.log(boardData);
         const selectedBoard = boardData.data;
-        const isAuthor = selectedBoard.isAuthor || false;
+        const isAuthor = selectedBoard.author || false;
 
         setBoard(selectedBoard || {});
         setIsAuthor(isAuthor);
         setLoading(false);
-
-        console.log("idx : " + selectedBoard.idx);
-        console.log("title : " + selectedBoard.title);
-        console.log("contents : " + selectedBoard.contents);
-        console.log("nickname : " + selectedBoard.nickname);
-        console.log("createdDate : " + selectedBoard.createdDate);
-        console.log("isAuthor : " + isAuthor);
       } catch (err) {
         console.log("게시글을 가져오는데 실패했습니다.", err);
         setLoading(false);
