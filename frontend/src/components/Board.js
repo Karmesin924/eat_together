@@ -9,8 +9,7 @@ const Board = ({
   contents,
   nickname,
   createdDate,
-  replies,
-  isAuthor,
+  author,
 }) => {
   const navigate = useNavigate();
 
@@ -48,7 +47,7 @@ const Board = ({
       <hr />
       <p>{contents}</p>
       <br />
-      {isAuthor && (
+      {author && (
         <div>
           <button text="수정" onClick={handleEdit} />
           <button text="삭제" onClick={handleDelete} />
@@ -56,8 +55,9 @@ const Board = ({
       )}
 
       <h3>댓글</h3>
-      <ReplyList replies={replies} />
       <ReplyForm />
+      <ReplyList />
+
     </div>
   );
 };

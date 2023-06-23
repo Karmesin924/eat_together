@@ -14,16 +14,17 @@ const ReplyForm = () => {
 
     const replyData = {
       contents: replycontents,
-      createdAt: new Date().toISOString(),
     };
 
     try {
       const response = await axios.post(`/posts/comment/${postIdx}/add`, replyData);
       // 성공적으로 작성되었을 때의 처리 로직
       console.log("댓글이 성공적으로 작성되었습니다.", response.data);
+      alert("댓글이 성공적으로 작성되었습니다.");
       setReplies([...replies, response.data]);
     } catch (error) {
       // 오류 발생 시의 처리 로직
+      alert("댓글 작성에 실패했습니다.");
       console.log("댓글 작성에 실패했습니다.", error);
     }
     // 입력 필드 초기화
@@ -69,19 +70,9 @@ const ReplyForm = () => {
             required
           />
         </div>
-        <button type="submit" onClick={handleSubmit} >
+        <button onClick={handleSubmit} >
           댓글 작성</button>
       </form>
-      <h4>댓글 목록</h4>
-      <ul>
-        {replies.map((reply, index) => (
-          <li key={index}>
-            <p>작성자: {reply.author}</p>
-            <p>내용: {reply.contents}</p>
-            <p>작성일시: {reply.createdAt}</p>
-          </li>
-        ))}
-      </ul>
     </div>
   );
 };
