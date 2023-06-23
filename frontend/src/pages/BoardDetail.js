@@ -21,16 +21,14 @@ const BoardDetail = () => {
   useEffect(() => {
     const getBoard = async () => {
       try {
-        const resp = await axios.get(`/posts/${String(idx)}`);
-        const selectedBoard = resp.data;
-        const isAuthor = resp.data.isAuthor || false;
+        const boardData = await axios.get(`/posts/${String(idx)}`);
+        console.log(boardData);
+        const selectedBoard = boardData.data;
+        const isAuthor = selectedBoard.author || false;
 
         setBoard(selectedBoard || {});
         setIsAuthor(isAuthor);
         setLoading(false);
-
-        // getReplies 함수 호출 후 완료될 때까지 기다림
-        await getReplies();
       } catch (err) {
         console.log("게시글을 가져오는데 실패했습니다.", err);
         setLoading(false);
@@ -39,8 +37,7 @@ const BoardDetail = () => {
 
     const getReplies = async () => {
       try {
-        const resp = await axios.get(`/posts/${String(idx)}/comment`);
-        const replyData = resp.data;
+        const replyData = await axios.get(`/posts/${String(idx)}/comment`).data;
         const replies = Array.isArray(replyData) ? replyData : [];
         setBoard((prevBoard) => ({ ...prevBoard, replies }));
       } catch (err) {
@@ -51,6 +48,7 @@ const BoardDetail = () => {
     const fetchData = async () => {
       setLoading(true);
       await getBoard();
+      await getReplies();
     };
 
     fetchData();
@@ -127,47 +125,34 @@ const BoardDetail = () => {
   //   getBoard();
   // }, [idx]);
 
-return (
-  <div>
-    <MyHeader
-      headText={"같이 하자"}
-      leftChild={
-        <MyButton
-          text={"뒤로가기"}
-          onClick={() => {
-            navigate(-1);
-          }}
+  return (
+    <div>
+      <MyHeader
+        headText={"같이 하자"}
+        leftChild={
+          <MyButton
+            text={"뒤로가기"}
+            onClick={() => {
+              navigate(-1);
+            }}
+          />
+        }
+      />
+      {loading ? (
+        <h2>loading...</h2>
+      ) : (
+        <Board
+          idx={board?.idx}
+          title={board?.title}
+          contents={board?.contents}
+          nickname={board?.nickname}
+          createdDate={board?.createdDate}
+          replies={board?.replies || []}
+          isAuthor={isAuthor}
         />
-      }
-    />
-    {loading ? (
-      <h2>loading...</h2>
-    ) : (
-      <>
-        {board.replies && board.replies.length > 0 ? (
-          <Board
-            idx={board.idx}
-            title={board.title}
-            contents={board.contents}
-            nickname={board.nickname}
-            createdDate={board.createdDate}
-            replies={board.replies}
-            isAuthor={isAuthor}
-          />
-        ) : (
-          <Board
-            idx={board.idx}
-            title={board.title}
-            contents={board.contents}
-            nickname={board.nickname}
-            createdDate={board.createdDate}
-            isAuthor={isAuthor}
-          />
-        )}
-      </>
-    )}
-  </div>
-);
+      )}
+    </div>
+  );
 };
 
 export default BoardDetail;

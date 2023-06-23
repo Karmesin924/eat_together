@@ -15,7 +15,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/signup")
-    public ResponseEntity signup(@RequestBody MemberDTO member) {
+    public ResponseEntity signup(@RequestBody SignUpDTO member) {
         System.out.println("member = " + member);
         int result = memberService.saveUser(member);
 
@@ -29,7 +29,7 @@ public class MemberController {
     public ResponseEntity login(@RequestBody LoginDTO form, HttpServletRequest request) {
         System.out.println("form = " + form);
 
-        MemberDTO loginMember = memberService.login(form.getEmail(), form.getPassword());
+        Member loginMember = memberService.login(form);
         if (loginMember == null) {
             return ResponseEntity.notFound().build();
         }
@@ -55,7 +55,7 @@ public class MemberController {
         if (session == null) {
             return ResponseEntity.badRequest().build();
         }
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("member");
+        Member loginMember = (Member) session.getAttribute("member");
 
         if (loginMember == null) {
             return ResponseEntity.notFound().build();

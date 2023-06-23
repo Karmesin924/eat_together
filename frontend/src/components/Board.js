@@ -7,7 +7,7 @@ const Board = ({
   idx,
   title,
   contents,
-  author,
+  nickname,
   createdDate,
   replies,
   isAuthor,
@@ -35,9 +35,9 @@ const Board = ({
   return (
     <div>
       <h2>{title}</h2>
-      <h5>{author}</h5>
+      <h4>작성자 : {nickname}</h4>
       <p>
-        작성일시:{" "}
+        작성일시 :{" "}
         {new Date(createdDate).toLocaleDateString("ko-KR", {
           weekday: "short",
           year: "2-digit",
