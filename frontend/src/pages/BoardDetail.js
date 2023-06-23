@@ -16,19 +16,25 @@ const BoardDetail = () => {
     createdDate: "",
     replies: [],
   });
-  const [isAuthor, setIsAuthor] = useState(false);
+  const [author, setAuthor] = useState(false);
 
   useEffect(() => {
     const getBoard = async () => {
       try {
         const boardData = await axios.get(`/posts/${String(idx)}`);
-        console.log(boardData);
         const selectedBoard = boardData.data;
-        const isAuthor = selectedBoard.author || false;
+        const author = selectedBoard.author || false;
 
         setBoard(selectedBoard || {});
-        setIsAuthor(isAuthor);
+        setAuthor(author);
         setLoading(false);
+
+        console.log("idx : " + selectedBoard.idx);
+        console.log("title : " + selectedBoard.title);
+        console.log("contents : " + selectedBoard.contents);
+        console.log("nickname : " + selectedBoard.nickname);
+        console.log("createdDate : " + selectedBoard.createdDate);
+        console.log("author : " + author);
       } catch (err) {
         console.log("게시글을 가져오는데 실패했습니다.", err);
         setLoading(false);
@@ -79,7 +85,7 @@ const BoardDetail = () => {
   //               createdDate: "2023-06-21T09:12:34Z",
   //             },
   //           ],
-  //           isAuthor: true,
+  //           author: true,
   //         },
   //         {
   //           idx: 2,
@@ -88,7 +94,7 @@ const BoardDetail = () => {
   //           nickname: "작성자 2",
   //           createdDate: "2023-06-21",
   //           replies: [],
-  //           isAuthor: false,
+  //           author: false,
   //         },
   //         {
   //           idx: 3,
@@ -104,7 +110,7 @@ const BoardDetail = () => {
   //               createdDate: "2023-06-22T15:45:00Z",
   //             },
   //           ],
-  //           isAuthor: true,
+  //           author: true,
   //         },
   //       ];
 
@@ -114,7 +120,7 @@ const BoardDetail = () => {
   //         (item) => item.idx === parseInt(idx)
   //       );
   //       setBoard(selectedBoard || {});
-  //       setIsAuthor(selectedBoard?.isAuthor || false); // 수정: 선택한 게시글의 isAuthor 값을 사용
+  //       setAuthor(selectedBoard?.author || false); // 수정: 선택한 게시글의 author 값을 사용
   //       setLoading(false);
   //     } catch (err) {
   //       console.log("게시글을 가져오는데 실패했습니다.", err);
@@ -148,7 +154,7 @@ const BoardDetail = () => {
           nickname={board?.nickname}
           createdDate={board?.createdDate}
           replies={board?.replies || []}
-          isAuthor={isAuthor}
+          author={author}
         />
       )}
     </div>
