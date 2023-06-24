@@ -1,6 +1,6 @@
 package SWST.eat_together.domain.comment;
 
-import SWST.eat_together.domain.member.MemberDTO;
+import SWST.eat_together.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,7 +18,7 @@ public class CommentController {
         if (session == null) {
             return ResponseEntity.badRequest().build();
         }
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("member");
+        Member loginMember = (Member) session.getAttribute("member");
 
         CommentService.addComment(loginMember, comment);
 
