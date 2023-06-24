@@ -9,6 +9,5 @@ public class CommentDTO {
     private String contents;
     private String nickname;
     private String createdDate;
-
     private String email;
 }

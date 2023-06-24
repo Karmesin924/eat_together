@@ -1,11 +1,12 @@
 package SWST.eat_together.domain.comment;
 
-import SWST.eat_together.domain.member.MemberDTO;
+
+import SWST.eat_together.domain.member.Member;
 
 import java.time.LocalDate;
 
 public class CommentService {
-    public static void addComment(MemberDTO member, CommentDTO comment) {
+    public static void addComment(Member member, CommentDTO comment) {
         comment.setEmail(member.getEmail());
         comment.setCreatedDate(LocalDate.now().toString());
         comment.setNickname(member.getNickname());
