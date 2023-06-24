@@ -25,6 +25,7 @@ public class MemberService {
         member.setPassword(form.getPassword());
 
         memberRepository.save(member);
+
         //성공시 0 return, 실패시 1 return
         return 0;
     }

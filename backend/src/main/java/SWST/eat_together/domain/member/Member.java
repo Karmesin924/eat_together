@@ -33,4 +33,5 @@ public class Member {
 
     @Column(name = "password")
     private String password;
+
 }
