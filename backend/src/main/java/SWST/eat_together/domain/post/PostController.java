@@ -1,6 +1,6 @@
 package SWST.eat_together.domain.post;
 
-import SWST.eat_together.domain.member.MemberDTO;
+import SWST.eat_together.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +14,12 @@ import javax.servlet.http.HttpSession;
 public class PostController {
     private final PostService postService;
     @PostMapping("/add")
-    public ResponseEntity add(@RequestBody PostDTO post, HttpServletRequest request){
+    public ResponseEntity add(@RequestBody regiPostDTO post, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null) {
             return ResponseEntity.badRequest().build();
         }
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("member");
+        Member loginMember = (Member)session.getAttribute("member");
 
         postService.addPost(loginMember, post);
 
@@ -27,16 +27,16 @@ public class PostController {
     }
 
     @GetMapping("/{idx}")
-    public ResponseEntity detail(@PathVariable("idx") String idx, HttpServletRequest request){
+    public ResponseEntity detail(@PathVariable("idx") String id, HttpServletRequest request){
 
         String email = null;
         HttpSession session = request.getSession(false);
         if (session != null) {
-            MemberDTO loginMember = (MemberDTO) session.getAttribute("member");
+            Member loginMember = (Member) session.getAttribute("member");
             email = loginMember.getEmail();
         }
 
-        PostDTO post = postService.detail(Integer.parseInt(idx), email);
+        Post post = postService.detail(Integer.parseInt(id), email);
 
         // 인덱스 번호와 일치하는 게시글이 없을 경우
         if (post == null){
@@ -47,14 +47,14 @@ public class PostController {
     }
     
     @DeleteMapping("{idx}")
-    public ResponseEntity delete(@PathVariable("idx") String idx, HttpServletRequest request){
+    public ResponseEntity delete(@PathVariable("idx") String id, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null)
             return ResponseEntity.notFound().build();
 
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("member");
+        Member loginMember = (Member) session.getAttribute("member");
         String email = loginMember.getEmail();
-        Integer result = postService.delete(Integer.parseInt(idx), email);
+        Integer result = postService.delete(Integer.parseInt(id), email);
 
         if (result == 1){
             return ResponseEntity.notFound().build();
@@ -63,14 +63,14 @@ public class PostController {
     }
 
     @PutMapping("{idx}")
-    public ResponseEntity edit(@PathVariable("idx") String idx, @RequestBody PostDTO post, HttpServletRequest request){
+    public ResponseEntity edit(@PathVariable("idx") String id, @RequestBody Post post, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null)
             return ResponseEntity.notFound().build();
         System.out.println("post = " + post);
-        MemberDTO loginMember = (MemberDTO) session.getAttribute("member");
+        Member loginMember = (Member) session.getAttribute("member");
         String email = loginMember.getEmail();
-        Integer result = postService.edit(Integer.parseInt(idx), email, post.getTitle(), post.getContents());
+        Integer result = postService.edit(Integer.parseInt(id), email, post.getTitle(), post.getContents());
 
         if (result == 1){
             return ResponseEntity.notFound().build();
