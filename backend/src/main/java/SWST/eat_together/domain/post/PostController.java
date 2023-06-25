@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
@@ -62,7 +63,7 @@ public class PostController {
     }
 
     @PutMapping("{idx}")
-    public ResponseEntity edit(@PathVariable("idx") int id, @RequestBody Post post, HttpServletRequest request){
+    public ResponseEntity edit(@PathVariable("idx") int id, @RequestBody RegiPostDTO post, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null)
             return ResponseEntity.notFound().build();
@@ -76,4 +77,5 @@ public class PostController {
         }
         return ResponseEntity.ok().build();
     }
+
 }
