@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class regiPostDTO {
+public class RegiPostDTO {
     private String title;
     private String contents;
 }
