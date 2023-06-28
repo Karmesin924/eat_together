@@ -1,0 +1,216 @@
+/* 로그인 */
+
+.signin {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.signin-together {
+    padding-top: 30px;
+    padding-bottom: 10px;
+    height: 170%;
+    font-size: 300%;
+    text-align: center;
+}
+
+.signin-together2 {
+    height: 50px;
+    font-size: 90%;
+    text-align: center;
+}
+
+.signin-forms {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    clear: both;
+}
+
+.signin-id {
+    margin-top: 5px;
+    margin-bottom: 7px;
+    width: 300px;
+    font-size: 25px;
+    border: 3px solid #FFCC66;
+    border-radius: 10px;
+}
+
+.signin-pw {
+    margin-top: 7px;
+    margin-bottom: 5px;
+    width: 300px;
+    font-size: 25px;
+    border: 3px solid #FFCC66;
+    border-radius: 10px;
+}
+
+.signin-submit {
+    display: flex;
+    margin: auto;
+    margin-top: 10px;
+    width: 300px;
+    height: 30px;
+}
+
+.signin-submit button {
+    cursor: pointer;
+    width: 300px;
+    border: none;
+    background-color: #FF9900;
+    border-radius: 5px;
+}
+
+.signin-goto {
+    width: 300px;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 30px;
+
+}
+
+.OAuth {
+    display: flex;
+    margin: auto;
+}
+
+/* 회원가입 */
+
+.signup {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.signup-container {
+    background-color: #ffffff;
+    padding: 20px;
+    margin: 0;
+
+}
+
+.signup-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+label {
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="password"],
+input[type="date"] {
+    padding: 8px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+}
+
+.message {
+    font-size: 14px;
+    color: #ff0000;
+}
+
+button {
+    padding: 8px 16px;
+    background-color: #ff9900;
+    /* 수정: 버튼 색을 #FF9900로 변경 */
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+
+/* Header */
+header {
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e2e2e2;
+    background-color: #FF9900;
+}
+
+header>div {
+    display: flex;
+
+}
+
+header .head_text {
+    width: 50%;
+    font-size: 25px;
+    justify-content: center;
+}
+
+header .head_btn_left {
+    width: 25%;
+    justify-content: start;
+}
+
+header .head_btn_right {
+    width: 25%;
+    justify-content: end;
+}
+
+/* footer */
+footer {
+    display: flex;
+    bottom: 0px;
+    position: absolute;
+}
+
+/* 홈페이지 */
+
+.Home {
+    text-align: center
+}
+
+.Home-LetsEat {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 200%;
+    font-weight: 500;
+    border-radius: 20px;
+    border: 2px solid #FF9900;
+    width: 150px;
+    height: 200px;
+
+}
+
+.Home-LetsDo {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+    padding-top: 20px;
+    text-align: center;
+    font-size: 200%;
+    font-weight: 500;
+    border-radius: 20px;
+    border: 2px solid #FF9900;
+    width: 150px;
+    height: 200px;
+
+}
+
+/* 마이 페이지 */
+
+.title-ex {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 20px;
+}
