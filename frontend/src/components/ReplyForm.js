@@ -17,7 +17,10 @@ const ReplyForm = () => {
     };
 
     try {
-      const response = await axios.post(`/posts/comment/${postIdx}/add`, replyData);
+      const response = await axios.post(
+        `/posts/comment/${postIdx}/add`,
+        replyData
+      );
       // 성공적으로 작성되었을 때의 처리 로직
       console.log("댓글이 성공적으로 작성되었습니다.", response.data);
       alert("댓글이 성공적으로 작성되었습니다.");
@@ -70,8 +73,7 @@ const ReplyForm = () => {
             required
           />
         </div>
-        <button onClick={handleSubmit} >
-          댓글 작성</button>
+        <button onClick={handleSubmit}>댓글 작성</button>
       </form>
     </div>
   );
