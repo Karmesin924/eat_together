@@ -6,11 +6,23 @@ import axios from "axios";
 
 const LetsEat = () => {
   const navigate = useNavigate("");
+  const [editTime, setEditTime] = useState(false);
+  const [startTime, setStartTime] = useState("");
+  const [endTime, setEndTime] = useState("");
+
   const [people, setPeople] = useState();
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [menu, setMenu] = useState([]);
   const [conversation, setConversation] = useState("");
+
+  const handleStartTime = (event) => {
+    setStartTime(event.target.value);
+  };
+
+  const handleEndTime = (event) => {
+    setEndTime(event.target.value);
+  };
 
   const handlePeople = (event) => {
     setPeople(event.target.value);
@@ -61,8 +73,20 @@ const LetsEat = () => {
       });
   });
 
-const LetsEat = () => {
-  const navigate = useNavigate();
+  useEffect(() => {
+    const now = new Date();
+    const nearestHour = Math.ceil(now.getMinutes() / 60) + now.getHours();
+    const nextHour = nearestHour + 1;
+
+    const formattedStartTime = `${
+      nearestHour < 10 ? "0" : ""
+    }${nearestHour}:00`;
+    const formattedEndTime = `${nextHour < 10 ? "0" : ""}${nextHour}:00`;
+
+    setStartTime(formattedStartTime);
+    setEndTime(formattedEndTime);
+  }, []);
+
   return (
     <div>
       <MyHeader
@@ -76,6 +100,34 @@ const LetsEat = () => {
           />
         }
       />
+      <h4>만남 일시</h4>
+      <div>
+        <input
+          type="text"
+          placeholder="닉네임"
+          value={new Date()
+            .toLocaleDateString("ko-KR", {
+              year: "numeric",
+              month: "2-digit",
+              day: "2-digit",
+              weekday: "short",
+            })
+            .replace(/\./g, " /")}
+          readOnly
+        />
+
+        <h4>시간 선택</h4>
+        <div>
+          <label>
+            시작 시간:
+            <input type="time" value={startTime} onChange={handleStartTime} />
+          </label>
+          <label>
+            종료 시간:
+            <input type="time" value={endTime} onChange={handleEndTime} />
+          </label>
+        </div>
+      </div>
     </div>
   );
 };
