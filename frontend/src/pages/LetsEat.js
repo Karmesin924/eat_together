@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const LetsEat = () => {
-  const navigate = useNavigate("");
+  const navigate = useNavigate();
   const [editTime, setEditTime] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
@@ -15,6 +15,7 @@ const LetsEat = () => {
   const [age, setAge] = useState("");
   const [menu, setMenu] = useState([]);
   const [conversation, setConversation] = useState("");
+  const [filterSelection, setFilterSelection] = useState(null);
 
   const handleStartTime = (event) => {
     setStartTime(event.target.value);
@@ -48,6 +49,13 @@ const LetsEat = () => {
     setConversation(event.target.value);
   };
 
+  const handleSaveFilters = (filters) => {
+    setPeople(filters.people);
+    setGender(filters.gender);
+    setAge(filters.age);
+    setMenu(filters.menu);
+  };
+
   const handleMatching = () => {
     alert("mathcing start!!");
     console.log("Selected Filters:", {
@@ -68,24 +76,42 @@ const LetsEat = () => {
           navigate("/SignIn");
         }
       })
-      .catch((error) => {
-        console.log("로그인이 되어있음.");
+      .catch((err) => {
+        console.log("로그인이 되어있습니다.");
       });
   });
 
   useEffect(() => {
-    const now = new Date();
-    const nearestHour = Math.ceil(now.getMinutes() / 60) + now.getHours();
-    const nextHour = nearestHour + 1;
+    axios
+      .get("")
+      .then((res) => {
+        //이전에 선택했었던 항목 받아서 집어넣는 코드
+      })
+      .catch((err) => {
+        alert("기존 선택항목을 불러오는데 오류가 발생했습니다.");
+        console.log(err);
+      });
+  });
 
-    const formattedStartTime = `${
-      nearestHour < 10 ? "0" : ""
-    }${nearestHour}:00`;
-    const formattedEndTime = `${nextHour < 10 ? "0" : ""}${nextHour}:00`;
+  const handleFilterSelection = (event) => {
+    if (event.target.value === "myFilter") {
+      const filterSelectionContent = (
+        <div>
+          <p>인원: {people}</p>
+          <p>성별: {gender}</p>
+          <p>나이대: {age}</p>
+          <p>메뉴: {menu.join(", ")}</p>
+          <p>대화 정도: {conversation}</p>
+        </div>
+      );
 
-    setStartTime(formattedStartTime);
-    setEndTime(formattedEndTime);
-  }, []);
+      setFilterSelection(filterSelectionContent);
+    } else if (event.target.value === "selectFilter") {
+      navigate("/FilterDetail", {
+        state: { handleSaveFilters: handleSaveFilters },
+      });
+    }
+  };
 
   return (
     <div>
@@ -100,7 +126,7 @@ const LetsEat = () => {
           />
         }
       />
-      <h4>만남 일시</h4>
+      <h3>모임 날짜</h3>
       <div>
         <input
           type="text"
@@ -116,18 +142,36 @@ const LetsEat = () => {
           readOnly
         />
 
-        <h4>시간 선택</h4>
-        <div>
-          <label>
-            시작 시간:
-            <input type="time" value={startTime} onChange={handleStartTime} />
-          </label>
-          <label>
-            종료 시간:
-            <input type="time" value={endTime} onChange={handleEndTime} />
-          </label>
-        </div>
+        <h3>시간 선택</h3>
+        <label>
+          시작 시간:
+          <input type="time" value={startTime} onChange={handleStartTime} />
+        </label>
+        <label>
+          종료 시간:
+          <input type="time" value={endTime} onChange={handleEndTime} />
+        </label>
       </div>
+
+      <h3>필터 선택</h3>
+      <div>
+        <input
+          type="radio"
+          name="filter"
+          value="myFilter"
+          checked={true}
+          onChange={handleFilterSelection}
+        />
+        나의 필터
+        <input
+          type="radio"
+          name="filter"
+          value="selectFilter"
+          onChange={handleFilterSelection}
+        />
+        필터 선택
+      </div>
+      <div id="filterSelectionDiv">{filterSelection}</div>
     </div>
   );
 };

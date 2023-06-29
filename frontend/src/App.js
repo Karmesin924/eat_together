@@ -9,6 +9,7 @@ import LetsDo from "./pages/LetsDo";
 import LetsEat from "./pages/LetsEat";
 import BoardDetail from "./pages/BoardDetail";
 import Write from "./components/Write";
+import FilterDetail from "./pages/FilterDetail";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
           <Route path="/board/:idx" element={<BoardDetail />} />
           <Route path="/write" element={<Write />} />
           <Route path="/write/:idx" element={<Write />} />
+          <Route path="/FilterDetail" element={<FilterDetail />} />
         </Routes>
       </div>
     </BrowserRouter>
