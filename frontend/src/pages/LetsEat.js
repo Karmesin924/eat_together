@@ -3,44 +3,18 @@ import MyButton from "../components/MyButton";
 import MyHeader from "../components/MyHeader";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import MyContext from "../components/MyContext";
 
 const LetsEat = () => {
   const navigate = useNavigate();
-  const [editTime, setEditTime] = useState(false);
   const [startTime, setStartTime] = useState("");
   const [people, setPeople] = useState();
   const [gender, setGender] = useState("");
   const [age, setAge] = useState("");
   const [menu, setMenu] = useState([]);
   const [conversation, setConversation] = useState("");
-  const [filterSelection, setFilterSelection] = useState(null);
-
   const handleStartTime = (event) => {
     setStartTime(event.target.value);
-  };
-
-  const handlePeople = (event) => {
-    setPeople(event.target.value);
-  };
-
-  const handleGender = (event) => {
-    setGender(event.target.value);
-  };
-
-  const handleAge = (event) => {
-    setAge(event.target.value);
-  };
-
-  const handleMenu = (event) => {
-    const selectedOptions = Array.from(
-      event.target.selectedOptions,
-      (option) => option.value
-    );
-    setMenu(selectedOptions);
-  };
-
-  const handleConversation = (event) => {
-    setConversation(event.target.value);
   };
 
   const handleSaveFilters = (filters) => {
@@ -48,6 +22,7 @@ const LetsEat = () => {
     setGender(filters.gender);
     setAge(filters.age);
     setMenu(filters.menu);
+    setConversation(filters.conversation);
   };
 
   const handleMatching = () => {
@@ -61,16 +36,25 @@ const LetsEat = () => {
     });
   };
 
-  const filterSelectionContent = (
-    <div>
-      <p>인원: {people}</p>
-      <p>성별: {gender}</p>
-      <p>나이대: {age}</p>
-      <p>메뉴: {menu.join(", ")}</p>
-      <p>대화 정도: {conversation}</p>
-    </div>
-  );
+  const handleshowFilter = () => {
+    // 나의 필터 버튼을 눌렀을 때, 서버에서 받은 최근 저장 정보를 입력해줌
+    axios
+      .get("/api/filters")
+      .then((res) => {
+        const filters = res.data;
+        handleSaveFilters(filters);
+      })
+      .catch((err) => {
+        alert("기존 선택항목을 불러오는데 오류가 발생했습니다.");
+        console.log(err);
+      });
+  };
 
+  const handleSelectFilter = () => {
+    navigate("/FilterDetail");
+  };
+
+  //로그인 정보 확인
   useEffect(() => {
     axios
       .get("/users/validate")
@@ -85,6 +69,7 @@ const LetsEat = () => {
       });
   }, [navigate]);
 
+  // 자동 시간 설정
   useEffect(() => {
     const now = new Date();
     const nearestHour = Math.ceil(now.getMinutes() / 60) + now.getHours();
@@ -96,27 +81,6 @@ const LetsEat = () => {
     setStartTime(formattedStartTime);
   }, []);
 
-  const handleFilterSelection = () => {
-    // 나의 필터 버튼을 눌렀을 때, 서버에서 받은 최근 저장 정보를 입력해줌
-    axios
-      .get("/api/filters")
-      .then((res) => {
-        const filters = res.data;
-        handleSaveFilters(filters);
-        setFilterSelection(filterSelectionContent);
-      })
-      .catch((err) => {
-        alert("기존 선택항목을 불러오는데 오류가 발생했습니다.");
-        console.log(err);
-      });
-  };
-
-  const handleSelectFilter = () => {
-    navigate("/FilterDetail", {
-      state: { state: JSON.stringify({ handleSaveFilters }) },
-    });
-  };
-
   return (
     <div>
       <MyHeader
@@ -125,7 +89,7 @@ const LetsEat = () => {
           <MyButton
             text={"뒤로가기"}
             onClick={() => {
-              navigate("/");
+              navigate(-1);
             }}
           />
         }
@@ -155,20 +119,11 @@ const LetsEat = () => {
 
       <h3>필터 선택</h3>
       <div>
-        <button onClick={handleFilterSelection}>나의 필터</button>
-        <button onClick={handleSelectFilter}>필터 선택</button>
+        <button onClick={handleshowFilter}>불러오기</button>
+        <button onClick={handleSelectFilter}>필터선택</button>
       </div>
-      <div id="filterSelectionDiv">
-        {filterSelection || (
-          <>
-            <p>인원:</p>
-            <p>성별:</p>
-            <p>나이대:</p>
-            <p>메뉴:</p>
-            <p>대화 정도:</p>
-          </>
-        )}
-      </div>
+
+      <button onClick={handleMatching}>매칭</button>
     </div>
   );
 };
