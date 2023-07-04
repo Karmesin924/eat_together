@@ -1,28 +1,19 @@
 import { useNavigate } from "react-router-dom";
 import MyButton from "../components/MyButton";
 import MyHeader from "../components/MyHeader";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import MyContext from "../components/MyContext";
 
 const LetsEat = () => {
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState("");
-  const [people, setPeople] = useState();
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
-  const [menu, setMenu] = useState([]);
-  const [conversation, setConversation] = useState("");
+
+  const { people, gender, age, menu, conversation, handleSaveFilters } =
+    useContext(MyContext);
+
   const handleStartTime = (event) => {
     setStartTime(event.target.value);
-  };
-
-  const handleSaveFilters = (filters) => {
-    setPeople(filters.people);
-    setGender(filters.gender);
-    setAge(filters.age);
-    setMenu(filters.menu);
-    setConversation(filters.conversation);
   };
 
   const handleMatching = () => {
@@ -36,7 +27,7 @@ const LetsEat = () => {
     });
   };
 
-  const handleshowFilter = () => {
+  const handleShowFilter = () => {
     // 나의 필터 버튼을 눌렀을 때, 서버에서 받은 최근 저장 정보를 입력해줌
     axios
       .get("/api/filters")
@@ -89,7 +80,7 @@ const LetsEat = () => {
           <MyButton
             text={"뒤로가기"}
             onClick={() => {
-              navigate(-1);
+              navigate("/");
             }}
           />
         }
@@ -119,8 +110,17 @@ const LetsEat = () => {
 
       <h3>필터 선택</h3>
       <div>
-        <button onClick={handleshowFilter}>불러오기</button>
+        <button onClick={handleShowFilter}>불러오기</button>
         <button onClick={handleSelectFilter}>필터선택</button>
+      </div>
+
+      <h3>현재 선택한 필터</h3>
+      <div>
+        <p>인원: {people}</p>
+        <p>성별: {gender}</p>
+        <p>나이대: {age}</p>
+        <p>메뉴: {menu.join(", ")}</p>
+        <p>대화 주제: {conversation}</p>
       </div>
 
       <button onClick={handleMatching}>매칭</button>

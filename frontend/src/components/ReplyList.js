@@ -1,7 +1,9 @@
 import axios from "axios";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ReplyList = ({ author }) => {
+  const navigate = useNavigate();
   const [replies, setReplies] = useState([]);
   const { postIdx } = useParams();
 
@@ -14,7 +16,7 @@ const ReplyList = ({ author }) => {
         alert.log("댓글을 가져오는데 실패했습니다.");
         console.log("댓글을 가져오는데 실패했습니다.", err);
       }
-    }
+    };
 
     getReplies();
   });
