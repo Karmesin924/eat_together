@@ -17,21 +17,23 @@ const FilterDetail = () => {
 
   const handleCheckboxMenuChange = (event) => {
     const { value, checked } = event.target;
+    const isUnchecked = !checked;
 
     if (value === "상관없음") {
-      // '상관없음'을 선택한 경우, 모든 메뉴 옵션의 체크 여부를 업데이트합니다.
       const updatedFilters = {
         ...filters,
-        menu: checked ? ["상관없음"] : [],
+        menu: isUnchecked ? [] : [value],
       };
       setFilters(updatedFilters);
     } else {
-      // 다른 메뉴 옵션을 선택한 경우, 해당 옵션을 추가 또는 제거합니다.
+      const hasUncheckedNone = filters.menu.includes("상관없음") && isUnchecked;
       const updatedFilters = {
         ...filters,
-        menu: checked
-          ? [...filters.menu.filter((item) => item !== "상관없음"), value]
-          : filters.menu.filter((item) => item !== value),
+        menu: hasUncheckedNone
+          ? [value]
+          : isUnchecked
+          ? filters.menu.filter((item) => item !== value)
+          : [...filters.menu.filter((item) => item !== "상관없음"), value],
       };
       setFilters(updatedFilters);
     }
@@ -160,7 +162,7 @@ const FilterDetail = () => {
             <input
               type="checkbox"
               value="상관없음"
-              checked={filters.menu === "상관없음"}
+              checked={filters.menu.includes("상관없음")}
               onChange={handleCheckboxMenuChange}
             />
             상관없음
