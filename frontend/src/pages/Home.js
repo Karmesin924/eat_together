@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import MyFooter from "../components/MyFooter";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 
@@ -32,6 +31,7 @@ const Home = () => {
         같이
         <br />
         먹자
+        <img src="images/LetsEat.png" width={200} height={200} />
       </div>
       <div
         className="Home-LetsDo"
@@ -42,6 +42,7 @@ const Home = () => {
         같이
         <br />
         하자
+        <img src="images/LetsDo.png" width={200} height={200} />
       </div>
     </div>
   );
