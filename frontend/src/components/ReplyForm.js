@@ -1,8 +1,9 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const ReplyForm = () => {
+  const navigate = useNavigate();
   const [replycontents, setReplycontents] = useState("");
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
@@ -10,7 +11,17 @@ const ReplyForm = () => {
   const [replies, setReplies] = useState([]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    axios
+      .get("/users/validate")
+      .then((res) => {
+        if (res.status === 404) {
+          alert("댓글을 작성하려면 먼저 로그인을 해주세요.");
+          navigate("/SignIn");
+        }
+      })
+      .catch((err) => {
+        console.log("로그인이 되어있습니다.");
+      });
 
     const replyData = {
       contents: replycontents,
@@ -32,7 +43,6 @@ const ReplyForm = () => {
     }
     // 입력 필드 초기화
     setReplycontents("");
-    // setReplyAuthor("");
   };
 
   useEffect(() => {
@@ -54,10 +64,9 @@ const ReplyForm = () => {
 
   return (
     <div>
-      <h4>댓글 작성하기</h4>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>작성자: </label>
+          <label>닉네임: </label>
           <input
             type="text"
             placeholder="닉네임"
@@ -66,7 +75,7 @@ const ReplyForm = () => {
           />
         </div>
         <div>
-          <label>내용:</label>
+          <h3>내용</h3>
           <textarea
             value={replycontents}
             onChange={(e) => setReplycontents(e.target.value)}
@@ -74,6 +83,7 @@ const ReplyForm = () => {
           />
         </div>
         <button onClick={handleSubmit}>댓글 작성</button>
+        <hr />
       </form>
     </div>
   );

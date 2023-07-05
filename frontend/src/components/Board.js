@@ -3,14 +3,7 @@ import ReplyForm from "./ReplyForm";
 import ReplyList from "./ReplyList";
 import { useNavigate } from "react-router-dom";
 
-const Board = ({
-  idx,
-  title,
-  contents,
-  nickname,
-  createdDate,
-  author,
-}) => {
+const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
@@ -34,8 +27,8 @@ const Board = ({
   return (
     <div>
       <h2>{title}</h2>
-      <h4>작성자 : {nickname}</h4>
-      <p>
+      <h4>글쓴이 : {nickname}</h4>
+      <h5>
         작성일시 :{" "}
         {new Date(createdDate).toLocaleDateString("ko-KR", {
           weekday: "short",
@@ -43,7 +36,7 @@ const Board = ({
           month: "2-digit",
           day: "2-digit",
         })}
-      </p>
+      </h5>
       <hr />
       <p>{contents}</p>
       <br />
@@ -53,11 +46,10 @@ const Board = ({
           <button text="삭제" onClick={handleDelete} />
         </div>
       )}
-
-      <h3>댓글</h3>
+      <hr />
+      <h2>댓글</h2>
       <ReplyForm />
       <ReplyList />
-
     </div>
   );
 };
