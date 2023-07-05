@@ -18,31 +18,37 @@ const Home = () => {
           />
         }
       />
-
-      <br />
-      <br />
-
-      <div
-        className="Home-LetsEat"
-        onClick={() => {
-          navigate("/LetsEat");
-        }}
-      >
-        같이
-        <br />
-        먹자
-        <img src="images/LetsEat.png" width={200} height={200} />
-      </div>
-      <div
-        className="Home-LetsDo"
-        onClick={() => {
-          navigate("/LetsDo");
-        }}
-      >
-        같이
-        <br />
-        하자
-        <img src="images/LetsDo.png" width={200} height={200} />
+      <div className="Home-Lets">
+        <div
+          onClick={() => {
+            navigate("/LetsEat");
+          }}
+        >
+          같이
+          <br />
+          먹자
+          <img
+            src="images/LetsEat.png"
+            alt="같이먹자"
+            width={200}
+            height={200}
+          />
+        </div>
+        <div
+          onClick={() => {
+            navigate("/LetsDo");
+          }}
+        >
+          같이
+          <br />
+          하자
+          <img
+            src="images/LetsDo.png"
+            alt="같이하자"
+            width={200}
+            height={200}
+          />
+        </div>
       </div>
     </div>
   );
