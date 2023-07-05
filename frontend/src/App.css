@@ -188,33 +188,29 @@ header .head_btn_right {
     text-align: center
 }
 
-.Home-LetsEat {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
-    padding-top: 20px;
-    text-align: center;
-    font-size: 320%;
-    border-radius: 20px;
-    border: 2px solid #FF9900;
-    width: 250px;
-    height: 400px;
-
+.Home-Lets {
+    padding-top: 40px;
 }
 
-.Home-LetsDo {
+.Home-Lets div {
     display: inline-block;
     vertical-align: middle;
     margin-left: 10px;
     padding-top: 20px;
+    margin: 0px 20px 0px;
     text-align: center;
     font-size: 320%;
     border-radius: 20px;
     border: 2px solid #FF9900;
     width: 250px;
     height: 400px;
-
+    cursor: pointer;
 }
+
+.Home-Lets div:hover{
+    background-color: #FFCC66;
+}
+
 
 /* 마이 페이지 */
 
@@ -234,6 +230,12 @@ button {
     border: none;
     border-radius: 4px;
     cursor: pointer;
+}
+
+button:hover {
+    background-color: #FFCC66;
+    color: #ff7f50;
+    font-weight: bold;
 }
 
 button:disabled {
