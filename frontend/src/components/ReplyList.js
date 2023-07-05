@@ -24,7 +24,6 @@ const ReplyList = ({ author }) => {
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
     axios
-      // 동우야 도와줘
       .delete(`/posts/${postIdx}`)
       .then((res) => {
         alert("댓글이 삭제되었습니다!");
@@ -52,7 +51,6 @@ const ReplyList = ({ author }) => {
                   weekday: "short",
                 })}
               </p>
-              {/* 조건부 삭제 */}
               {author && (
                 <div>
                   <button text="삭제" onClick={handleDelete} />
