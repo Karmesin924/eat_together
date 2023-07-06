@@ -167,56 +167,91 @@ const SignUp = () => {
           />
         }
       />
-      <div className="signup-container">
-        <div className="signup-form">
-          <label htmlFor="name">이름</label>
-          <input type="text" id="name" value={name} onChange={onChangeName} />
-          <span className="message">{nameMessage}</span>
-
-          <label htmlFor="email">이메일</label>
+      <div className="p-5 m-0">
+        <div className="flex flex-col gap-4 max-w-md mt-0 m-auto">
+          <label className="text-xl font-bold" htmlFor="name">
+            이름
+          </label>
           <input
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
+            type="text"
+            id="name"
+            value={name}
+            onChange={onChangeName}
+          />
+          <span className="text-sm font-semibold text-signupmessage">
+            {nameMessage}
+          </span>
+
+          <label className="text-xl font-bold" htmlFor="email">
+            이메일
+          </label>
+          <input
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
             type="text"
             id="email"
             value={email}
             onChange={onChangeEmail}
           />
-          <span className="message">{emailMessage}</span>
+          <span className="text-sm font-semibold text-signupmessage">
+            {emailMessage}
+          </span>
 
-          <label htmlFor="birth">생년월일</label>
+          <label className="text-xl font-bold" htmlFor="birth">
+            생년월일
+          </label>
           <input
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
             type="date"
             id="birth"
             value={birth}
             onChange={onChangeBirth}
           />
-          <span className="message">{birthMessage}</span>
+          <span className="text-sm font-semibold text-signupmessage">
+            {birthMessage}
+          </span>
 
-          <label htmlFor="nickname">닉네임</label>
+          <label className="text-xl font-bold" htmlFor="nickname">
+            닉네임
+          </label>
           <input
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
             type="text"
             id="nickname"
             value={nickname}
             onChange={onChangeNickname}
           />
-          <span className="message">{nicknameMessage}</span>
+          <span className="text-sm font-semibold text-signupmessage">
+            {nicknameMessage}
+          </span>
 
-          <label htmlFor="password">비밀번호</label>
+          <label className="text-xl font-bold" htmlFor="password">
+            비밀번호
+          </label>
           <input
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
             type="password"
             id="password"
             value={password}
             onChange={onChangePassword}
           />
-          <span className="message">{passwordMessage}</span>
+          <span className="text-sm font-semibold text-signupmessage">
+            {passwordMessage}
+          </span>
 
-          <label htmlFor="passwordConfirm">비밀번호 확인</label>
+          <label className="text-xl font-bold" htmlFor="passwordConfirm">
+            비밀번호 확인
+          </label>
           <input
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
             type="password"
             id="passwordConfirm"
             value={passwordConfirm}
             onChange={onChangePasswordConfirm}
           />
-          <span className="message">{passwordConfirmMessage}</span>
+          <span className="text-sm font-semibold text-signupmessage">
+            {passwordConfirmMessage}
+          </span>
 
           <MyButton
             text="가입하기"
