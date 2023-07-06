@@ -7,7 +7,12 @@ const Home = () => {
   return (
     <div className="text-center">
       <MyHeader
-        leftChild={"채팅"}
+        leftChild={<MyButton
+          text={"채팅"}
+          onClick={() => {
+            navigate("/ChatList");
+          }}
+        />}
         headText={"같이 먹자"}
         rightChild={
           <MyButton
