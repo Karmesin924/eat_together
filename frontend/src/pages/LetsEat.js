@@ -4,10 +4,15 @@ import MyHeader from "../components/MyHeader";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
 import MyContext from "../components/MyContext";
+import Map from "../components/Map";
 
 const LetsEat = () => {
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState("");
+  const [currentLocation, setCurrentLocation] = useState(null);
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+  const [mapLoaded, setMapLoaded] = useState(false);
 
   const { people, gender, age, menu, conversation, handleSaveFilters } =
     useContext(MyContext);
@@ -28,7 +33,6 @@ const LetsEat = () => {
   };
 
   const handleShowFilter = () => {
-    // 나의 필터 버튼을 눌렀을 때, 서버에서 받은 최근 저장 정보를 입력해줌
     axios
       .get("/api/filters")
       .then((res) => {
@@ -45,7 +49,37 @@ const LetsEat = () => {
     navigate("/FilterDetail");
   };
 
-  //로그인 정보 확인
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      const options = { enableHighAccuracy: true };
+
+      const successCallback = (position) => {
+        const { latitude, longitude } = position.coords;
+        const accuracy = position.coords.accuracy;
+
+        if (accuracy <= 100) {
+          setLatitude(latitude);
+          setLongitude(longitude);
+          setMapLoaded(true); // 위치 정보가 정확하게 가져와지면 map을 로드할 수 있도록 상태 업데이트
+        } else {
+          navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
+        }
+      };
+
+      const errorCallback = (error) => {
+        console.log("위치 정보를 가져오는데 실패했습니다.", error);
+      };
+
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
+    } else {
+      console.log("Geolocation API가 지원되지 않습니다.");
+    }
+  };
+
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
   useEffect(() => {
     axios
       .get("/users/validate")
@@ -60,14 +94,11 @@ const LetsEat = () => {
       });
   }, [navigate]);
 
-  // 자동 시간 설정
   useEffect(() => {
     const now = new Date();
     const nearestHour = Math.ceil(now.getMinutes() / 60) + now.getHours();
 
-    const formattedStartTime = `${
-      nearestHour < 10 ? "0" : ""
-    }${nearestHour}:00`;
+    const formattedStartTime = `${nearestHour < 10 ? "0" : ""}${nearestHour}:00`;
 
     setStartTime(formattedStartTime);
   }, []);
@@ -123,6 +154,21 @@ const LetsEat = () => {
         <p>대화 주제: {conversation}</p>
       </div>
 
+      <h3>현재 위치</h3>
+
+      {latitude && longitude ? (
+        <div>
+          <p> 위도: {latitude}, 경도: {longitude}, </p>
+          {mapLoaded ? (
+            <Map latitude={latitude} longitude={longitude} />
+          ) : (
+            <p>지도를 로딩 중입니다...</p>
+          )}
+        </div>
+      ) : (
+        <p>위치 정보를 가져오는 중...</p>
+      )}
+      <br />
       <button onClick={handleMatching}>매칭</button>
     </div>
   );
