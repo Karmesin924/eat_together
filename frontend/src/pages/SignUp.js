@@ -173,7 +173,7 @@ const SignUp = () => {
             이름
           </label>
           <input
-            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold outline-none"
             type="text"
             id="name"
             value={name}
@@ -187,7 +187,7 @@ const SignUp = () => {
             이메일
           </label>
           <input
-            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold outline-none"
             type="text"
             id="email"
             value={email}
@@ -201,7 +201,7 @@ const SignUp = () => {
             생년월일
           </label>
           <input
-            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold outline-none"
             type="date"
             id="birth"
             value={birth}
@@ -215,7 +215,7 @@ const SignUp = () => {
             닉네임
           </label>
           <input
-            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold outline-none"
             type="text"
             id="nickname"
             value={nickname}
@@ -229,7 +229,7 @@ const SignUp = () => {
             비밀번호
           </label>
           <input
-            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold outline-none"
             type="password"
             id="password"
             value={password}
@@ -243,7 +243,7 @@ const SignUp = () => {
             비밀번호 확인
           </label>
           <input
-            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold"
+            className="border-2 border-gray-400 rounded-md h-9 pl-3 focus:border-project focus:text-inputfocus focus:font-semibold outline-none"
             type="password"
             id="passwordConfirm"
             value={passwordConfirm}
