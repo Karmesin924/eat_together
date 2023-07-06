@@ -45,6 +45,7 @@ function SignIn() {
           document.location.href = "/";
         })
         .catch((ex) => {
+          alert("로그인 요청이 실패했습니다.");
           console.log("login request fail: " + ex);
         })
         .finally(() => console.log("login request end"));
@@ -54,7 +55,7 @@ function SignIn() {
   };
 
   return (
-    <div className="signin">
+    <div className="flex flex-col justify-center">
       <MyHeader
         headText={"로그인"}
         leftChild={
@@ -66,16 +67,19 @@ function SignIn() {
           />
         }
       />
-      <div className="signin-together">
+      <div className=" pt-8 pb-3 text-6xl text-center">
         같이
-        <br />
+        <span className=" leading-normal">
+          <br />
+        </span>
         먹자
       </div>
-      <div className="signin-together2">외로운 혼밥러들을 위해</div>
-
-      <div className="signin-forms">
+      <div className=" mt-3 h-14 text-center text-lg font-normal">
+        외로운 혼밥러들을 위해
+      </div>
+      <div className="flex flex-col justify-center items-center clear-both">
         <input
-          className="signin-id"
+          className=" mt-1 mb-3 w-80 h-10 pl-3 text-base border-buttonhover border-4 border-solid rounded-xl placeholder:text-base focus:border-project focus:text-inputfocus outline-none"
           type="text"
           value={inputEmail}
           onChange={handleinputEmail}
@@ -83,7 +87,7 @@ function SignIn() {
         />
 
         <input
-          className="signin-pw"
+          className=" mt-3 mb-3 w-80 h-10 pl-3 text-base border-buttonhover border-4 border-solid rounded-xl placeholder:text-base focus:border-project focus:text-inputfocus outline-none"
           type="password"
           value={inputPassword}
           onChange={handleinputPassword}
@@ -91,13 +95,17 @@ function SignIn() {
         />
       </div>
 
-      <div className="signin-submit">
-        <button type="button" onClick={onClickSignIn}>
+      <div className="flex m-auto mt-3 w-80 h-10">
+        <button
+          className=" pl-2 pr-2 pt-2 pb-2 w-full bg-project text-white rounded-xl cursor-pointer hover:bg-buttonhover hover:text-buttonhovercolor hover:font-bold"
+          onClick={onClickSignIn}
+        >
           로그인
         </button>
       </div>
-      <div className="signin-goto">
+      <div className="m-auto mt-11 mb-8 text-projectthick text-base font-semibold cursor-pointer">
         <p
+          className="pb-3"
           onClick={() => {
             navigate("/SignUp");
           }}
@@ -106,9 +114,10 @@ function SignIn() {
         </p>
         <p>비밀번호를 잊어버리셨나요?</p>
       </div>
-      <div className="OAuth">
-        <button className="OAuth-Kakao">카카오로그인</button>
-        <button className="OAuth-Naver">네이버로그인</button>
+      <div className="flex m-auto">
+        <MyButton text={"카카오로그인"} onClick={() => {}} />
+        <span className="pl-2"></span>
+        <MyButton text={"네이버로그인"} onClick={() => {}} />
       </div>
     </div>
   );
