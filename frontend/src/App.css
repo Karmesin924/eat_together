@@ -154,67 +154,9 @@ label {
 }
 
 /* Header */
-header {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    font-weight: 650;
-    font-family: 'IBM Plex Sans KR', sans-serif;
 
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid #e2e2e2;
-    background-color: #FF9900;
-}
-
-header>div {
-    display: flex;
-
-}
-
-header .head_text {
-    width: 50%;
-    font-size: 25px;
-    justify-content: center;
-}
-
-header .head_btn_left {
-    width: 25%;
-    justify-content: start;
-}
-
-header .head_btn_right {
-    width: 25%;
-    justify-content: end;
-}
 
 /* 홈페이지 */
-
-.Home {
-    text-align: center
-}
-
-.Home-Lets {
-    padding-top: 40px;
-}
-
-.Home-Lets div {
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-    padding-top: 20px;
-    margin: 0px 20px 0px;
-    text-align: center;
-    font-size: 320%;
-    border-radius: 20px;
-    border: 2px solid #FF9900;
-    width: 250px;
-    height: 400px;
-    cursor: pointer;
-}
-
-.Home-Lets div:hover{
-    background-color: #FFCC66;
-}
 
 
 /* 마이 페이지 */
