@@ -5,7 +5,7 @@ import MyButton from "../components/MyButton";
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="Home">
+    <div className="text-center">
       <MyHeader
         leftChild={"채팅"}
         headText={"같이 먹자"}
@@ -18,16 +18,19 @@ const Home = () => {
           />
         }
       />
-      <div className="Home-Lets">
+      <div className=" pt-24">
         <div
+          className=" inline-block align-middle ml-3 pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsEat");
           }}
         >
-          같이
-          <br />
-          먹자
+          <p className=" text-6xl pt-6">
+            같이 <br />
+            먹자
+          </p>
           <img
+            className="  m-auto"
             src="images/LetsEat.png"
             alt="같이먹자"
             width={200}
@@ -35,14 +38,17 @@ const Home = () => {
           />
         </div>
         <div
+          className=" inline-block align-middle ml-3 pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsDo");
           }}
         >
-          같이
-          <br />
-          하자
+          <p className=" text-6xl pt-6">
+            같이 <br />
+            하자
+          </p>
           <img
+            className=" m-auto"
             src="images/LetsDo.png"
             alt="같이하자"
             width={200}
