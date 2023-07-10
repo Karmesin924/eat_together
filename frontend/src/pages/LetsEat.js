@@ -117,7 +117,7 @@ const LetsEat = () => {
     <div>
       <div>
         <MyHeader
-          headText={"매칭 필터 선택"}
+          headText={"같이 먹자"}
           leftChild={
             <MyButton
               text={"뒤로가기"}
@@ -133,7 +133,7 @@ const LetsEat = () => {
               <p className="flex font-bold text-3xl pt-3 pb-3">모임 날짜</p>
 
               <input
-                className="flex text-center text-xl w-f"
+                className="flex text-center text-xl w-full text-red-500 font-semibold"
                 type="text"
                 placeholder="닉네임"
                 value={new Date()
@@ -153,12 +153,12 @@ const LetsEat = () => {
             <div className="flex flex-col justify-center items-center m-auto w-64 flex-shrink-0">
               <p className="font-bold text-3xl pt-3 pb-3">시간 선택</p>
               <input
-                className=" text-xl"
+                className=" text-xl text-red-500 font-semibold"
                 type="time"
                 value={startTime}
                 onChange={handleStartTime}
               />
-              <p className=" text-gray-500 pb-3">※시간 변경 가능</p>
+              <p className=" text-gray-500 pb-3">※시간 변경이 가능합니다.</p>
             </div>
           </div>
 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +12,7 @@ const SignUp = () => {
   const [nickname, setNickname] = useState("");
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [gender, setGender] = useState("");
   const [nameMessage, setNameMessage] = useState("");
   const [emailMessage, setEmailMessage] = useState("");
   const [birthMessage, setBirthMessage] = useState("");
@@ -26,20 +27,33 @@ const SignUp = () => {
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
-  const checkButtonEnabled = () => {
+  const checkButtonEnabled = useCallback(() => {
     if (
       isName &&
       isEmail &&
       isBirth &&
       isNickname &&
       isPassword &&
-      isPasswordConfirm
+      isPasswordConfirm &&
+      gender !== ""
     ) {
       setIsButtonEnabled(true);
     } else {
       setIsButtonEnabled(false);
     }
-  };
+  }, [
+    isName,
+    isEmail,
+    isBirth,
+    isNickname,
+    isPassword,
+    isPasswordConfirm,
+    gender,
+  ]);
+
+  useEffect(() => {
+    checkButtonEnabled();
+  }, [checkButtonEnabled]);
 
   const onChangeName = (e) => {
     const currentName = e.target.value;
@@ -132,10 +146,17 @@ const SignUp = () => {
     checkButtonEnabled();
   };
 
+  const onChangeGender = (e) => {
+    const selectedGender = e.target.value;
+    setGender(selectedGender);
+    checkButtonEnabled();
+  };
+
   const onClickSignUp = () => {
     const userData = {
       name: name,
       email: email,
+      gender: gender,
       nickname: nickname,
       date: birth,
       password: password,
@@ -196,6 +217,32 @@ const SignUp = () => {
           <span className="text-sm font-semibold text-signupmessage">
             {emailMessage}
           </span>
+
+          <label className="text-xl font-bold" htmlFor="gender">
+            성별
+          </label>
+          <div className="font-semibold text-xl flex gap-4">
+            <label htmlFor="male">
+              <input
+                type="radio"
+                id="male"
+                value="man"
+                checked={gender === "man"}
+                onChange={onChangeGender}
+              />
+              남성
+            </label>
+            <label htmlFor="female">
+              <input
+                type="radio"
+                id="female"
+                value="woman"
+                checked={gender === "woman"}
+                onChange={onChangeGender}
+              />
+              여성
+            </label>
+          </div>
 
           <label className="text-xl font-bold" htmlFor="birth">
             생년월일
