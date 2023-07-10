@@ -4,6 +4,21 @@ import MyButton from "../components/MyButton";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
+const dummyData = [
+  {
+    idx: 1,
+    title: "게시글 제목 1",
+  },
+  {
+    idx: 2,
+    title: "게시글 제목 2",
+  },
+  {
+    idx: 3,
+    title: "게시글 제목 3",
+  },
+];
+
 const LetsDo = () => {
   const [boardList, setBoardList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -14,10 +29,9 @@ const LetsDo = () => {
 
   const getBoardList = async (page) => {
     try {
-      const resp = await axios.get(`/posts/board/${page}`);
-      setBoardList(resp.data);
-      setTotalPages(resp.pagination.totalPages);
-      console.log(resp.pagination);
+      // 비동기적으로 더미 데이터 설정
+      setBoardList(dummyData);
+      setTotalPages(dummyData.length);
     } catch (err) {
       console.log("게시글 목록을 가져오는데 실패했습니다.", err);
     }
@@ -63,25 +77,36 @@ const LetsDo = () => {
           />
         }
       />
-      {boardList.map((item) => (
-        <li key={item.idx}>
-          <Link to={`/board/${item.idx}`}>{item.title}</Link>
-        </li>
-      ))}
-
-      <div>
-        <MyButton
-          text={"이전 페이지"}
-          disabled={isPreviousDisabled}
-          grayedOut={isPreviousDisabled}
-          onClick={goToPreviousPage}
-        />
-        <MyButton
-          text={"다음 페이지"}
-          disabled={isNextDisabled}
-          grayedOut={isNextDisabled}
-          onClick={goToNextPage}
-        />
+      <div className="flex flex-col ">
+        <div className="flex flex-col items-center pt-10">
+          {boardList.map((item) => (
+            <li className="list-none w-3/4 text-center" key={item.idx}>
+              <Link className="cursor-pointer" to={`/board/${item.idx}`}>
+                <div className="pt-3 pb-3 border-t-4 border-homehover">
+                  <span className="text-3xl text-orange-600">{item.title}</span>
+                </div>
+              </Link>
+            </li>
+          ))}
+          <div className="border-t-4 w-3/4  border-homehover"></div>
+        </div>
+        <div className="flex flex-col items-center pt-10">
+          <p>
+            <MyButton
+              text={"이전 페이지"}
+              disabled={isPreviousDisabled}
+              grayedOut={isPreviousDisabled}
+              onClick={goToPreviousPage}
+            />
+            <span className="pr-3"></span>
+            <MyButton
+              text={"다음 페이지"}
+              disabled={isNextDisabled}
+              grayedOut={isNextDisabled}
+              onClick={goToNextPage}
+            />
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -90,4 +115,5 @@ const LetsDo = () => {
 LetsDo.defaultProps = {
   boardList: [],
 };
+
 export default LetsDo;
