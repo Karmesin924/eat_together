@@ -67,6 +67,7 @@ const MyPage = () => {
         navigate("/SignIn"); // 로그아웃 성공 시 이동할 경로를 설정해주세요
       })
       .catch((error) => {
+        alert("로그아웃에 실패하였습니다.");
         console.error(error);
       });
   };
@@ -99,25 +100,37 @@ const MyPage = () => {
             }}
           />
         }
+        rightChild={<MyButton text={"로그아웃"} onClick={onClickLogout} />}
       />
-      <div className="title-ex">내 프로필</div>
-      <div>
-        <h4>이름</h4>
-        {name}
-      </div>
-      <div>
-        <h4>이메일</h4>
-        {email}
-      </div>
-      <div>
-        <h4>닉네임</h4>
-        {nickname}
-      </div>
-      <div className="title-ex">기타 및 설정</div>
-      <div>이용 약관</div>
+      <div className="flex flex-col items-center">
+        <div className="flex flex-col border-4 border-project rounded-xl mt-10 p-4 w-2/5">
+          <p className="font-bold text-3xl text-center">내 프로필</p>
 
-      <br />
-      <MyButton text={"로그아웃"} onClick={onClickLogout} />
+          <p className="text-2xl">
+            이름 : <span className="font-bold">{name}</span>
+          </p>
+          <p className="text-2xl pt-3">
+            이메일 : <span className="font-bold">{email}</span>
+          </p>
+          <p className="text-2xl pt-3">
+            닉네임 : <span className="font-bold">{nickname}</span>
+          </p>
+        </div>
+
+        <div className="flex flex-col border-4 border-project rounded-xl mt-6 p-4 w-2/5">
+          <p className="font-bold text-3xl text-center">현재 버전</p>
+          <p className="text-2xl pt-3">
+            버전 : <span>{"v1.0.0"}</span>
+          </p>
+        </div>
+
+        <div className="flex flex-col border-4 border-project rounded-xl mt-6 p-4 w-2/5">
+          <p className="font-bold text-3xl text-center">이용 약관</p>
+          <p className="text-2xl pt-3">
+            <span>이용약관 확인하기...</span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };

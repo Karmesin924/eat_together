@@ -66,7 +66,7 @@ const FilterDetail = () => {
         }
       />
       <div className="flex p-4 pt-10 justify-center items-center">
-        <div className="flex flex-col w-9/12 p-4 items-center border-4 border-project rounded-xl">
+        <div className="flex flex-col w-1/2 p-4 items-center border-4 border-project rounded-xl">
           <div className="flex flex-col">
             <div className="flex flex-row text-lg font-medium">
               <p className=" text-2xl font-bold p-5">인원</p>

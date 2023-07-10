@@ -6,7 +6,12 @@ const MyButton = ({ text, onClick, disabled }) => {
   }`;
 
   return (
-    <button className={buttonClassName} onClick={onClick} disabled={disabled}>
+    <button
+      className={buttonClassName}
+      onClick={onClick}
+      disabled={disabled}
+      style={disabled ? { backgroundColor: "#999", cursor: "not-allowed" } : {}}
+    >
       {text}
     </button>
   );
