@@ -133,7 +133,7 @@ const LetsEat = () => {
               <p className="flex font-bold text-3xl pt-3 pb-3">모임 날짜</p>
 
               <input
-                className="flex text-center text-xl"
+                className="flex text-center text-xl w-full"
                 type="text"
                 placeholder="닉네임"
                 value={new Date()
