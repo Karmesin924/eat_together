@@ -27,7 +27,7 @@ const Home = () => {
       />
       <div className=" pt-24">
         <div
-          className=" inline-block align-middle ml-3 pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
+          className=" inline-block align-middle pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsEat");
           }}
@@ -45,7 +45,7 @@ const Home = () => {
           />
         </div>
         <div
-          className=" inline-block align-middle ml-3 pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
+          className=" inline-block align-middle pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsDo");
           }}

@@ -1,5 +1,5 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 import { useNavigate } from "react-router-dom";
@@ -27,19 +27,7 @@ const SignUp = () => {
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
   const [isButtonEnabled, setIsButtonEnabled] = useState(false);
 
-  useEffect(() => {
-    checkButtonEnabled();
-  }, [
-    isName,
-    isEmail,
-    isBirth,
-    isNickname,
-    isPassword,
-    isPasswordConfirm,
-    gender,
-  ]);
-
-  const checkButtonEnabled = () => {
+  const checkButtonEnabled = useCallback(() => {
     if (
       isName &&
       isEmail &&
@@ -53,7 +41,19 @@ const SignUp = () => {
     } else {
       setIsButtonEnabled(false);
     }
-  };
+  }, [
+    isName,
+    isEmail,
+    isBirth,
+    isNickname,
+    isPassword,
+    isPasswordConfirm,
+    gender,
+  ]);
+
+  useEffect(() => {
+    checkButtonEnabled();
+  }, [checkButtonEnabled]);
 
   const onChangeName = (e) => {
     const currentName = e.target.value;
