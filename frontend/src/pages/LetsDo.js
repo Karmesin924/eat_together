@@ -27,17 +27,6 @@ const LetsDo = () => {
     getBoardList(currentPage);
   }, [currentPage]);
 
-  // useEffect(() => {
-  //   // 더미 데이터 생성
-  //   const dummyData = [
-  //     { idx: 1, title: "첫 번째 게시글" },
-  //     { idx: 2, title: "두 번째 게시글" },
-  //     { idx: 3, title: "세 번째 게시글" },
-  //   ];
-
-  //   setBoardList(dummyData);
-  // }, []);
-
   useEffect(() => {
     setIsPreviousDisabled(currentPage === 1);
     setIsNextDisabled(currentPage === totalPages);
@@ -81,20 +70,18 @@ const LetsDo = () => {
       ))}
 
       <div>
-        {isPreviousDisabled ? (
-          <button disabled style={{ backgroundColor: "gray" }}>
-            이전 페이지
-          </button>
-        ) : (
-          <button onClick={goToPreviousPage}>이전 페이지</button>
-        )}
-        {isNextDisabled ? (
-          <button disabled style={{ backgroundColor: "gray" }}>
-            다음 페이지
-          </button>
-        ) : (
-          <button onClick={goToNextPage}>다음 페이지</button>
-        )}
+        <MyButton
+          text={"이전 페이지"}
+          disabled={isPreviousDisabled}
+          grayedOut={isPreviousDisabled}
+          onClick={goToPreviousPage}
+        />
+        <MyButton
+          text={"다음 페이지"}
+          disabled={isNextDisabled}
+          grayedOut={isNextDisabled}
+          onClick={goToNextPage}
+        />
       </div>
     </div>
   );
