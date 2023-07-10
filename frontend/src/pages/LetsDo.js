@@ -4,21 +4,6 @@ import MyButton from "../components/MyButton";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
-const dummyData = [
-  {
-    idx: 1,
-    title: "게시글 제목 1",
-  },
-  {
-    idx: 2,
-    title: "게시글 제목 2",
-  },
-  {
-    idx: 3,
-    title: "게시글 제목 3",
-  },
-];
-
 const LetsDo = () => {
   const [boardList, setBoardList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,9 +14,10 @@ const LetsDo = () => {
 
   const getBoardList = async (page) => {
     try {
-      // 비동기적으로 더미 데이터 설정
-      setBoardList(dummyData);
-      setTotalPages(dummyData.length);
+      const resp = await axios.get(`/posts/board/${page}`);
+      setBoardList(resp.data);
+      setTotalPages(resp.pagination.totalPages);
+      console.log(resp.pagination);
     } catch (err) {
       console.log("게시글 목록을 가져오는데 실패했습니다.", err);
     }
@@ -115,5 +101,4 @@ const LetsDo = () => {
 LetsDo.defaultProps = {
   boardList: [],
 };
-
 export default LetsDo;
