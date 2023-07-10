@@ -55,7 +55,7 @@ const FilterDetail = () => {
   return (
     <div>
       <MyHeader
-        headText={"같이 먹자"}
+        headText={"필터 상세 설정"}
         leftChild={
           <MyButton
             text={"뒤로가기"}
@@ -65,206 +65,211 @@ const FilterDetail = () => {
           />
         }
       />
-      <h1>필터 상세 설정</h1>
-      <div>
-        <div>
-          <label>
-            <h3>인원</h3>
-            <input
-              type="checkbox"
-              value="상관없음"
-              name="people"
-              checked={filters.people === "상관없음"}
-              onChange={handleCheckboxChange}
-            />
-            상관없음
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="2인"
-              name="people"
-              checked={filters.people === "2인"}
-              onChange={handleCheckboxChange}
-            />
-            2인
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="3인"
-              name="people"
-              checked={filters.people === "3인"}
-              onChange={handleCheckboxChange}
-            />
-            3인
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="4인 이상"
-              name="people"
-              checked={filters.people === "4인 이상"}
-              onChange={handleCheckboxChange}
-            />
-            4인 이상
-          </label>
+      <div className="flex p-4 pt-10 justify-center items-center">
+        <div className="flex flex-col w-9/12 p-4 items-center border-4 border-project rounded-xl">
+          <div className="flex flex-col">
+            <div className="flex flex-row text-lg font-medium">
+              <p className=" text-2xl font-bold p-5">인원</p>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="상관없음"
+                  name="people"
+                  checked={filters.people === "상관없음"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">상관없음</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="2인"
+                  name="people"
+                  checked={filters.people === "2인"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">2인</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="3인"
+                  name="people"
+                  checked={filters.people === "3인"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">3인</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="4인 이상"
+                  name="people"
+                  checked={filters.people === "4인 이상"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">4인 이상</span>
+              </label>
+            </div>
+            <div className="flex flex-row text-lg font-medium">
+              <p className=" text-2xl font-bold p-5">성별</p>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="상관없음"
+                  name="gender"
+                  checked={filters.gender === "상관없음"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">상관없음</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="동성만"
+                  name="gender"
+                  checked={filters.gender === "동성만"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">동성만</span>
+              </label>
+            </div>
+            <div className="flex flex-row text-lg font-medium">
+              <p className=" text-2xl font-bold p-5">나이대</p>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="상관없음"
+                  name="age"
+                  checked={filters.age === "상관없음"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">상관없음</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="또래만"
+                  name="age"
+                  checked={filters.age === "또래만"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">또래만</span>
+              </label>
+            </div>
+            <div className="flex flex-row text-lg font-medium">
+              <p className=" text-2xl font-bold p-5">
+                메뉴<span className="text-xl pl-1">(중복선택가능)</span>
+              </p>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="상관없음"
+                  checked={filters.menu.includes("상관없음")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">상관없음</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="한식"
+                  checked={filters.menu.includes("한식")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">한식</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="중식"
+                  checked={filters.menu.includes("중식")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">중식</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="일식"
+                  checked={filters.menu.includes("일식")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">일식</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="양식"
+                  checked={filters.menu.includes("양식")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">양식</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="베트남식"
+                  checked={filters.menu.includes("베트남식")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">베트남식</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="분식"
+                  checked={filters.menu.includes("분식")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">분식</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="디저트"
+                  checked={filters.menu.includes("디저트")}
+                  onChange={handleCheckboxMenuChange}
+                />
+                <span className="ml-1 mr-1">디저트</span>
+              </label>
+            </div>
+            <div className="flex flex-row text-lg font-medium">
+              <p className=" text-2xl font-bold p-5">식사 시 대화빈도</p>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="적음"
+                  name="conversation"
+                  checked={filters.conversation === "적음"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">적음</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="보통"
+                  name="conversation"
+                  checked={filters.conversation === "보통"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">보통</span>
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="checkbox"
+                  value="많음"
+                  name="conversation"
+                  checked={filters.conversation === "많음"}
+                  onChange={handleCheckboxChange}
+                />
+                <span className="ml-1 mr-1">많음</span>
+              </label>
+            </div>
+          </div>
+          <MyButton text={"적용하기"} onClick={handleApplyFilters} />
         </div>
-        <div>
-          <label>
-            <h3>성별</h3>
-            <input
-              type="checkbox"
-              value="상관없음"
-              name="gender"
-              checked={filters.gender === "상관없음"}
-              onChange={handleCheckboxChange}
-            />
-            상관없음
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="동성만"
-              name="gender"
-              checked={filters.gender === "동성만"}
-              onChange={handleCheckboxChange}
-            />
-            동성만
-          </label>
-        </div>
-        <div>
-          <label>
-            <h3>나이대</h3>
-            <input
-              type="checkbox"
-              value="상관없음"
-              name="age"
-              checked={filters.age === "상관없음"}
-              onChange={handleCheckboxChange}
-            />
-            상관없음
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="또래만"
-              name="age"
-              checked={filters.age === "또래만"}
-              onChange={handleCheckboxChange}
-            />
-            또래만
-          </label>
-        </div>
-        <div>
-          <h3>메뉴 (중복선택 가능)</h3>
-          <label>
-            <input
-              type="checkbox"
-              value="상관없음"
-              checked={filters.menu.includes("상관없음")}
-              onChange={handleCheckboxMenuChange}
-            />
-            상관없음
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="한식"
-              checked={filters.menu.includes("한식")}
-              onChange={handleCheckboxMenuChange}
-            />
-            한식
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="중식"
-              checked={filters.menu.includes("중식")}
-              onChange={handleCheckboxMenuChange}
-            />
-            중식
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="일식"
-              checked={filters.menu.includes("일식")}
-              onChange={handleCheckboxMenuChange}
-            />
-            일식
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="양식"
-              checked={filters.menu.includes("양식")}
-              onChange={handleCheckboxMenuChange}
-            />
-            양식
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="베트남식"
-              checked={filters.menu.includes("베트남식")}
-              onChange={handleCheckboxMenuChange}
-            />
-            베트남식
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="분식"
-              checked={filters.menu.includes("분식")}
-              onChange={handleCheckboxMenuChange}
-            />
-            분식
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="디저트"
-              checked={filters.menu.includes("디저트")}
-              onChange={handleCheckboxMenuChange}
-            />
-            디저트
-          </label>
-        </div>
-        <div>
-          <h3>식사 시 대화빈도</h3>
-          <label>
-            <input
-              type="checkbox"
-              value="적음"
-              name="conversation"
-              checked={filters.conversation === "적음"}
-              onChange={handleCheckboxChange}
-            />
-            적음
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="보통"
-              name="conversation"
-              checked={filters.conversation === "보통"}
-              onChange={handleCheckboxChange}
-            />
-            보통
-          </label>
-          <label>
-            <input
-              type="checkbox"
-              value="많음"
-              name="conversation"
-              checked={filters.conversation === "많음"}
-              onChange={handleCheckboxChange}
-            />
-            많음
-          </label>
-        </div>
-        <button onClick={handleApplyFilters}>적용</button>
       </div>
     </div>
   );
