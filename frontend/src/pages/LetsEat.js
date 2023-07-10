@@ -128,12 +128,12 @@ const LetsEat = () => {
           }
         />
         <div className="flex flex-col items-center pt-10">
-          <div className="flex flex-row border-4 border-project rounded-xl">
-            <div className="flex flex-col justify-center items-center m-auto w-72">
+          <div className="flex flex-row border-4 border-project rounded-xl w-1/2">
+            <div className="flex flex-col justify-center items-center m-auto w-64">
               <p className="flex font-bold text-3xl pt-3 pb-3">모임 날짜</p>
 
               <input
-                className="flex text-center text-xl"
+                className="flex text-center text-xl w-full"
                 type="text"
                 placeholder="닉네임"
                 value={new Date()
@@ -150,7 +150,7 @@ const LetsEat = () => {
                 ※모임 날짜는 당일로 고정됩니다.
               </p>
             </div>
-            <div className="flex flex-col justify-center items-center m-auto  w-72">
+            <div className="flex flex-col justify-center items-center m-auto w-64">
               <p className="font-bold text-3xl pt-3 pb-3">시간 선택</p>
               <input
                 className=" text-xl"
