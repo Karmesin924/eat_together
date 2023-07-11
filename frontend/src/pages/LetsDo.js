@@ -5,47 +5,27 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const LetsDo = () => {
-  //const [boardList, setBoardList] = useState([]);
-  const [boardList, setBoardList] = useState([
-    // DUMMY
-    {
-      idx: 1,
-      title: "게시글 제목 1",
-      contents: "게시글 내용입니다 1.",
-    },
-    {
-      idx: 2,
-      title: "게시글 제목 2",
-      contents: "게시글 내용입니다 2.",
-    },
-    {
-      idx: 3,
-      title: "게시글 제목 3",
-      contents: "게시글 내용입니다 3.",
-    },
-  ]);
-
+  const [boardList, setBoardList] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
   const [isPreviousDisabled, setIsPreviousDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
-  // const [totalPages, setTotalPages] = useState(0);
-  const totalPages = 3; // DUMMY
+  const [totalPages, setTotalPages] = useState(0);
 
-  // const getBoardList = async (page) => {
-  //   try {
-  //     const resp = await axios.get(`/posts/board/${page}`);
-  //     setBoardList(resp.data);
-  //     setTotalPages(resp.pagination.totalPages);
-  //     console.log(resp.pagination);
-  //   } catch (err) {
-  //     console.log("게시글 목록을 가져오는데 실패했습니다.", err);
-  //   }
-  // };
+  const getBoardList = async (page) => {
+    try {
+      const resp = await axios.get(`/posts/board/${page}`);
+      setBoardList(resp.data);
+      setTotalPages(resp.pagination.totalPages);
+      console.log(resp.pagination);
+    } catch (err) {
+      console.log("게시글 목록을 가져오는데 실패했습니다.", err);
+    }
+  };
 
-  // useEffect(() => {
-  //   getBoardList(currentPage);
-  // }, [currentPage]);
+  useEffect(() => {
+    getBoardList(currentPage);
+  }, [currentPage]);
 
   useEffect(() => {
     setIsPreviousDisabled(currentPage === 1);

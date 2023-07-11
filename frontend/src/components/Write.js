@@ -71,22 +71,6 @@ const Write = () => {
     }
   }, [isEditMode, idx]);
 
-  // useEffect(() => {
-  //   // 더미 데이터
-  //   const dummyData = {
-  //     title: "더미 제목",
-  //     contents: "더미 내용",
-  //     nickname: "더미 작성자",
-  //   };
-
-  //   // 수정 모드인 경우 기존 글의 내용을 불러옴
-  //   if (isEditMode) {
-  //     // 더미 데이터를 사용하여 값 설정
-  //     setTitle(dummyData.title);
-  //     setContents(dummyData.contents);
-  //   }
-  // }, [isEditMode]);
-
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
   };
