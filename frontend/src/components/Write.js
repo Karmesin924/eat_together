@@ -44,7 +44,7 @@ const Write = () => {
         setNickname(nickname);
         setLoading(false);
       } catch (error) {
-        if (response.status === 404) {
+        if (error.response && error.response.status === 404) {
           alert("글을 쓰기 위해서 로그인이 필요합니다!");
           navigate("/SignIn");
         } else {
