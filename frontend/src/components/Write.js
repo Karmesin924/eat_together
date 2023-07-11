@@ -126,7 +126,6 @@ const Write = () => {
       }
     }
   };
-
   return (
     <div>
       <MyHeader
@@ -140,41 +139,54 @@ const Write = () => {
           />
         }
       />
-      <div>
-        <input
-          type="text"
-          placeholder="닉네임"
-          value={loading ? "" : nickname}
-          readOnly
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          placeholder="제목을 작성하세요!"
-          value={title}
-          onChange={handleTitleChange}
-        />
-      </div>
-      <div>
-        <input
-          type="text"
-          value={formatDateForDisplay(getCurrentDateTime())}
-          readOnly
-        />
-      </div>
-      <div>
-        <textarea
-          placeholder="내용을 입력하세요!"
-          value={contents}
-          onChange={handleContentsChange}
-        />
-      </div>
-      <div>
-        <MyButton
-          text={isEditMode ? "수정하기" : "작성하기"}
-          onClick={handleSubmit}
-        />
+      <div className="flex flex-col pt-10 items-center justify-center">
+        <div className="p-4 w-1/2 border-4 border-project rounded-lg">
+          <div>
+            <input
+              className="pt-4 px-4 font-bold text-2xl w-full"
+              type="text"
+              placeholder="제목을 작성하세요!"
+              value={title}
+              onChange={handleTitleChange}
+            />
+            <div className="p-4 flex flex-row justify-between border-b-4 border-orange-100">
+              <div>
+                <input
+                  className=" font-semibold text-lg"
+                  type="text"
+                  value={formatDateForDisplay(getCurrentDateTime())}
+                  readOnly
+                />
+              </div>
+              <div>
+                <input
+                  className=" text-right font-semibold text-lg text-project"
+                  type="text"
+                  placeholder="닉네임"
+                  value={loading ? "" : nickname}
+                  readOnly
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className=" mt-10 border-4 border-orange-300 rounded-lg">
+            <textarea
+              className="p-2 w-full h-80 resize-none outline-none"
+              placeholder="본문을 입력하세요!"
+              maxLength={"100"}
+              value={contents}
+              onChange={handleContentsChange}
+              required
+            />
+          </div>
+          <div className=" pt-6">
+            <MyButton
+              text={isEditMode ? "수정하기" : "작성하기"}
+              onClick={handleSubmit}
+            />
+          </div>
+        </div>
       </div>
     </div>
   );

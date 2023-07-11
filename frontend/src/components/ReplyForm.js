@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import MyButton from "./MyButton";
 
 const ReplyForm = () => {
   const navigate = useNavigate();
@@ -63,28 +64,31 @@ const ReplyForm = () => {
   }, []);
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>닉네임: </label>
+    <div className="w-2/5">
+      <div className="flex flex-col">
+        <div className="flex flex-row p-4">
+          <p className="font-semibold text-base">닉네임:</p>
           <input
+            className="pl-2 text-base font-semibold text-project"
             type="text"
             placeholder="닉네임"
             value={loading ? "" : nickname}
             readOnly
           />
         </div>
-        <div>
-          <h3>내용</h3>
+        <div className="border-4 border-orange-200">
           <textarea
+            className="p-2 w-full h-32 resize-none outline-none"
+            maxLength={"100"}
             value={replycontents}
             onChange={(e) => setReplycontents(e.target.value)}
             required
           />
         </div>
-        <button onClick={handleSubmit}>댓글 작성</button>
-        <hr />
-      </form>
+        <span className="pt-4">
+          <MyButton text={"댓글 작성"} onClick={handleSubmit} />
+        </span>
+      </div>
     </div>
   );
 };
