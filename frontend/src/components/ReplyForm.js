@@ -78,7 +78,7 @@ const ReplyForm = () => {
         </div>
         <div className="border-4 border-orange-200">
           <textarea
-            className="p-2 w-full h-32 resize-none outline-none"
+            className="p-2 w-full h-32 resize-none outline-none break-words"
             maxLength={"100"}
             value={replycontents}
             onChange={(e) => setReplycontents(e.target.value)}

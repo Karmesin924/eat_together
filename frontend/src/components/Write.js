@@ -144,7 +144,7 @@ const Write = () => {
               </div>
               <div>
                 <input
-                  className=" text-right font-semibold text-lg text-project"
+                  className=" w-full text-right font-semibold text-lg text-project"
                   type="text"
                   placeholder="닉네임"
                   value={loading ? "" : nickname}
