@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import MyButton from "./MyButton";
 
 const ReplyList = ({ author }) => {
   const navigate = useNavigate();
@@ -35,29 +36,26 @@ const ReplyList = ({ author }) => {
   };
 
   return (
-    <div>
+    <div className="w-2/5 text-left">
       {replies.length === 0 ? (
         <p>아직 댓글이 없습니다.댓글을 달아보세요!</p>
       ) : (
         <ul>
           {replies.map((reply) => (
             <li key={reply.id}>
-              <p>작성자: {reply.nickname}</p>
-              <p>
-                {new Date(reply.createdDate).toLocaleDateString("ko-KR", {
-                  year: "2-digit",
-                  month: "2-digit",
-                  day: "2-digit",
-                  weekday: "short",
-                })}
-              </p>
-              {author && (
-                <div>
-                  <button text="삭제" onClick={handleDelete} />
-                </div>
-              )}
-              <p>{reply.contents}</p>
-              <hr />
+              <div className="flex flex-row p-4 border-b-2 border-buttonhover">
+                <p className="w-1/5">{reply.nickname}</p>
+                <p className="w-3/5">{reply.contents}</p>
+                <p className="w-1/5">
+                  {new Date(reply.createdDate).toLocaleDateString("ko-KR", {
+                    year: "2-digit",
+                    month: "2-digit",
+                    day: "2-digit",
+                    weekday: "short",
+                  })}
+                </p>
+              </div>
+              {author && <MyButton text={"삭제"} onClick={handleDelete} />}
             </li>
           ))}
         </ul>
