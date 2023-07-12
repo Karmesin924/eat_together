@@ -18,4 +18,5 @@ public class SignUpDTO {
     private String nickname;
     private Date birthDate;
     private String password;
+    private String gender;
 }
