@@ -23,6 +23,7 @@ public class MemberService {
         member.setNickname(form.getNickname());
         member.setDate(form.getBirthDate());
         member.setPassword(form.getPassword());
+        member.setGender(form.getGender());
 
         memberRepository.save(member);
 
