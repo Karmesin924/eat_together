@@ -7,13 +7,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.List;
 
 @RestController
 @RequestMapping("/posts")
 @RequiredArgsConstructor
 public class PostController {
     private final PostService postService;
+
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody RegiPostDTO post, HttpServletRequest request){
         HttpSession session = request.getSession(false);
