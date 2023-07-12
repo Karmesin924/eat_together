@@ -1,7 +1,9 @@
-package SWST.eat_together.domain.post;
+package SWST.eat_together.domain.comment;
 
-import lombok.*;
-import org.springframework.lang.Nullable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -10,15 +12,15 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @Entity
-@Table(name = "post_info")
-public class Post {
+@Table(name = "commentInfo")
+public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="id")
-    private Long id;
+    @Column(name = "comment_id")
+    private Long commentId;
 
-    @Column(name = "title")
-    private String title;
+    @Column(name = "post_id")
+    private Long postId;
 
     @Column(name = "content")
     private String contents;
@@ -31,4 +33,6 @@ public class Post {
 
     @Column(name = "email")
     private String email;
+
+
 }
