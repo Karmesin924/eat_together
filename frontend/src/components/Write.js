@@ -55,7 +55,7 @@ const Write = () => {
     };
 
     fetchUserNickname();
-  }, []);
+  }, [navigate]);
 
   useEffect(() => {
     // 수정 모드인 경우 기존 글의 내용을 불러옴
@@ -94,7 +94,7 @@ const Write = () => {
         });
         console.log("글이 성공적으로 수정되었습니다.", response.data);
         alert("글이 성공적으로 수정되었습니다.");
-        navigate(`/board/${idx}`);
+        navigate(`/posts/${idx}`);
       } else {
         // 글 작성 요청 처리
         const response = await axios.post("/posts/add", {
@@ -109,7 +109,7 @@ const Write = () => {
       console.log("글 저장 또는 수정에 실패했습니다.", error);
       alert("글 저장 또는 수정에 실패했습니다..");
       if (isEditMode) {
-        navigate(`/board/${idx}`);
+        navigate(`/posts/${idx}`);
       } else {
         navigate("/LetsDo");
       }
@@ -123,7 +123,7 @@ const Write = () => {
           <MyButton
             text={"뒤로가기"}
             onClick={() => {
-              navigate("/");
+              navigate(-1);
             }}
           />
         }

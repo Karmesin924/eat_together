@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 
 const LetsDo = () => {
@@ -11,6 +11,7 @@ const LetsDo = () => {
   const [isPreviousDisabled, setIsPreviousDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
   const [totalPages, setTotalPages] = useState(0);
+  const { pageNumber } = useParams();
 
   const getBoardList = async (page) => {
     try {
@@ -24,8 +25,13 @@ const LetsDo = () => {
   };
 
   useEffect(() => {
-    getBoardList(currentPage);
-  }, [currentPage]);
+    if (pageNumber) {
+      getBoardList(pageNumber);
+      setCurrentPage(pageNumber);
+    } else {
+      getBoardList(currentPage);
+    }
+  }, [pageNumber, currentPage]);
 
   useEffect(() => {
     setIsPreviousDisabled(currentPage === 1);
@@ -67,7 +73,7 @@ const LetsDo = () => {
         <div className="flex flex-col items-center pt-10">
           {boardList.map((item) => (
             <li className="list-none w-3/4 text-center" key={item.idx}>
-              <Link className="cursor-pointer" to={`/board/${item.idx}`}>
+              <Link className="cursor-pointer" to={`/posts/${item.idx}`}>
                 <div className="pt-3 pb-3 border-t-4 border-homehover">
                   <span className="text-3xl text-orange-600">{item.title}</span>
                 </div>
