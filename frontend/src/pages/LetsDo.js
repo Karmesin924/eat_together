@@ -104,7 +104,4 @@ const LetsDo = () => {
   );
 };
 
-LetsDo.defaultProps = {
-  boardList: [],
-};
 export default LetsDo;

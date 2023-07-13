@@ -103,12 +103,12 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="4인 이상"
+                  value="4인"
                   name="people"
-                  checked={filters.people === "4인 이상"}
+                  checked={filters.people === "4인"}
                   onChange={handleCheckboxChange}
                 />
-                <span className="ml-1 mr-1">4인 이상</span>
+                <span className="ml-1 mr-1">4인</span>
               </label>
             </div>
             <div className="flex flex-row text-lg font-medium">

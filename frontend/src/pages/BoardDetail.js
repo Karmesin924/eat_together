@@ -43,9 +43,9 @@ const BoardDetail = () => {
 
     const getReplies = async () => {
       try {
-        const replyData = await axios.get(`/posts/${String(idx)}/comment`).data;
-        const replies = Array.isArray(replyData) ? replyData : [];
-        setBoard((prevBoard) => ({ ...prevBoard, replies }));
+        const replyData = await axios.get(`/posts/${String(idx)}/comment`);
+        const replies = Array.isArray(replyData.data) ? replyData.data : [];
+        setBoard((prevBoard) => ({ ...prevBoard, replies: [...replies] }));
       } catch (err) {
         console.log("댓글을 가져오는데 실패했습니다.", err);
       }
