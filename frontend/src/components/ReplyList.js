@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const ReplyList = ({ author }) => {
+const ReplyList = () => {
   const navigate = useNavigate();
   const [replies, setReplies] = useState([]);
   const { postIdx } = useParams();
@@ -29,7 +29,7 @@ const ReplyList = ({ author }) => {
       .delete(`/posts/${postIdx}`)
       .then((res) => {
         alert("댓글이 삭제되었습니다!");
-        navigate(`posts/${postIdx}`);
+        getReplies();
       })
       .catch((err) => {
         alert("글 삭제 중 오류가 발생했습니다.");
@@ -56,7 +56,9 @@ const ReplyList = ({ author }) => {
                   })}
                 </p>
               </div>
-              {author && <MyButton text={"삭제"} onClick={handleDelete} />}
+              {reply.author && (
+                <MyButton text={"삭제"} onClick={handleDelete} />
+              )}
             </li>
           ))}
         </ul>
