@@ -11,16 +11,17 @@ const ReplyList = ({ author }) => {
   useEffect(() => {
     const getReplies = async () => {
       try {
-        const repliesData = await axios.get(`/posts/${String(postIdx)}`).data;
+        const response = await axios.get(`/posts/comment/${String(postIdx)}`);
+        const repliesData = response.data;
         setReplies(repliesData);
       } catch (err) {
-        alert.log("댓글을 가져오는데 실패했습니다.");
+        alert("댓글을 가져오는데 실패했습니다.");
         console.log("댓글을 가져오는데 실패했습니다.", err);
       }
     };
 
     getReplies();
-  });
+  }, [postIdx]);
 
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
@@ -28,7 +29,7 @@ const ReplyList = ({ author }) => {
       .delete(`/posts/${postIdx}`)
       .then((res) => {
         alert("댓글이 삭제되었습니다!");
-        navigate(`board/${postIdx}}`);
+        navigate(`posts/${postIdx}`);
       })
       .catch((err) => {
         alert("글 삭제 중 오류가 발생했습니다.");
@@ -38,7 +39,7 @@ const ReplyList = ({ author }) => {
   return (
     <div className="w-2/5 text-left">
       {replies.length === 0 ? (
-        <p>아직 댓글이 없습니다.댓글을 달아보세요!</p>
+        <p>아직 댓글이 없습니다. 댓글을 달아보세요!</p>
       ) : (
         <ul>
           {replies.map((reply) => (
