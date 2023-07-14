@@ -3,15 +3,15 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const ReplyList = ({ author }) => {
+const ReplyList = (id) => {
   const navigate = useNavigate();
   const [replies, setReplies] = useState([]);
-  const { postIdx } = useParams();
+  const { id } = useParams();
 
   useEffect(() => {
     const getReplies = async () => {
       try {
-        const response = await axios.get(`/posts/comment/${String(postIdx)}`);
+        const response = await axios.get(`/posts/comment/${String(id)}`);
         const repliesData = response.data;
         setReplies(repliesData);
       } catch (err) {
@@ -21,15 +21,15 @@ const ReplyList = ({ author }) => {
     };
 
     getReplies();
-  }, [postIdx]);
+  }, [id]);
 
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
     axios
-      .delete(`/posts/${postIdx}`)
+      .delete(`/posts/${id}`)
       .then((res) => {
         alert("댓글이 삭제되었습니다!");
-        navigate(`posts/${postIdx}`);
+        getReplies();
       })
       .catch((err) => {
         alert("글 삭제 중 오류가 발생했습니다.");
@@ -56,7 +56,9 @@ const ReplyList = ({ author }) => {
                   })}
                 </p>
               </div>
-              {author && <MyButton text={"삭제"} onClick={handleDelete} />}
+              {reply.author && (
+                <MyButton text={"삭제"} onClick={handleDelete} />
+              )}
             </li>
           ))}
         </ul>

@@ -7,7 +7,7 @@ import MyButton from "../components/MyButton";
 
 const BoardDetail = () => {
   const navigate = useNavigate();
-  const { idx } = useParams();
+  const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const [board, setBoard] = useState({
     title: "",
@@ -21,7 +21,7 @@ const BoardDetail = () => {
   useEffect(() => {
     const getBoard = async () => {
       try {
-        const boardData = await axios.get(`/posts/${String(idx)}`);
+        const boardData = await axios.get(`/posts/${String(id)}`);
         const selectedBoard = boardData.data;
         const author = selectedBoard.author || false;
 
@@ -29,7 +29,7 @@ const BoardDetail = () => {
         setAuthor(author);
         setLoading(false);
 
-        console.log("idx : " + selectedBoard.idx);
+        console.log("id : " + selectedBoard.id);
         console.log("title : " + selectedBoard.title);
         console.log("contents : " + selectedBoard.contents);
         console.log("nickname : " + selectedBoard.nickname);
@@ -43,9 +43,9 @@ const BoardDetail = () => {
 
     const getReplies = async () => {
       try {
-        const replyData = await axios.get(`/posts/${String(idx)}/comment`).data;
-        const replies = Array.isArray(replyData) ? replyData : [];
-        setBoard((prevBoard) => ({ ...prevBoard, replies }));
+        const replyData = await axios.get(`/posts/${String(id)}/comment`);
+        const replies = Array.isArray(replyData.data) ? replyData.data : [];
+        setBoard((prevBoard) => ({ ...prevBoard, replies: [...replies] }));
       } catch (err) {
         console.log("댓글을 가져오는데 실패했습니다.", err);
       }
@@ -58,7 +58,7 @@ const BoardDetail = () => {
     };
 
     fetchData();
-  }, [idx]);
+  }, [id]);
 
   return (
     <div>
@@ -76,15 +76,22 @@ const BoardDetail = () => {
       {loading ? (
         <h2>loading...</h2>
       ) : (
-        <Board
-          idx={board?.idx}
-          title={board?.title}
-          contents={board?.contents}
-          nickname={board?.nickname}
-          createdDate={board?.createdDate}
-          replies={board?.replies || []}
-          author={author}
-        />
+        <div>
+          <Board
+            id={board?.id}
+            title={board?.title}
+            contents={board?.contents}
+            nickname={board?.nickname}
+            createdDate={board?.createdDate}
+            replies={board?.replies || []}
+            author={author}
+          />
+          <p className="p-4 font-bold text-xl border-b-4 border-buttonhover w-2/5 bg-orange-100">
+            댓글
+          </p>
+          <ReplyForm />
+          <ReplyList id={board?.id} />
+        </div>
       )}
     </div>
   );

@@ -12,17 +12,18 @@ const ReplyForm = () => {
   const [replies, setReplies] = useState([]);
 
   const handleSubmit = async (e) => {
-    axios
-      .get("/users/validate")
-      .then((res) => {
-        if (res.status === 404) {
-          alert("댓글을 작성하려면 먼저 로그인을 해주세요.");
-          navigate("/SignIn");
-        }
-      })
-      .catch((err) => {
-        console.log("로그인이 되어있습니다.");
-      });
+    e.preventDefault();
+
+    try {
+      const response = await axios.get("/users/validate");
+      if (response.status === 404) {
+        alert("댓글을 작성하려면 먼저 로그인을 해주세요.");
+        navigate("/SignIn");
+        return; // 함수 실행 중단
+      }
+    } catch (err) {
+      console.log("로그인이 되어있습니다.");
+    }
 
     const replyData = {
       contents: replycontents,
@@ -36,14 +37,14 @@ const ReplyForm = () => {
       // 성공적으로 작성되었을 때의 처리 로직
       console.log("댓글이 성공적으로 작성되었습니다.", response.data);
       alert("댓글이 성공적으로 작성되었습니다.");
-      setReplies([...replies, response.data]);
+      setReplies((prevReplies) => [...prevReplies, response.data]);
     } catch (error) {
       // 오류 발생 시의 처리 로직
       alert("댓글 작성에 실패했습니다.");
       console.log("댓글 작성에 실패했습니다.", error);
+    } finally {
+      setReplycontents("");
     }
-    // 입력 필드 초기화
-    setReplycontents("");
   };
 
   useEffect(() => {
