@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import Board from "../components/Board";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
+import ReplyForm from "../components/ReplyForm";
+import ReplyList from "../components/ReplyList";
 
 const BoardDetail = () => {
   const navigate = useNavigate();

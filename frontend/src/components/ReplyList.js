@@ -1,27 +1,24 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const ReplyList = (id) => {
-  const navigate = useNavigate();
+const ReplyList = ({ id }) => {
   const [replies, setReplies] = useState([]);
-  const { id } = useParams();
 
   useEffect(() => {
-    const getReplies = async () => {
-      try {
-        const response = await axios.get(`/posts/comment/${String(id)}`);
-        const repliesData = response.data;
-        setReplies(repliesData);
-      } catch (err) {
-        alert("댓글을 가져오는데 실패했습니다.");
-        console.log("댓글을 가져오는데 실패했습니다.", err);
-      }
-    };
-
     getReplies();
   }, [id]);
+
+  const getReplies = async () => {
+    try {
+      const response = await axios.get(`/posts/comment/${String(id)}`);
+      const repliesData = response.data;
+      setReplies(repliesData);
+    } catch (err) {
+      alert("댓글을 가져오는데 실패했습니다.");
+      console.log("댓글을 가져오는데 실패했습니다.", err);
+    }
+  };
 
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
