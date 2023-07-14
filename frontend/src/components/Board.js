@@ -1,6 +1,4 @@
 import axios from "axios";
-import ReplyForm from "./ReplyForm";
-import ReplyList from "./ReplyList";
 import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 
@@ -18,7 +16,7 @@ const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
       .delete(`/posts/${idx}`)
       .then((res) => {
         alert("글이 삭제되었습니다!");
-        navigate("/posts/board/1");
+        navigate("/board/1");
       })
       .catch((err) => {
         alert("글 삭제 중 오류가 발생했습니다.");
@@ -57,12 +55,6 @@ const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
         <p className="p-4 font-semibold text-lg border-b-4 border-buttonhover w-2/5 h-auto break-words text-left">
           {contents}
         </p>
-
-        <p className="p-4 font-bold text-xl border-b-4 border-buttonhover w-2/5 bg-orange-100">
-          댓글
-        </p>
-        <ReplyForm />
-        <ReplyList />
       </div>
     </div>
   );
