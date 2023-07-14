@@ -15,7 +15,7 @@ const LetsDo = () => {
 
   const getBoardList = async (page) => {
     try {
-      const resp = await axios.get(`/posts/board/${page}`);
+      const resp = await axios.get(`/board/${page}`);
       setBoardList(resp.data);
       setTotalPages(resp.pagination.totalPages);
       console.log(resp.pagination);
@@ -72,8 +72,8 @@ const LetsDo = () => {
       <div className="flex flex-col ">
         <div className="flex flex-col items-center pt-10">
           {boardList.map((item) => (
-            <li className="list-none w-3/4 text-center" key={item.idx}>
-              <Link className="cursor-pointer" to={`/posts/${item.idx}`}>
+            <li className="list-none w-3/4 text-center" key={item.id}>
+              <Link className="cursor-pointer" to={`/posts/${item.id}`}>
                 <div className="pt-3 pb-3 border-t-4 border-homehover">
                   <span className="text-3xl text-orange-600">{item.title}</span>
                 </div>
