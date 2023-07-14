@@ -9,20 +9,27 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class CommentService {
     private final CommentRepository commentRepository;
+
+    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+    Date date = new Date(System.currentTimeMillis());
+
+
     public int addComment(Member member, CommentDTO regiComment, Long postId) {
         Comment comment = new Comment();
 
         comment.setPostId(postId);
         comment.setContents(regiComment.getContents());
         comment.setNickname(member.getNickname());
-        comment.setCreatedDate(LocalDate.now().toString());
+        comment.setCreatedDate(formatter.format(date));
         comment.setEmail(member.getEmail());
 
         try {

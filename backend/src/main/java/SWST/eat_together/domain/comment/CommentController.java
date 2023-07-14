@@ -31,6 +31,7 @@ public class CommentController {
 
     @GetMapping("{idx}")
     public List<Comment> getComments(@PathVariable("idx") String idx){
+        System.out.println("idx = " + idx);
         List<Comment> comments = commentService.getComments(idx);
         System.out.println("comments = " + comments);
 
