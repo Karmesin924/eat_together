@@ -45,11 +45,13 @@ const ReplyList = ({ id }) => {
                 <p className="w-1/5">{reply.nickname}</p>
                 <p className="w-3/5">{reply.contents}</p>
                 <p className="w-1/5">
-                  {new Date(reply.createdDate).toLocaleDateString("ko-KR", {
+                  {new Date(reply.date).toLocaleDateString("ko-KR", {
                     year: "2-digit",
                     month: "2-digit",
                     day: "2-digit",
                     weekday: "short",
+                    hour: "2-digit",
+                    minute: "2-digit",
                   })}
                 </p>
               </div>

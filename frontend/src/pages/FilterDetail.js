@@ -48,7 +48,15 @@ const FilterDetail = () => {
   };
 
   const handleApplyFilters = () => {
-    handleSaveFilters(filters);
+    const updatedFilters = {
+      ...filters,
+      people: filters.people || "상관없음",
+      gender: filters.gender || "상관없음",
+      age: filters.age || "상관없음",
+      menu: filters.menu.length === 0 ? ["상관없음"] : filters.menu,
+      conversation: filters.conversation || "상관없음",
+    };
+    handleSaveFilters(updatedFilters);
     navigate("/LetsEat");
   };
 

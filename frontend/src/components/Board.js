@@ -32,10 +32,12 @@ const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
             <p className="font-semibold text-xl m-auto">글쓴이 : {nickname}</p>
             <p className="pl-4 font-semibold text-xl text-inputfocus m-auto">
               {new Date(createdDate).toLocaleDateString("ko-KR", {
-                weekday: "short",
                 year: "2-digit",
                 month: "2-digit",
                 day: "2-digit",
+                weekday: "short",
+                hour: "2-digit",
+                minute: "2-digit",
               })}
             </p>
           </div>
