@@ -34,9 +34,11 @@ const ReplyList = ({ id }) => {
   };
 
   return (
-    <div className="w-2/5 text-left">
+    <div className="w-2/5 text-left mx-auto">
       {replies.length === 0 ? (
-        <p>아직 댓글이 없습니다. 댓글을 달아보세요!</p>
+        <p className="pt-10 font-bold text-lg">
+          아직 댓글이 없습니다. 댓글을 달아보세요!
+        </p>
       ) : (
         <ul>
           {replies.map((reply) => (
@@ -45,7 +47,9 @@ const ReplyList = ({ id }) => {
                 <p className="w-1/5">{reply.nickname}</p>
                 <p className="w-3/5">{reply.contents}</p>
                 <p className="w-1/5">
-                  {new Date(reply.date).toLocaleDateString("ko-KR", {
+                  {new Date(
+                    reply.date.replace(" at ", " ").replace(" KST", "")
+                  ).toLocaleString("ko-KR", {
                     year: "2-digit",
                     month: "2-digit",
                     day: "2-digit",

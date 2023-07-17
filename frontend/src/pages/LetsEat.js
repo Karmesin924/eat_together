@@ -101,17 +101,12 @@ const LetsEat = () => {
   };
 
   useEffect(() => {
-    axios
-      .get("/users/validate")
-      .then((res) => {
-        if (res.status === 404) {
-          alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
-          navigate("/SignIn");
-        }
-      })
-      .catch((err) => {
-        console.log("로그인이 되어있습니다.");
-      });
+    axios.get("/users/validate").then((res) => {
+      if (res.status === 404) {
+        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+        navigate("/SignIn");
+      }
+    });
   }, [navigate]);
 
   useEffect(() => {

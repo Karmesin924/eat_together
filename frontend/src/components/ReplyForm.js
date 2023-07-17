@@ -65,7 +65,7 @@ const ReplyForm = () => {
   }, []);
 
   return (
-    <div className="w-2/5">
+    <div className="w-2/5 mx-auto">
       <div className="flex flex-col">
         <div className="flex flex-row p-4">
           <p className="font-semibold text-base">닉네임:</p>

@@ -31,7 +31,9 @@ const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
           <div className="flex">
             <p className="font-semibold text-xl m-auto">글쓴이 : {nickname}</p>
             <p className="pl-4 font-semibold text-xl text-inputfocus m-auto">
-              {new Date(createdDate).toLocaleDateString("ko-KR", {
+              {new Date(
+                createdDate.replace(" at ", " ").replace(" KST", "")
+              ).toLocaleString("ko-KR", {
                 year: "2-digit",
                 month: "2-digit",
                 day: "2-digit",
