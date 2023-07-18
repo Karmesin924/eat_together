@@ -42,7 +42,7 @@ const LetsEat = () => {
     };
 
     axios
-      .post("/api/matching/start", filters)
+      .post("/matching/start", filters)
       .then((response) => {
         console.log("필터 선택 값들을 백엔드로 전송했습니다.", response.data);
         navigate("/Matching");
@@ -214,18 +214,15 @@ const LetsEat = () => {
         </div>
         <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-1/2 mt-5">
           <p className="font-bold text-3xl pt-3 pb-3">매칭 위치</p>
-          <p className=" text-gray-500 pb-3">
-            ※현재 위치 기준으로 근처 인원이 매칭됩니다 :)
+          <p className=" text-gray-500 pt-1 pb-1">
+            ※대략적인 현재 위치 기준으로 근처 인원이 매칭됩니다 :)
           </p>
           {latitude && longitude ? (
             <div>
-              <p>
-                위도: {latitude}, 경도: {longitude}
-              </p>
               {mapLoaded ? (
                 <div>
                   <Map center={{ latitude, longitude }} />
-                  <p className={locationError ? "text-red-500" : ""}>
+                  <p className={locationError ? "text-red-500 m-2" : ""}>
                     {locationError
                       ? "위치가 정확하지 않을 수 있습니다. 지도를 이동하여 마커를 수정해주세요."
                       : ""}

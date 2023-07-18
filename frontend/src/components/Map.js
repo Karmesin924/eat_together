@@ -1,14 +1,15 @@
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import MyContext from "./MyContext";
 
 const Map = ({ center }) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
+  const addressRef = useRef(null);
 
   const { handleLocation } = useContext(MyContext);
   useEffect(() => {
     const { kakao } = window;
-    if (typeof kakao !== "undefined" && kakao.maps) {
+    if (kakao && kakao.maps && kakao.maps.services) {
       const container = mapRef.current;
       const options = {
         center: new kakao.maps.LatLng(center.latitude, center.longitude),
@@ -31,18 +32,32 @@ const Map = ({ center }) => {
       const updateAddress = () => {
         const newCenter = marker.getPosition();
         handleLocation(newCenter.getLat(), newCenter.getLng());
+
+        const geocoder = new kakao.maps.services.Geocoder();
+        geocoder.coord2Address(
+          newCenter.getLng(),
+          newCenter.getLat(),
+          (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              addressRef.current.innerHTML = `주소: ${result[0].address.address_name}`;
+            }
+          }
+        );
       };
 
       kakao.maps.event.addListener(map, "center_changed", () => {
         const newCenter = map.getCenter();
         marker.setPosition(newCenter);
-        updateAddress(); // 마커 위치가 변경될 때 주소 정보 업데이트
+        updateAddress();
       });
+
+      updateAddress();
     }
   }, [center, handleLocation]);
 
   return (
-    <div>
+    <div className="flex flex-col items-center">
+      <div ref={addressRef} className=" font-semibold text-lg mb-1" />
       <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
     </div>
   );
