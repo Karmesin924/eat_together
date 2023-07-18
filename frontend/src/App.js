@@ -20,12 +20,20 @@ function App() {
   const [menu, setMenu] = useState([]);
   const [conversation, setConversation] = useState("");
 
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
   const handleSaveFilters = (filters) => {
     setPeople(filters.people);
     setGender(filters.gender);
     setAge(filters.age);
     setMenu(filters.menu);
     setConversation(filters.conversation);
+  };
+
+  const handleLocation = (latitude, longitude) => {
+    setLatitude(latitude);
+    setLongitude(longitude);
   };
 
   return (
@@ -37,6 +45,9 @@ function App() {
         age,
         menu,
         conversation,
+        latitude,
+        longitude,
+        handleLocation,
       }}
     >
       <BrowserRouter>

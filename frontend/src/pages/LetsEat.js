@@ -9,15 +9,20 @@ import Map from "../components/Map";
 const LetsEat = () => {
   const navigate = useNavigate();
   const [startTime, setStartTime] = useState("");
-  const [mapCenter, setMapCenter] = useState({
-    latitude: null,
-    longitude: null,
-  });
   const [mapLoaded, setMapLoaded] = useState(false);
   const [locationError, setLocationError] = useState(false);
 
-  const { people, gender, age, menu, conversation, handleSaveFilters } =
-    useContext(MyContext);
+  const {
+    people,
+    gender,
+    age,
+    menu,
+    conversation,
+    handleSaveFilters,
+    latitude,
+    longitude,
+    handleLocation,
+  } = useContext(MyContext);
 
   const handleStartTime = (event) => {
     setStartTime(event.target.value);
@@ -25,13 +30,6 @@ const LetsEat = () => {
 
   const handleMatching = () => {
     alert("matching start!!");
-    console.log("Selected Filters:", {
-      people,
-      gender,
-      age,
-      menu,
-      conversation,
-    });
 
     const filters = {
       people,
@@ -79,8 +77,8 @@ const LetsEat = () => {
         if (accuracy > 100) {
           setLocationError(true);
         }
-
-        setMapCenter({ latitude, longitude });
+        console.log("latitude : " + latitude + ", longitude : " + longitude);
+        handleLocation(latitude, longitude);
         setMapLoaded(true);
       };
 
@@ -101,12 +99,17 @@ const LetsEat = () => {
   };
 
   useEffect(() => {
-    axios.get("/users/validate").then((res) => {
-      if (res.status === 404) {
-        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
-        navigate("/SignIn");
-      }
-    });
+    axios
+      .get("/users/validate")
+      .then((res) => {
+        if (res.status === 404) {
+          alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+          navigate("/SignIn");
+        }
+      })
+      .catch(() => {
+        console.log("로그인 OK");
+      });
   }, [navigate]);
 
   useEffect(() => {
@@ -208,21 +211,21 @@ const LetsEat = () => {
           </div>
         </div>
         <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-1/2 mt-5">
-          <p className="font-bold text-3xl pt-3 pb-3">현재 위치</p>
+          <p className="font-bold text-3xl pt-3 pb-3">매칭 위치</p>
           <p className=" text-gray-500 pb-3">
             ※현재 위치 기준으로 근처 인원이 매칭됩니다 :)
           </p>
-          {mapCenter.latitude && mapCenter.longitude ? (
+          {latitude && longitude ? (
             <div>
               <p>
-                위도: {mapCenter.latitude}, 경도: {mapCenter.longitude},{" "}
+                위도: {latitude}, 경도: {longitude}
               </p>
               {mapLoaded ? (
                 <div>
-                  <Map center={mapCenter} />
+                  <Map center={{ latitude, longitude }} />
                   <p className={locationError ? "text-red-500" : ""}>
                     {locationError
-                      ? "현재 위치가 정확하지 않습니다. 지도를 이동하여 마커를 수정해주세요."
+                      ? "위치가 정확하지 않을 수 있습니다. 지도를 이동하여 마커를 수정해주세요."
                       : ""}
                   </p>
                 </div>
