@@ -1,17 +1,16 @@
-import React, { useContext, useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import MyContext from "./MyContext";
 
 const Map = ({ center }) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
+  const [address, setAddress] = useState("");
 
   const { handleLocation } = useContext(MyContext);
-
   useEffect(() => {
     const { kakao } = window;
     if (typeof kakao !== "undefined" && kakao.maps) {
       const container = mapRef.current;
-
       const options = {
         center: new kakao.maps.LatLng(center.latitude, center.longitude),
         level: 3,
@@ -30,16 +29,24 @@ const Map = ({ center }) => {
 
       markerRef.current = marker;
 
+      const updateAddress = () => {
+        const newCenter = marker.getPosition();
+        handleLocation(newCenter.getLat(), newCenter.getLng());
+      };
+
       kakao.maps.event.addListener(map, "center_changed", () => {
         const newCenter = map.getCenter();
-        markerRef.current.setPosition(newCenter);
-
-        handleLocation(newCenter.getLat(), newCenter.getLng());
+        marker.setPosition(newCenter);
+        updateAddress(); // 마커 위치가 변경될 때 주소 정보 업데이트
       });
     }
-  }, [center]);
+  }, [center, handleLocation]);
 
-  return <div ref={mapRef} style={{ width: "100%", height: "400px" }} />;
+  return (
+    <div>
+      <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
+    </div>
+  );
 };
 
 export default Map;
