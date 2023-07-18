@@ -1,8 +1,11 @@
-import React, { useEffect, useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
+import MyContext from "./MyContext";
 
 const Map = ({ center }) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
+
+  const { handleLocation } = useContext(MyContext);
 
   useEffect(() => {
     const { kakao } = window;
@@ -30,6 +33,8 @@ const Map = ({ center }) => {
       kakao.maps.event.addListener(map, "center_changed", () => {
         const newCenter = map.getCenter();
         markerRef.current.setPosition(newCenter);
+
+        handleLocation(newCenter.getLat(), newCenter.getLng());
       });
     }
   }, [center]);
