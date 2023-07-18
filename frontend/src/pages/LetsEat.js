@@ -37,6 +37,8 @@ const LetsEat = () => {
       age,
       menu,
       conversation,
+      latitude,
+      longitude,
     };
 
     axios

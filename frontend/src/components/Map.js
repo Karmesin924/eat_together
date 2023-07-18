@@ -4,7 +4,6 @@ import MyContext from "./MyContext";
 const Map = ({ center }) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
-  const [address, setAddress] = useState("");
 
   const { handleLocation } = useContext(MyContext);
   useEffect(() => {
