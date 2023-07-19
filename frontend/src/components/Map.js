@@ -56,9 +56,9 @@ const Map = ({ center }) => {
   }, [center, handleLocation]);
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="flex flex-col items-center w-full">
       <div ref={addressRef} className=" font-semibold text-lg mb-1" />
-      <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
+      <div ref={mapRef} className=" w-full h-96" />
     </div>
   );
 };
