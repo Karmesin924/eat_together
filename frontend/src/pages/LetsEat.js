@@ -218,7 +218,7 @@ const LetsEat = () => {
             ※대략적인 현재 위치 기준으로 근처 인원이 매칭됩니다 :)
           </p>
           {latitude && longitude ? (
-            <div>
+            <div className="w-full p-4 text-center">
               {mapLoaded ? (
                 <div>
                   <Map center={{ latitude, longitude }} />
@@ -229,7 +229,7 @@ const LetsEat = () => {
                   </p>
                 </div>
               ) : (
-                <p>지도를 로딩 중입니다...</p>
+                <p className=" text-center">지도를 로딩 중입니다...</p>
               )}
             </div>
           ) : (
