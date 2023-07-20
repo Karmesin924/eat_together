@@ -5,7 +5,7 @@ import MyButton from "../components/MyButton";
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="text-center">
+    <div className="w-auto">
       <MyHeader
         leftChild={
           <MyButton
@@ -25,9 +25,9 @@ const Home = () => {
           />
         }
       />
-      <div className="flex flex-row justify-center items-center pt-24 p-1 gap-5">
+      <div className="flex flex-row justify-center items-center pt-24 p-1 gap-6 ">
         <div
-          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project w-1/5 h-1/5 cursor-pointer hover:bg-homehover"
+          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsEat");
           }}
@@ -45,7 +45,7 @@ const Home = () => {
           />
         </div>
         <div
-          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project w-1/5 h-1/5 cursor-pointer hover:bg-homehover"
+          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsDo");
           }}

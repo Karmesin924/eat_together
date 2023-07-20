@@ -4,7 +4,7 @@ import MyContext from "./MyContext";
 const Map = ({ center }) => {
   const mapRef = useRef(null);
   const markerRef = useRef(null);
-  const addressRef = useRef(null);
+  const addressRef = useRef();
 
   const { handleLocation } = useContext(MyContext);
 
@@ -17,6 +17,7 @@ const Map = ({ center }) => {
         level: 3,
       };
       const map = new kakao.maps.Map(container, options);
+      const addressElement = addressRef.current;
 
       // 이전 마커를 제거하는 함수
       const removeMarker = () => {
@@ -35,7 +36,10 @@ const Map = ({ center }) => {
           newCenter.getLat(),
           (result, status) => {
             if (status === kakao.maps.services.Status.OK) {
-              addressRef.current.innerHTML = `주소: ${result[0].address.address_name}`;
+              // addressElement가 존재할 때만 innerHTML 속성을 설정합니다.
+              if (addressElement) {
+                addressElement.current.innerHTML = `주소: ${result[0].address.address_name}`;
+              }
             }
           }
         );
