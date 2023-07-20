@@ -72,7 +72,7 @@ const LetsDo = () => {
       <div className="flex flex-col">
         <div className="flex flex-col items-center pt-10">
           {boardList.map((item) => (
-            <li className="list-none w-3/4 text-center" key={item.id}>
+            <li className="list-none w-4/5 text-center" key={item.id}>
               <Link className="cursor-pointer" to={`/posts/${item.id}`}>
                 <div className="flex pt-3 pb-3 border-t-4 border-homehover">
                   <span className="flex items-center justify-start w-1/3 pl-4 font-semibold text-lg text-gray-500">

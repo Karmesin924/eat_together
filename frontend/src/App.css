@@ -2,4 +2,6 @@
 
 .App {
     font-family: 'IBM Plex Sans KR', sans-serif;
+    min-height: 100vh;
+    min-width: 400px;
 }

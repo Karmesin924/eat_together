@@ -5,7 +5,7 @@ import MyButton from "../components/MyButton";
 const Home = () => {
   const navigate = useNavigate();
   return (
-    <div className="text-center">
+    <div className="w-auto">
       <MyHeader
         leftChild={
           <MyButton
@@ -25,19 +25,19 @@ const Home = () => {
           />
         }
       />
-      <div className=" pt-24">
+      <div className="flex flex-row justify-center items-center pt-24 p-1 gap-6 ">
         <div
-          className=" inline-block align-middle pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
+          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsEat");
           }}
         >
-          <p className=" text-6xl pt-6">
+          <p className="text-6xl pt-6">
             같이 <br />
             먹자
           </p>
           <img
-            className="  m-auto"
+            className="m-auto"
             src="images/LetsEat.png"
             alt="같이먹자"
             width={200}
@@ -45,17 +45,17 @@ const Home = () => {
           />
         </div>
         <div
-          className=" inline-block align-middle pt-5 ml-5 mr-5 text-center font-light rounded-3xl border-4 border-solid border-project w-64 h-96 cursor-pointer hover:bg-homehover"
+          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsDo");
           }}
         >
-          <p className=" text-6xl pt-6">
+          <p className="text-6xl pt-6">
             같이 <br />
             하자
           </p>
           <img
-            className=" m-auto"
+            className="m-auto"
             src="images/LetsDo.png"
             alt="같이하자"
             width={200}

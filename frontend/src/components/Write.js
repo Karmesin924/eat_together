@@ -136,7 +136,7 @@ const Write = () => {
         }
       />
       <div className="flex flex-col pt-10 items-center justify-center">
-        <div className="p-4 w-1/2 border-4 border-project rounded-lg">
+        <div className="p-4 w-4/5 border-4 border-project rounded-lg">
           <div>
             <input
               className="pt-4 px-4 font-bold text-2xl w-full"
@@ -170,7 +170,7 @@ const Write = () => {
             <textarea
               className="p-2 w-full h-80 resize-none outline-none"
               placeholder="본문을 입력하세요!"
-              maxLength={"100"}
+              maxLength={"1000"}
               value={contents}
               onChange={handleContentsChange}
               required

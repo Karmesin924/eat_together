@@ -144,7 +144,7 @@ const LetsEat = () => {
         }
       />
       <div className="flex flex-col items-center pt-10">
-        <div className="flex flex-row flex-wrap border-4 border-project rounded-xl w-1/2 flex-shrink-0">
+        <div className="flex flex-row flex-wrap border-4 border-project rounded-xl w-4/5 flex-shrink-0">
           <div className="flex flex-col justify-center items-center m-auto w-64">
             <p className="flex font-bold text-3xl pt-3 pb-3">모임 날짜</p>
             <input
@@ -177,7 +177,7 @@ const LetsEat = () => {
           </div>
         </div>
 
-        <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-1/2 mt-5">
+        <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-4/5 mt-5">
           <p className="font-bold text-3xl pt-3 pb-3">필터 선택</p>
           <div>
             <MyButton text={"불러오기"} onClick={handleShowFilter} />
@@ -212,7 +212,7 @@ const LetsEat = () => {
             </p>
           </div>
         </div>
-        <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-1/2 mt-5">
+        <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-4/5 mt-5">
           <p className="font-bold text-3xl pt-3 pb-3">매칭 위치</p>
           <p className=" text-gray-500 pt-1 pb-1">
             ※대략적인 현재 위치 기준으로 근처 인원이 매칭됩니다 :)
