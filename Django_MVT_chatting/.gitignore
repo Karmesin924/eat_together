@@ -1,0 +1,5 @@
+.idea
+.env
+redis_test.py
+__pycache__/
+migrations/
