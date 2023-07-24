@@ -6,7 +6,7 @@ import MyButton from "../components/MyButton";
 
 const Write = () => {
   const navigate = useNavigate();
-  const { idx } = useParams();
+  const { id } = useParams();
   const location = useLocation();
   const [title, setTitle] = useState("");
   const [contents, setContents] = useState("");
@@ -59,10 +59,10 @@ const Write = () => {
 
   useEffect(() => {
     // 수정 모드인 경우 기존 글의 내용을 불러옴
-    if (isEditMode && idx) {
+    if (isEditMode && id) {
       const fetchPost = async () => {
         try {
-          const response = await axios.get(`/posts/${idx}`);
+          const response = await axios.get(`/posts/${id}`);
           const { title, contents, nickname } = response.data;
           setTitle(title);
           setContents(contents);
@@ -74,7 +74,7 @@ const Write = () => {
 
       fetchPost();
     }
-  }, [isEditMode, idx]);
+  }, [isEditMode, id]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
@@ -90,13 +90,13 @@ const Write = () => {
         const shouldUpdate = window.confirm("수정하시겠습니까?");
         if (shouldUpdate) {
           // 글 수정 요청 처리
-          const response = await axios.put(`/posts/${idx}`, {
+          const response = await axios.put(`/posts/${id}`, {
             title,
             contents,
           });
           console.log("글이 성공적으로 수정되었습니다.", response.data);
           alert("글이 성공적으로 수정되었습니다.");
-          navigate(`/posts/${idx}`);
+          navigate(`/posts/${id}`);
         }
       } else {
         const shouldSubmit = window.confirm("작성하시겠습니까?");
@@ -115,7 +115,7 @@ const Write = () => {
       console.log("글 저장 또는 수정에 실패했습니다.", error);
       alert("글 저장 또는 수정에 실패했습니다..");
       if (isEditMode) {
-        navigate(`/posts/${idx}`);
+        navigate(`/posts/${id}`);
       } else {
         navigate("/LetsDo");
       }
