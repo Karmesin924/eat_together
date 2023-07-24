@@ -17,7 +17,7 @@ const LetsDo = () => {
     try {
       const resp = await axios.get(`/board/${page}`);
       setBoardList(resp.data);
-      setTotalPages(resp.pagination.totalPages);
+      setTotalPages(resp.data.totalPages);
       console.log(resp.pagination);
     } catch (err) {
       console.log("게시글 목록을 가져오는데 실패했습니다.", err);
