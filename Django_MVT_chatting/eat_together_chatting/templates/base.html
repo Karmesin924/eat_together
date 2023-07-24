@@ -16,21 +16,21 @@
 
 <div class="container">
     <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <a href="/" class="d-flex align-items-center col-md-3 mb-2 mb-md-0 text-dark text-decoration-none">
-            같이 먹자
-        </a>
-
-        <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" class="nav-link px-2 link-secondary">채팅</a></li>
+        <div class="col-4 d-flex justify-content-start">
+            <a href="/" class="btn btn-primary d-flex align-items-center justify-content-center text-nowrap">
+                채팅방 목록
+            </a>
+        </div>
+        <div class="col-4 d-flex justify-content-center">
+            <ul class="nav col-12 col-md-auto justify-content-center">
+            <li><a href="#" class="nav-link px-2 link-secondary">같이먹자 채팅</a></li>
         </ul>
-
-        <div class="col-md-3 text-end">
+        </div>
+        <div class="col-4 d-flex justify-content-end">
             {% if not user.is_authenticated %}
-                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary me-2">로그인</a>
-                <a href="{% url 'accounts:signup' %}" class="btn btn-primary">회원가입</a>
+                <a href="{% url 'accounts:login' %}" class="btn btn-outline-primary me-2 text-nowrap">로그인</a>
             {% else %}
-                <a href="{% url 'accounts:profile' %}" class="btn btn-outline-primary me-2">프로필</a>
-                <a href="{% url 'accounts:logout' %}" class="btn btn-primary">로그아웃</a>
+                <a href="{% url 'accounts:logout' %}" class="btn btn-primary text-nowrap">로그아웃</a>
             {% endif %}
         </div>
     </header>

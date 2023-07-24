@@ -26,7 +26,7 @@ if env_path.exists():
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a(6%&=2vjwjhn0+nft9ow^%)e3ej8eum*2f03hl(5()noo#zwi'
+SECRET_KEY = env('SECRET_KEY')  #.env 파일 사용
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -96,7 +96,7 @@ DATABASES = {
     }
 }
 
-# django channels layer
+# django channels layer     .env 파일 사용
 if "CHANNEL_LAYER_REDIS_URL" in env:
     channel_layer_redis = env.db_url("CHANNEL_LAYER_REDIS_URL")
     CHANNEL_LAYERS = {

@@ -12,9 +12,14 @@
             <form action="" method="post" novalidate>
                 {% csrf_token %}
                 {% bootstrap_form form %}
-                <input type="submit" class="btn btn-primary"
-                       {% if submit_label %}value="{{ submit_label }}"{% endif %} />
+                <div class="d-flex justify-content-between">
+                    <input type="submit" class="btn btn-primary"
+                           {% if submit_label %}value="{{ submit_label }}"{% endif %} />
+                    <a href="{% url 'accounts:signup' %}" class="btn btn-primary text-nowrap">회원가입</a>
+                </div>
             </form>
+
         </div>
+
     </div>
 {% endblock %}
