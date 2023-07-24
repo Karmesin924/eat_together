@@ -96,7 +96,7 @@ const LetsDo = () => {
               </Link>
             </li>
           ))}
-          <div className="border-t-4 w-3/4 border-homehover"></div>
+          <div className="border-t-4 w-4/5 border-homehover"></div>
         </div>
         <div className="flex flex-col items-center pt-10">
           <p>

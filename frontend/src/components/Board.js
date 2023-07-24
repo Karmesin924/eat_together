@@ -26,7 +26,7 @@ const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
   return (
     <div>
       <div className="flex flex-col items-center text-center">
-        <div className="flex p-4 flex-row border-b-4 border-buttonhover w-2/5 justify-between">
+        <div className="flex p-4 flex-row border-b-4 border-buttonhover w-4/5 justify-between">
           <div></div>
           <div className="flex">
             <p className="font-semibold text-xl m-auto">글쓴이 : {nickname}</p>
@@ -53,10 +53,10 @@ const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
             )}
           </div>
         </div>
-        <p className="p-4  font-bold text-2xl border-b-4 border-buttonhover w-2/5 bg-orange-100">
+        <p className="p-4  font-bold text-2xl border-b-4 border-buttonhover w-4/5 bg-orange-100">
           {title}
         </p>
-        <p className="p-4 font-semibold text-lg border-b-4 border-buttonhover w-2/5 h-auto break-words text-left">
+        <p className="p-4 font-semibold text-lg border-b-4 border-buttonhover w-4/5 h-auto break-words text-left">
           {contents}
         </p>
       </div>

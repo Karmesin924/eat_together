@@ -11,7 +11,7 @@ const ReplyList = ({ id }) => {
 
   const getReplies = async () => {
     try {
-      const response = await axios.get(`/posts/comment/${String(id)}`);
+      const response = await axios.get(`/posts/comment/${id}`);
       const repliesData = response.data;
       setReplies(repliesData);
     } catch (err) {
