@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
 
@@ -8,12 +8,11 @@ const Home = () => {
     <div className="w-auto">
       <MyHeader
         leftChild={
-          <MyButton
+          <Link to="http://127.0.0.1:8000">
+            <MyButton
             text={"채팅"}
-            onClick={() => {
-              navigate("/ChatList");
-            }}
-          />
+            />
+          </Link>
         }
         headText={"같이 먹자"}
         rightChild={
