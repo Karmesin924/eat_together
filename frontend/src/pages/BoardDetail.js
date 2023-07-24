@@ -23,7 +23,7 @@ const BoardDetail = () => {
   useEffect(() => {
     const getBoard = async () => {
       try {
-        const boardData = await axios.get(`/posts/${String(id)}`);
+        const boardData = await axios.get(`/posts/${id}`);
         const selectedBoard = boardData.data;
         const author = selectedBoard.author || false;
 
@@ -45,7 +45,7 @@ const BoardDetail = () => {
 
     const getReplies = async () => {
       try {
-        const replyData = await axios.get(`/posts/${String(id)}/comment`);
+        const replyData = await axios.get(`/posts/${id}/comment`);
         const replies = Array.isArray(replyData.data) ? replyData.data : [];
         setBoard((prevBoard) => ({ ...prevBoard, replies: [...replies] }));
       } catch (err) {
@@ -88,11 +88,11 @@ const BoardDetail = () => {
             replies={board?.replies || []}
             author={author}
           />
-          <p className="p-4 font-bold text-xl border-b-4 border-buttonhover w-2/5 mx-auto bg-orange-100">
+          <p className="p-4 font-bold text-xl border-b-4 border-buttonhover w-4/5 mx-auto bg-orange-100">
             댓글
           </p>
           <ReplyForm />
-          <ReplyList id={board?.id} />
+          <ReplyList id={id} />
         </div>
       )}
     </div>
