@@ -59,10 +59,10 @@ function App() {
             <Route path="/SignUp" element={<SignUp />} />
             <Route path="/LetsEat" element={<LetsEat />} />
             <Route path="/LetsDo" element={<LetsDo />} />
-            <Route path="/board/:idx" element={<LetsDo />} />
-            <Route path="/posts/:idx" element={<BoardDetail />} />
+            <Route path="/board/:id" element={<LetsDo />} />
+            <Route path="/posts/:id" element={<BoardDetail />} />
             <Route path="/write" element={<Write />} />
-            <Route path="/write/:idx" element={<Write />} />
+            <Route path="/write/:id" element={<Write />} />
             <Route path="/FilterDetail" element={<FilterDetail />} />
           </Routes>
         </div>

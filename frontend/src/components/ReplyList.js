@@ -34,7 +34,7 @@ const ReplyList = ({ id }) => {
   };
 
   return (
-    <div className="w-2/5 text-left mx-auto">
+    <div className="w-4/5 text-left mx-auto">
       {replies.length === 0 ? (
         <p className="pt-10 font-bold text-lg">
           아직 댓글이 없습니다. 댓글을 달아보세요!

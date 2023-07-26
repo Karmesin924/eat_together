@@ -1,6 +1,6 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 import Board from "../components/Board";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
@@ -21,50 +21,43 @@ const BoardDetail = () => {
   });
   const [author, setAuthor] = useState(false);
 
-  useEffect(() => {
-    const getBoard = async () => {
-      try {
-        const boardData = await axios.get(`/posts/${id}`);
-        const selectedBoard = boardData.data;
-        const author = selectedBoard.author || false;
+  const getBoard = useCallback(async () => {
+    try {
+      const boardData = await axios.get(`/posts/${id}`);
+      const selectedBoard = boardData.data;
+      const author = selectedBoard.author || false;
 
-        setBoard(selectedBoard || {});
-        setAuthor(author);
-        setLoading(false);
+      setBoard(selectedBoard || {});
+      setAuthor(author);
+      setLoading(false);
 
-        console.log("id : " + selectedBoard.id);
-        console.log("title : " + selectedBoard.title);
-        console.log("contents : " + selectedBoard.contents);
-        console.log("nickname : " + selectedBoard.nickname);
-        console.log("createdDate : " + selectedBoard.createdDate);
-        console.log("author : " + author);
-      } catch (err) {
-        console.log("게시글을 가져오는데 실패했습니다.", err);
-        setLoading(false);
-      }
-    };
-
-    const getReplies = async () => {
-      try {
-        const replyData = await axios.get(`/posts/${id}/comment`);
-        const replies = Array.isArray(replyData.data) ? replyData.data : [];
-        setBoard((prevBoard) => ({ ...prevBoard, replies: [...replies] }));
-      } catch (err) {
-        console.log("댓글을 가져오는데 실패했습니다.", err);
-      }
-    };
-
-    const fetchData = async () => {
-      setLoading(true);
-      console.log("시작");
-      await getBoard();
-      console.log("보드");
-      await getReplies();
-      console.log("댓글");
-    };
-
-    fetchData();
+      console.log("id : " + selectedBoard.id);
+      console.log("title : " + selectedBoard.title);
+      console.log("contents : " + selectedBoard.contents);
+      console.log("nickname : " + selectedBoard.nickname);
+      console.log("createdDate : " + selectedBoard.createdDate);
+      console.log("author : " + author);
+    } catch (err) {
+      console.log("게시글을 가져오는데 실패했습니다.", err);
+      setLoading(false);
+    }
   }, [id]);
+
+  const getReplies = useCallback(async () => {
+    try {
+      const replyData = await axios.get(`/posts/${id}/comment`);
+      const replies = Array.isArray(replyData.data) ? replyData.data : [];
+      setBoard((prevBoard) => ({ ...prevBoard, replies: [...replies] }));
+    } catch (err) {
+      console.log("댓글을 가져오는데 실패했습니다.", err);
+    }
+  }, [id]);
+
+  useEffect(() => {
+    setLoading(true);
+    getBoard();
+    getReplies();
+  }, [getBoard, getReplies]);
 
   return (
     <div>
