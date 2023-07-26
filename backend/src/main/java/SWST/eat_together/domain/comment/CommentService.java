@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,27 +43,6 @@ public class CommentService {
         return 1;
     }
 
-    public Comment detail(long commentId, String email){
-        Comment comment = commentRepository.findById(commentId);
-
-        CommentDetailDTO commentDetail = new CommentDetailDTO();
-
-        commentDetail.setId(comment.getId());
-        commentDetail.setPostId(comment.getPostId());
-        commentDetail.setContents(comment.getContents());
-        commentDetail.setCreatedDate(comment.getCreatedDate());
-        commentDetail.setNickname(commentDetail.getNickname());
-        commentDetail.setEmail(commentDetail.getEmail());
-
-        commentDetail.setAuthor(false);
-
-        if(email != null && comment.getEmail().equals(email)) {
-            commentDetail.setAuthor(true);
-        }
-
-        return commentDetail;
-    }
-
     public Integer delete(Long commentId, String email) {
         Comment comment = commentRepository.getReferenceById(commentId);
 
@@ -84,8 +64,28 @@ public class CommentService {
         return 0;
     }
 
-    public List<Comment> getComments(String idx) {
-        List<Comment> comments = commentRepository.findByPostId(Long.parseLong(idx));
-        return comments;
+    public List<CommentDetailDTO> getCommentDetailDTOs(String postId, String email) {
+        List<Comment> comments = commentRepository.findByPostId(Long.parseLong(postId));
+        return createCommentDetailDTOs(comments, email);
+    }
+
+
+    private List<CommentDetailDTO> createCommentDetailDTOs(List<Comment> comments, String email) {
+        List<CommentDetailDTO> commentDetailDTOs = new ArrayList<>();
+
+        for (Comment comment : comments) {
+            CommentDetailDTO commentDetailDTO = new CommentDetailDTO();
+            commentDetailDTO.setId(comment.getId());
+            commentDetailDTO.setPostId(comment.getPostId());
+            commentDetailDTO.setContents(comment.getContents());
+            commentDetailDTO.setNickname(comment.getNickname());
+            commentDetailDTO.setCreatedDate(comment.getCreatedDate());
+            commentDetailDTO.setEmail(comment.getEmail());
+            commentDetailDTO.setAuthor(comment.getEmail().equals(email));
+
+            commentDetailDTOs.add(commentDetailDTO);
+        }
+
+        return commentDetailDTOs;
     }
 }

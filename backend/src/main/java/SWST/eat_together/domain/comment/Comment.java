@@ -33,6 +33,4 @@ public class Comment {
 
     @Column(name = "email")
     private String email;
-
-
 }

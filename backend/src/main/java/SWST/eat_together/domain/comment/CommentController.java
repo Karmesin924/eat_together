@@ -1,9 +1,7 @@
 package SWST.eat_together.domain.comment;
 
 import SWST.eat_together.domain.member.Member;
-import SWST.eat_together.domain.post.Post;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,14 +29,23 @@ public class CommentController {
     }
 
     @GetMapping("{idx}")
-    public List<Comment> getComments(@PathVariable("idx") String idx){
-        System.out.println("idx = " + idx);
-        List<Comment> comments = commentService.getComments(idx);
+    public ResponseEntity<List<CommentDetailDTO>> getComments(@PathVariable("idx") String idx, HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        Member loginMember = null;
+        String email = "0"; // 기본값으로 '0'으로 설정
+
+        if (session != null) {
+            loginMember = (Member) session.getAttribute("member");
+            if (loginMember != null) {
+                email = loginMember.getEmail();
+            }
+        }
+
+        List<CommentDetailDTO> comments = commentService.getCommentDetailDTOs(idx, email);
         System.out.println("comments = " + comments);
 
-        return comments;
+        return ResponseEntity.ok(comments);
     }
-
     @DeleteMapping("{commentIdx}")
     public ResponseEntity delete(@PathVariable("commentIdx") Long commentIdx, HttpServletRequest request){
         HttpSession session = request.getSession(false);
