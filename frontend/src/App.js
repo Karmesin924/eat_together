@@ -1,24 +1,25 @@
-import "./App.css";
-import "./index.css";
-import Home from "./pages/Home";
-import MyPage from "./pages/MyPage";
-import SignIn from "./pages/SignIn";
-import SignUp from "./pages/SignUp";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LetsDo from "./pages/LetsDo";
-import LetsEat from "./pages/LetsEat";
-import BoardDetail from "./pages/BoardDetail";
-import Write from "./components/Write";
-import FilterDetail from "./pages/FilterDetail";
-import { useState } from "react";
-import MyContext from "./components/MyContext";
+import './App.css';
+import './index.css';
+import Home from './pages/Home';
+import MyPage from './pages/MyPage';
+import SignIn from './pages/SignIn';
+import SignUp from './pages/SignUp';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import LetsDo from './pages/LetsDo';
+import LetsEat from './pages/LetsEat';
+import BoardDetail from './pages/BoardDetail';
+import Write from './components/Write';
+import FilterDetail from './pages/FilterDetail';
+import { useState } from 'react';
+import MyContext from './components/MyContext';
+import Matching from './pages/Matching';
 
 function App() {
   const [people, setPeople] = useState();
-  const [gender, setGender] = useState("");
-  const [age, setAge] = useState("");
+  const [gender, setGender] = useState('');
+  const [age, setAge] = useState('');
   const [menu, setMenu] = useState([]);
-  const [conversation, setConversation] = useState("");
+  const [conversation, setConversation] = useState('');
 
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -64,6 +65,7 @@ function App() {
             <Route path="/write" element={<Write />} />
             <Route path="/write/:id" element={<Write />} />
             <Route path="/FilterDetail" element={<FilterDetail />} />
+            <Route path="/Matching" element={<Matching />} />
           </Routes>
         </div>
       </BrowserRouter>

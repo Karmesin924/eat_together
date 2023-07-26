@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import axios from "axios";
-import MyHeader from "../components/MyHeader";
-import { useNavigate } from "react-router-dom";
-import MyButton from "../components/MyButton";
+import React, { useState } from 'react';
+import axios from 'axios';
+import MyHeader from '../components/MyHeader';
+import { useNavigate } from 'react-router-dom';
+import MyButton from '../components/MyButton';
 
 function SignIn() {
-  const [inputEmail, setinputEmail] = useState("");
-  const [inputPassword, setinputPassword] = useState("");
+  const [inputEmail, setinputEmail] = useState('');
+  const [inputPassword, setinputPassword] = useState('');
   const navigate = useNavigate();
 
   const handleinputEmail = (e) => {
@@ -21,34 +21,34 @@ function SignIn() {
     e.preventDefault();
     try {
       const data = { email: inputEmail, password: inputPassword };
-      console.log("click SignIn");
-      console.log("ID : ", inputEmail);
-      console.log("PW : ", inputPassword);
+      console.log('click SignIn');
+      console.log('ID : ', inputEmail);
+      console.log('PW : ', inputPassword);
       axios
-        .post("/users/login", data, {
+        .post('/users/login', data, {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         })
         .then((res) => {
           console.log(res);
 
           if (res.status === 404) {
-            console.log("======================", res.data.msg);
-            alert("입력하신 이메일과 비밀번호가 일치하지 않습니다.");
+            console.log('======================', res.data.msg);
+            alert('입력하신 이메일과 비밀번호가 일치하지 않습니다.');
           } else if (res.status === 200) {
-            console.log("======================", "로그인 성공");
-            alert("로그인 성공!");
-            navigate("/MyPage");
+            console.log('======================', '로그인 성공');
+            alert('로그인 성공!');
+            navigate('/MyPage');
           }
           // 작업 완료 되면 페이지 이동(새로고침)
-          document.location.href = "/";
+          document.location.href = '/';
         })
         .catch((ex) => {
-          alert("로그인 요청이 실패했습니다.");
-          console.log("login request fail: " + ex);
+          alert('로그인 요청이 실패했습니다.');
+          console.log('login request fail: ' + ex);
         })
-        .finally(() => console.log("login request end"));
+        .finally(() => console.log('login request end'));
     } catch (e) {
       console.log(e);
     }
@@ -57,12 +57,12 @@ function SignIn() {
   return (
     <div className="flex flex-col justify-center">
       <MyHeader
-        headText={"로그인"}
+        headText={'로그인'}
         leftChild={
           <MyButton
-            text={"뒤로가기"}
+            text={'뒤로가기'}
             onClick={() => {
-              navigate("/");
+              navigate('/');
             }}
           />
         }
@@ -74,9 +74,7 @@ function SignIn() {
         </span>
         먹자
       </div>
-      <div className=" mt-3 h-14 text-center text-lg font-normal">
-        외로운 혼밥러들을 위해
-      </div>
+      <div className=" mt-3 h-14 text-center text-lg font-normal">외로운 혼밥러들을 위해</div>
       <div className="flex flex-col justify-center items-center clear-both">
         <input
           className=" mt-1 mb-3 w-80 h-10 pl-3 text-base border-buttonhover border-4 border-solid rounded-xl placeholder:text-base focus:border-project focus:text-inputfocus outline-none"
@@ -103,11 +101,11 @@ function SignIn() {
           로그인
         </button>
       </div>
-      <div className="m-auto mt-11 mb-8 text-projectthick text-base font-semibold cursor-pointer">
+      <div className="m-auto mt-11 mb-8 text-projectthick text-base font-semibold cursor-pointer text-center">
         <p
           className="pb-3"
           onClick={() => {
-            navigate("/SignUp");
+            navigate('/SignUp');
           }}
         >
           회원 가입
@@ -115,9 +113,9 @@ function SignIn() {
         <p>비밀번호를 잊어버리셨나요?</p>
       </div>
       <div className="flex m-auto">
-        <MyButton text={"카카오로그인"} onClick={() => {}} />
+        <MyButton text={'카카오로그인'} onClick={() => {}} />
         <span className="pl-2"></span>
-        <MyButton text={"네이버로그인"} onClick={() => {}} />
+        <MyButton text={'네이버로그인'} onClick={() => {}} />
       </div>
     </div>
   );
