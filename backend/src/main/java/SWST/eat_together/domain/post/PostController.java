@@ -2,10 +2,14 @@ package SWST.eat_together.domain.post;
 
 import SWST.eat_together.domain.member.Member;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import static SWST.eat_together.domain.member.AuthUtil.Not_logged_in;
+import static SWST.eat_together.domain.member.AuthUtil.checkLoggedInUserOr401;
 
 @RestController
 @RequestMapping("/posts")
@@ -16,11 +20,13 @@ public class PostController {
     @PostMapping("/add")
     public ResponseEntity add(@RequestBody RegiPostDTO post, HttpServletRequest request){
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            return ResponseEntity.badRequest().build();
-        }
-        Member loginMember = (Member)session.getAttribute("member");
 
+        String email = checkLoggedInUserOr401(session);
+        if (email == Not_logged_in){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Member loginMember = (Member)session.getAttribute("member");
         postService.addPost(loginMember, post);
 
         return ResponseEntity.ok().build();
@@ -28,15 +34,7 @@ public class PostController {
 
     @GetMapping("/{idx}")
     public ResponseEntity<Post> detail(@PathVariable("idx") String id, HttpServletRequest request) {
-        String email = "0"; // 기본값으로 '0'으로 설정
-
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            Member loginMember = (Member) session.getAttribute("member");
-            if (loginMember != null) {
-                email = loginMember.getEmail();
-            }
-        }
+        String email = checkLoggedInUserOr401(request.getSession(false));
 
         Post post = postService.detail(Integer.parseInt(id), email);
 
@@ -50,34 +48,31 @@ public class PostController {
     
     @DeleteMapping("{idx}")
     public ResponseEntity delete(@PathVariable("idx") String id, HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session == null)
-            return ResponseEntity.notFound().build();
+        String email = checkLoggedInUserOr401(request.getSession(false));
+        if (email == Not_logged_in){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-        Member loginMember = (Member) session.getAttribute("member");
-        String email = loginMember.getEmail();
         Integer result = postService.delete(Integer.parseInt(id), email);
 
-        if (result == 1){
-            return ResponseEntity.notFound().build();
+        if (result == -1){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("{idx}")
     public ResponseEntity edit(@PathVariable("idx") String id, @RequestBody RegiPostDTO post, HttpServletRequest request){
-        HttpSession session = request.getSession(false);
-        if (session == null)
-            return ResponseEntity.notFound().build();
-        System.out.println("post = " + post);
-        Member loginMember = (Member) session.getAttribute("member");
-        String email = loginMember.getEmail();
+        String email = checkLoggedInUserOr401(request.getSession(false));
+        if (email == Not_logged_in){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
         Integer result = postService.edit(Integer.parseInt(id), email, post.getTitle(), post.getContents());
 
-        if (result == 1){
-            return ResponseEntity.notFound().build();
+        if (result == -1){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         return ResponseEntity.ok().build();
     }
-
 }
