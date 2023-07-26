@@ -30,34 +30,16 @@ const BoardDetail = () => {
       setBoard(selectedBoard || {});
       setAuthor(author);
       setLoading(false);
-
-      console.log("id : " + selectedBoard.id);
-      console.log("title : " + selectedBoard.title);
-      console.log("contents : " + selectedBoard.contents);
-      console.log("nickname : " + selectedBoard.nickname);
-      console.log("createdDate : " + selectedBoard.createdDate);
-      console.log("author : " + author);
     } catch (err) {
       console.log("게시글을 가져오는데 실패했습니다.", err);
       setLoading(false);
     }
   }, [id]);
 
-  const getReplies = useCallback(async () => {
-    try {
-      const replyData = await axios.get(`/posts/${id}/comment`);
-      const replies = Array.isArray(replyData.data) ? replyData.data : [];
-      setBoard((prevBoard) => ({ ...prevBoard, replies: [...replies] }));
-    } catch (err) {
-      console.log("댓글을 가져오는데 실패했습니다.", err);
-    }
-  }, [id]);
-
   useEffect(() => {
     setLoading(true);
     getBoard();
-    getReplies();
-  }, [getBoard, getReplies]);
+  }, [getBoard]);
 
   return (
     <div>
