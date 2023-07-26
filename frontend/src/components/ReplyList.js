@@ -20,10 +20,10 @@ const ReplyList = ({ id }) => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = (replyId) => {
     console.log("삭제 버튼 클릭");
     axios
-      .delete(`/posts/${id}`)
+      .delete(`/posts/comment/${replyId}`)
       .then((res) => {
         alert("댓글이 삭제되었습니다!");
         getReplies();
@@ -60,7 +60,12 @@ const ReplyList = ({ id }) => {
                 </p>
               </div>
               {reply.author && (
-                <MyButton text={"삭제"} onClick={handleDelete} />
+                <MyButton
+                  text={"삭제"}
+                  onClick={() => {
+                    handleDelete(reply.id);
+                  }}
+                />
               )}
             </li>
           ))}
