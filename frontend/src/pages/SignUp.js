@@ -158,7 +158,7 @@ const SignUp = () => {
       email: email,
       gender: gender,
       nickname: nickname,
-      date: birth,
+      birthDate: birth,
       password: password,
     };
 

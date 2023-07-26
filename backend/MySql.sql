@@ -1,12 +1,12 @@
 CREATE DATABASE `eat_together_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
 CREATE TABLE `eat_together_db`.`comment_info` (
-  `comment_Id` bigint NOT NULL,
-  `post_id` bigint DEFAULT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
+  `post_id` int DEFAULT NULL,
   `content` varchar(255) DEFAULT NULL,
   `nickname` varchar(255) DEFAULT NULL,
   `created_date` varchar(255) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`comment_Id`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 CREATE TABLE `eat_together_db`.`post_info` (
   `id` int NOT NULL AUTO_INCREMENT,
