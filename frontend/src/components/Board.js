@@ -2,18 +2,18 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const Board = ({ idx, title, contents, nickname, createdDate, author }) => {
+const Board = ({ id, title, contents, nickname, createdDate, author }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
     console.log("수정 버튼 클릭");
-    navigate(`/write/${idx}`, { state: { isEditMode: true } });
+    navigate(`/write/${id}`, { state: { isEditMode: true } });
   };
 
   const handleDelete = () => {
     console.log("삭제 버튼 클릭");
     axios
-      .delete(`/posts/${idx}`)
+      .delete(`/posts/${id}`)
       .then((res) => {
         alert("글이 삭제되었습니다!");
         navigate("/board/1");
