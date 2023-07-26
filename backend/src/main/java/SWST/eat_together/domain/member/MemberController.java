@@ -3,7 +3,6 @@ package SWST.eat_together.domain.member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -17,12 +16,8 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody SignUpDTO member) {
         System.out.println("member = " + member);
-        int result = memberService.saveUser(member);
-
-        if (result == 0)
-            return ResponseEntity.ok().build();
-        else
-            return ResponseEntity.notFound().build();
+        memberService.saveUser(member);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/login")

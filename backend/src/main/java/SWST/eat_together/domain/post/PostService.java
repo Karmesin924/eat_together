@@ -3,7 +3,6 @@ package SWST.eat_together.domain.post;
 import SWST.eat_together.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,7 +12,6 @@ public class PostService {
     private final PostRepository postRepository;
 
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-    Date date = new Date(System.currentTimeMillis());
 
     public void addPost(Member member, RegiPostDTO regiPost){
         Post post = new Post();
@@ -21,9 +19,11 @@ public class PostService {
         post.setTitle(regiPost.getTitle());
         post.setContents(regiPost.getContents());
         post.setEmail(member.getEmail());
-        post.setCreatedDate(formatter.format(date));
+
+        Date currentDate = new Date(System.currentTimeMillis());
+        post.setCreatedDate(formatter.format(currentDate));
         post.setNickname(member.getNickname());
-        //post 객체에 inx 값을 적절히 할당하고, 데이터베이스에 추가하는 과정 필요.
+
         try {
             postRepository.save(post);
         } catch (Exception e) {
@@ -68,11 +68,10 @@ public class PostService {
 
         if (!email.equals(post.getEmail()))
             return 1;
-        /*postRepository.edit(idx, title, contents);*/
+
         post.setTitle(title);
         post.setContents(contents);
         postRepository.save(post);
         return 0;
     }
-
 }
