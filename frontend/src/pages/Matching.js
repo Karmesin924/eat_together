@@ -56,11 +56,11 @@ const Matching = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (people === '2인') {
+    if (people === '2') {
       setMatchingLimit(2);
-    } else if (people === '3인') {
+    } else if (people === '3') {
       setMatchingLimit(3);
-    } else if (people === '4인') {
+    } else if (people === '4') {
       setMatchingLimit(4);
     } else {
       setMatchingLimit(5); //아 상관없음은 또 어떻게 해야하냐 미친~
