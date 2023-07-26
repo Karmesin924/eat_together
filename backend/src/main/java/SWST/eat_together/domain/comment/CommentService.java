@@ -14,16 +14,16 @@ public class CommentService {
     private final CommentRepository commentRepository;
 
     SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-    Date date = new Date(System.currentTimeMillis());
 
-
-    public int addComment(Member member, CommentDTO regiComment, Long postId) {
+    public void addComment(Member member, CommentDTO regiComment, Long postId) {
         Comment comment = new Comment();
 
         comment.setPostId(postId);
         comment.setContents(regiComment.getContents());
         comment.setNickname(member.getNickname());
-        comment.setCreatedDate(formatter.format(date));
+
+        Date currentDate = new Date(System.currentTimeMillis());
+        comment.setCreatedDate(formatter.format(currentDate));
         comment.setEmail(member.getEmail());
 
         try {
@@ -31,9 +31,6 @@ public class CommentService {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        System.out.println("comment = " + comment);
-        return 1;
     }
 
     public Integer deleteComment(Long commentId, String email) {

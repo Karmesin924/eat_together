@@ -17,6 +17,7 @@ public class CommentController {
     @PostMapping("/{idx}/add")
     public ResponseEntity addComment(@PathVariable("idx") String idx, @RequestBody CommentDTO regiComment, HttpServletRequest request){
         System.out.println("idx = " + idx);
+        System.out.println("regiComment = " + regiComment);
         HttpSession session = request.getSession(false);
         if (session == null) {
             System.out.println("비로그인 상태");
