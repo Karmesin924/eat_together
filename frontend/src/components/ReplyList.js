@@ -48,7 +48,7 @@ const ReplyList = ({ id }) => {
                 <p className="w-3/5">{reply.contents}</p>
                 <p className="w-1/5">
                   {new Date(
-                    reply.date.replace(" at ", " ").replace(" KST", "")
+                    reply.createdDate.replace(" at ", " ").replace(" KST", "")
                   ).toLocaleString("ko-KR", {
                     year: "2-digit",
                     month: "2-digit",
