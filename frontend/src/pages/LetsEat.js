@@ -1,35 +1,51 @@
-import { useNavigate } from "react-router-dom";
-import MyButton from "../components/MyButton";
-import MyHeader from "../components/MyHeader";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import MyContext from "../components/MyContext";
-import Map from "../components/Map";
+import { useNavigate } from 'react-router-dom';
+import MyButton from '../components/MyButton';
+import MyHeader from '../components/MyHeader';
+import { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import MyContext from '../components/MyContext';
+import Map from '../components/Map';
 
 const LetsEat = () => {
   const navigate = useNavigate();
-  const [startTime, setStartTime] = useState("");
+  const [startTime, setStartTime] = useState('');
   const [mapLoaded, setMapLoaded] = useState(false);
   const [locationError, setLocationError] = useState(false);
 
-  const {
-    people,
-    gender,
-    age,
-    menu,
-    conversation,
-    handleSaveFilters,
-    latitude,
-    longitude,
-    handleLocation,
-  } = useContext(MyContext);
+  const { people, gender, age, menu, conversation, handleSaveFilters, latitude, longitude, handleLocation } =
+    useContext(MyContext);
+
+  useEffect(() => {
+    let isMounted = true;
+    const source = axios.CancelToken.source();
+
+    axios
+      .get('/users/validate', { cancelToken: source.token })
+      .then((res) => {
+        if (isMounted && res.status !== 404) {
+        }
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          return;
+        }
+        console.log('Failed to validate user:', error);
+        alert('같이 먹자 페이지는 로그인 후 사용하실 수 있습니다.');
+        navigate('/SignIn');
+      });
+
+    return () => {
+      isMounted = false;
+      source.cancel('Request canceled');
+    };
+  }, [navigate]);
 
   const handleStartTime = (event) => {
     setStartTime(event.target.value);
   };
 
   const handleMatching = () => {
-    alert("matching start!!");
+    alert('matching start!!');
 
     const filters = {
       people,
@@ -42,31 +58,31 @@ const LetsEat = () => {
     };
 
     axios
-      .post("/matching/start", filters)
+      .post('/matching/start', filters)
       .then((response) => {
-        console.log("필터 선택 값들을 백엔드로 전송했습니다.", response.data);
-        navigate("/Matching");
+        console.log('필터 선택 값들을 백엔드로 전송했습니다.', response.data);
+        navigate('/Matching');
       })
       .catch((error) => {
-        console.log("필터 선택 값을 백엔드로 전송하는데 실패했습니다.", error);
+        console.log('필터 선택 값을 백엔드로 전송하는데 실패했습니다.', error);
       });
   };
 
   const handleShowFilter = () => {
     axios
-      .get("/api/filters")
+      .get('/api/filters')
       .then((res) => {
         const filters = res.data;
         handleSaveFilters(filters);
       })
       .catch((err) => {
-        alert("기존 선택항목을 불러오는데 오류가 발생했습니다.");
+        alert('기존 선택항목을 불러오는데 오류가 발생했습니다.');
         console.log(err);
       });
   };
 
   const handleSelectFilter = () => {
-    navigate("/FilterDetail");
+    navigate('/FilterDetail');
   };
 
   const getCurrentLocation = () => {
@@ -79,38 +95,34 @@ const LetsEat = () => {
         if (accuracy > 100) {
           setLocationError(true);
         }
-        console.log("latitude : " + latitude + ", longitude : " + longitude);
+        console.log('latitude : ' + latitude + ', longitude : ' + longitude);
         handleLocation(latitude, longitude);
         setMapLoaded(true);
       };
 
       const errorCallback = (error) => {
-        console.log("위치 정보를 가져오는데 실패했습니다.", error);
+        console.log('위치 정보를 가져오는데 실패했습니다.', error);
         setLocationError(true);
       };
 
-      navigator.geolocation.getCurrentPosition(
-        successCallback,
-        errorCallback,
-        options
-      );
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
     } else {
-      console.log("Geolocation API가 지원되지 않습니다.");
+      console.log('Geolocation API가 지원되지 않습니다.');
       setLocationError(true);
     }
   };
 
   useEffect(() => {
     axios
-      .get("/users/validate")
+      .get('/users/validate')
       .then((res) => {
         if (res.status === 404) {
-          alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
-          navigate("/SignIn");
+          alert('로그인 정보가 없습니다. 다시 로그인해주세요.');
+          navigate('/SignIn');
         }
       })
       .catch(() => {
-        console.log("로그인 OK");
+        console.log('로그인 OK');
       });
   }, [navigate]);
 
@@ -122,7 +134,7 @@ const LetsEat = () => {
       nearestHour = 0;
     }
 
-    const formattedStartTime = `${nearestHour.toString().padStart(2, "0")}:00`;
+    const formattedStartTime = `${nearestHour.toString().padStart(2, '0')}:00`;
     setStartTime(formattedStartTime);
   }, []);
 
@@ -133,12 +145,12 @@ const LetsEat = () => {
   return (
     <div>
       <MyHeader
-        headText={"같이 먹자"}
+        headText={'같이 먹자'}
         leftChild={
           <MyButton
-            text={"뒤로가기"}
+            text={'뒤로가기'}
             onClick={() => {
-              navigate("/");
+              navigate('/');
             }}
           />
         }
@@ -152,18 +164,16 @@ const LetsEat = () => {
               type="text"
               placeholder="닉네임"
               value={new Date()
-                .toLocaleDateString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  weekday: "short",
+                .toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  weekday: 'short',
                 })
-                .replace(/\./g, " /")}
+                .replace(/\./g, ' /')}
               readOnly
             />
-            <p className=" text-gray-500 pb-3">
-              ※모임 날짜는 당일로 고정됩니다.
-            </p>
+            <p className=" text-gray-500 pb-3">※모임 날짜는 당일로 고정됩니다.</p>
           </div>
           <div className="flex flex-col justify-center items-center m-auto w-64 flex-shrink-0">
             <p className="font-bold text-3xl pt-3 pb-3">시간 선택</p>
@@ -180,9 +190,9 @@ const LetsEat = () => {
         <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-4/5 mt-5">
           <p className="font-bold text-3xl pt-3 pb-3">필터 선택</p>
           <div>
-            <MyButton text={"불러오기"} onClick={handleShowFilter} />
+            <MyButton text={'불러오기'} onClick={handleShowFilter} />
             <span className="m-1" />
-            <MyButton text={"필터선택"} onClick={handleSelectFilter} />
+            <MyButton text={'필터선택'} onClick={handleSelectFilter} />
           </div>
           <p className="pt-3 text-xl font-semibold pb-2">현재 선택한 필터</p>
           <div className="text-xl pb-3">
@@ -200,32 +210,24 @@ const LetsEat = () => {
             </p>
             <p>
               <span className="font-bold">메뉴: </span>
-              <span className=" text-red-500 font-semibold">
-                {menu.join(", ")}
-              </span>
+              <span className=" text-red-500 font-semibold">{menu.join(', ')}</span>
             </p>
             <p>
               <span className="font-bold">대화빈도: </span>
-              <span className=" text-red-500 font-semibold">
-                {conversation}
-              </span>
+              <span className=" text-red-500 font-semibold">{conversation}</span>
             </p>
           </div>
         </div>
         <div className="flex flex-col justify-center items-center m-auto border-4 border-project rounded-xl w-4/5 mt-5">
           <p className="font-bold text-3xl pt-3 pb-3">매칭 위치</p>
-          <p className=" text-gray-500 pt-1 pb-1">
-            ※대략적인 현재 위치 기준으로 근처 인원이 매칭됩니다 :)
-          </p>
+          <p className=" text-gray-500 pt-1 pb-1">※대략적인 현재 위치 기준으로 근처 인원이 매칭됩니다 :)</p>
           {latitude && longitude ? (
             <div className="w-full p-4 text-center">
               {mapLoaded ? (
                 <div>
                   <Map center={{ latitude, longitude }} />
-                  <p className={locationError ? "text-red-500 m-2" : ""}>
-                    {locationError
-                      ? "위치가 정확하지 않을 수 있습니다. 지도를 이동하여 마커를 수정해주세요."
-                      : ""}
+                  <p className={locationError ? 'text-red-500 m-2' : ''}>
+                    {locationError ? '위치가 정확하지 않을 수 있습니다. 지도를 이동하여 마커를 수정해주세요.' : ''}
                   </p>
                 </div>
               ) : (
@@ -233,16 +235,14 @@ const LetsEat = () => {
               )}
             </div>
           ) : (
-            <p className={locationError ? "text-red-500" : ""}>
-              {locationError
-                ? "위치 정보를 가져오는 중 오류가 발생했습니다."
-                : "위치 정보를 가져오는 중..."}
+            <p className={locationError ? 'text-red-500' : ''}>
+              {locationError ? '위치 정보를 가져오는 중 오류가 발생했습니다.' : '위치 정보를 가져오는 중...'}
             </p>
           )}
           <p className="pb-3" />
         </div>
         <p className="pb-3" />
-        <MyButton text={"매칭 시작"} onClick={handleMatching} />
+        <MyButton text={'매칭 시작'} onClick={handleMatching} />
       </div>
     </div>
   );

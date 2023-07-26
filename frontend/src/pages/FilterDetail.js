@@ -1,72 +1,49 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import MyHeader from "../components/MyHeader";
-import MyButton from "../components/MyButton";
-import MyContext from "../components/MyContext";
+import { useContext, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import MyHeader from '../components/MyHeader';
+import MyButton from '../components/MyButton';
+import MyContext from '../components/MyContext';
 
 const FilterDetail = () => {
   const navigate = useNavigate();
   const { handleSaveFilters } = useContext(MyContext);
   const [filters, setFilters] = useState({
-    people: "",
-    gender: "",
-    age: "",
-    menu: [],
-    conversation: "",
+    people: '',
+    gender: '',
+    age: '',
+    menu: '',
+    conversation: '',
   });
-
-  const handleCheckboxMenuChange = (event) => {
-    const { value, checked } = event.target;
-    const isUnchecked = !checked;
-
-    if (value === "상관없음") {
-      const updatedFilters = {
-        ...filters,
-        menu: isUnchecked ? [] : [value],
-      };
-      setFilters(updatedFilters);
-    } else {
-      const hasUncheckedNone = filters.menu.includes("상관없음") && isUnchecked;
-      const updatedFilters = {
-        ...filters,
-        menu: hasUncheckedNone
-          ? [value]
-          : isUnchecked
-          ? filters.menu.filter((item) => item !== value)
-          : [...filters.menu.filter((item) => item !== "상관없음"), value],
-      };
-      setFilters(updatedFilters);
-    }
-  };
 
   const handleCheckboxChange = (event) => {
     const { name, value, checked } = event.target;
+
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: checked ? value : "",
+      [name]: checked ? value : '',
     }));
   };
 
   const handleApplyFilters = () => {
     const updatedFilters = {
       ...filters,
-      people: filters.people || "상관없음",
-      gender: filters.gender || "상관없음",
-      age: filters.age || "상관없음",
-      menu: filters.menu.length === 0 ? ["상관없음"] : filters.menu,
-      conversation: filters.conversation || "상관없음",
+      people: filters.people || '상관없음',
+      gender: filters.gender || '상관없음',
+      age: filters.age || '상관없음',
+      menu: filters.menu || '상관없음',
+      conversation: filters.conversation || '상관없음',
     };
     handleSaveFilters(updatedFilters);
-    navigate("/LetsEat");
+    navigate('/LetsEat');
   };
 
   return (
     <div>
       <MyHeader
-        headText={"필터 상세 설정"}
+        headText={'필터 상세 설정'}
         leftChild={
           <MyButton
-            text={"뒤로가기"}
+            text={'뒤로가기'}
             onClick={() => {
               navigate(-1);
             }}
@@ -81,9 +58,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="상관없음"
+                  value="any"
                   name="people"
-                  checked={filters.people === "상관없음"}
+                  checked={filters.people === 'any'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
@@ -91,9 +68,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="2인"
+                  value="2"
                   name="people"
-                  checked={filters.people === "2인"}
+                  checked={filters.people === '2'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">2인</span>
@@ -101,9 +78,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="3인"
+                  value="3"
                   name="people"
-                  checked={filters.people === "3인"}
+                  checked={filters.people === '3'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">3인</span>
@@ -111,9 +88,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="4인"
+                  value="4"
                   name="people"
-                  checked={filters.people === "4인"}
+                  checked={filters.people === '4'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">4인</span>
@@ -124,9 +101,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="상관없음"
+                  value="any"
                   name="gender"
-                  checked={filters.gender === "상관없음"}
+                  checked={filters.gender === 'any'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
@@ -134,9 +111,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="동성만"
+                  value="same"
                   name="gender"
-                  checked={filters.gender === "동성만"}
+                  checked={filters.gender === 'same'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">동성만</span>
@@ -147,9 +124,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="상관없음"
+                  value="any"
                   name="age"
-                  checked={filters.age === "상관없음"}
+                  checked={filters.age === 'any'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
@@ -157,9 +134,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="또래만"
+                  value="peer"
                   name="age"
-                  checked={filters.age === "또래만"}
+                  checked={filters.age === 'peer'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">또래만</span>
@@ -167,77 +144,85 @@ const FilterDetail = () => {
             </div>
             <div className="flex flex-row text-lg font-medium">
               <p className=" text-2xl font-bold p-5">
-                메뉴<span className="text-xl pl-1">(중복선택가능)</span>
+                메뉴<span className="text-xl pl-1"></span>
               </p>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="상관없음"
-                  checked={filters.menu.includes("상관없음")}
-                  onChange={handleCheckboxMenuChange}
+                  value="any"
+                  name="menu"
+                  checked={filters.menu === 'any'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="한식"
-                  checked={filters.menu.includes("한식")}
-                  onChange={handleCheckboxMenuChange}
+                  value="Korean"
+                  name="menu"
+                  checked={filters.menu === 'Korean'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">한식</span>
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="중식"
-                  checked={filters.menu.includes("중식")}
-                  onChange={handleCheckboxMenuChange}
+                  value="Chinese"
+                  name="menu"
+                  checked={filters.menu === 'Chinese'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">중식</span>
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="일식"
-                  checked={filters.menu.includes("일식")}
-                  onChange={handleCheckboxMenuChange}
+                  value="Japanese"
+                  name="menu"
+                  checked={filters.menu === 'Japanese'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">일식</span>
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="양식"
-                  checked={filters.menu.includes("양식")}
-                  onChange={handleCheckboxMenuChange}
+                  value="Western"
+                  name="menu"
+                  checked={filters.menu === 'Western'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">양식</span>
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="베트남식"
-                  checked={filters.menu.includes("베트남식")}
-                  onChange={handleCheckboxMenuChange}
+                  value="Vietnamese"
+                  name="menu"
+                  checked={filters.menu === 'Vietnamese'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">베트남식</span>
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="분식"
-                  checked={filters.menu.includes("분식")}
-                  onChange={handleCheckboxMenuChange}
+                  value="Bunsik"
+                  name="menu"
+                  checked={filters.menu === 'Bunsik'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">분식</span>
               </label>
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="디저트"
-                  checked={filters.menu.includes("디저트")}
-                  onChange={handleCheckboxMenuChange}
+                  value="Dessert"
+                  name="menu"
+                  checked={filters.menu === 'Dessert'}
+                  onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">디저트</span>
               </label>
@@ -247,9 +232,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="적음"
+                  value="Little"
                   name="conversation"
-                  checked={filters.conversation === "적음"}
+                  checked={filters.conversation === 'Little'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">적음</span>
@@ -257,9 +242,9 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="보통"
+                  value="Normal"
                   name="conversation"
-                  checked={filters.conversation === "보통"}
+                  checked={filters.conversation === 'Normal'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">보통</span>
@@ -267,16 +252,16 @@ const FilterDetail = () => {
               <label className="flex items-center">
                 <input
                   type="checkbox"
-                  value="많음"
+                  value="Many"
                   name="conversation"
-                  checked={filters.conversation === "많음"}
+                  checked={filters.conversation === 'Many'}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">많음</span>
               </label>
             </div>
           </div>
-          <MyButton text={"적용하기"} onClick={handleApplyFilters} />
+          <MyButton text={'적용하기'} onClick={handleApplyFilters} />
         </div>
       </div>
     </div>
