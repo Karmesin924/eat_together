@@ -42,7 +42,7 @@ public class PostController {
         if (post == null){
             return ResponseEntity.notFound().build();
         }
-        System.out.println("post = " + post);
+        System.out.println("post = " + post.getId());
         return ResponseEntity.ok(post);
     }
     

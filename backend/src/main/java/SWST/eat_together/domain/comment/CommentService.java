@@ -47,7 +47,7 @@ public class CommentService {
 
         CommentDetailDTO commentDetail = new CommentDetailDTO();
 
-        commentDetail.setCommentId(comment.getCommentId());
+        commentDetail.setId(comment.getId());
         commentDetail.setPostId(comment.getPostId());
         commentDetail.setContents(comment.getContents());
         commentDetail.setCreatedDate(comment.getCreatedDate());
@@ -71,7 +71,6 @@ public class CommentService {
         commentRepository.delete(comment);
 
         return 0;
-
     }
 
     public Integer edit(Long commentId, String email, String contents) {

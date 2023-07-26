@@ -20,6 +20,7 @@ public class CommentController {
     public ResponseEntity addComment(@PathVariable("idx") String idx, @RequestBody CommentDTO regiComment, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null) {
+            System.out.println("비로그인 상태");
             return ResponseEntity.badRequest().build();
         }
         Member loginMember = (Member) session.getAttribute("member");
@@ -38,6 +39,21 @@ public class CommentController {
         return comments;
     }
 
-//    @GetMapping("/{idx}/comment")
-//    public ResponseEntity getComment(@RequestBody)
+    @DeleteMapping("{commentIdx}")
+    public ResponseEntity delete(@PathVariable("commentIdx") Long commentIdx, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if (session == null)
+            return ResponseEntity.notFound().build();
+
+        Member loginMember = (Member) session.getAttribute("member");
+        String email = loginMember.getEmail();
+        Integer result = commentService.delete(commentIdx, email);
+
+        if (result == 1){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+
 }

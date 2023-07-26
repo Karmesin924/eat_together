@@ -10,6 +10,7 @@ import ReplyList from "../components/ReplyList";
 const BoardDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log("아이디 : ", id)
   const [loading, setLoading] = useState(true);
   const [board, setBoard] = useState({
     title: "",
@@ -55,8 +56,11 @@ const BoardDetail = () => {
 
     const fetchData = async () => {
       setLoading(true);
+      console.log("시작");
       await getBoard();
+      console.log("보드");
       await getReplies();
+      console.log("댓글");
     };
 
     fetchData();

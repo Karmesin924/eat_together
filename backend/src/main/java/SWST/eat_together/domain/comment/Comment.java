@@ -16,8 +16,8 @@ import javax.persistence.*;
 public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "comment_id")
-    private Long commentId;
+    @Column(name = "id")
+    private Long Id;
 
     @Column(name = "post_id")
     private Long postId;
