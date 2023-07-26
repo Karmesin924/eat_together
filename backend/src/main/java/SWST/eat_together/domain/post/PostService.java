@@ -68,7 +68,7 @@ public class PostService {
 
         if (!email.equals(post.getEmail()))
             return 1;
-        /*postRepository.edit(idx, title, contents);*/
+
         post.setTitle(title);
         post.setContents(contents);
         postRepository.save(post);

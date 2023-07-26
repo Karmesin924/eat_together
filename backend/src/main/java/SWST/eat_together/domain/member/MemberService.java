@@ -14,8 +14,7 @@ public class MemberService {
     public void setMemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;}
 
-
-    public int saveUser(SignUpDTO form) {
+    public void saveUser(SignUpDTO form) {
         Member member = new Member();
 
         member.setEmail(form.getEmail());
@@ -26,9 +25,6 @@ public class MemberService {
         member.setGender(form.getGender());
 
         memberRepository.save(member);
-
-        //성공시 0 return, 실패시 1 return
-        return 0;
     }
 
     public Member login(LoginDTO form)
