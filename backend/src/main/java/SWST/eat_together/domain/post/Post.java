@@ -1,8 +1,6 @@
 package SWST.eat_together.domain.post;
 
 import lombok.*;
-import org.springframework.lang.Nullable;
-
 import javax.persistence.*;
 
 @Data

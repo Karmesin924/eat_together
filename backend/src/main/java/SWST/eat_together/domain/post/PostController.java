@@ -4,7 +4,6 @@ import SWST.eat_together.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -28,7 +27,7 @@ public class PostController {
     }
 
     @GetMapping("/{idx}")
-    public ResponseEntity<Post> detail(@PathVariable("idx") int id, HttpServletRequest request) {
+    public ResponseEntity<Post> detail(@PathVariable("idx") String id, HttpServletRequest request) {
         String email = "0"; // 기본값으로 '0'으로 설정
 
         HttpSession session = request.getSession(false);
@@ -39,7 +38,7 @@ public class PostController {
             }
         }
 
-        Post post = postService.detail(id, email);
+        Post post = postService.detail(Integer.parseInt(id), email);
 
         if (post == null) {
             return ResponseEntity.notFound().build();
@@ -50,14 +49,14 @@ public class PostController {
     }
     
     @DeleteMapping("{idx}")
-    public ResponseEntity delete(@PathVariable("idx") int id, HttpServletRequest request){
+    public ResponseEntity delete(@PathVariable("idx") String id, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null)
             return ResponseEntity.notFound().build();
 
         Member loginMember = (Member) session.getAttribute("member");
         String email = loginMember.getEmail();
-        Integer result = postService.delete(id, email);
+        Integer result = postService.delete(Integer.parseInt(id), email);
 
         if (result == 1){
             return ResponseEntity.notFound().build();
@@ -66,14 +65,14 @@ public class PostController {
     }
 
     @PutMapping("{idx}")
-    public ResponseEntity edit(@PathVariable("idx") int id, @RequestBody RegiPostDTO post, HttpServletRequest request){
+    public ResponseEntity edit(@PathVariable("idx") String id, @RequestBody RegiPostDTO post, HttpServletRequest request){
         HttpSession session = request.getSession(false);
         if (session == null)
             return ResponseEntity.notFound().build();
         System.out.println("post = " + post);
         Member loginMember = (Member) session.getAttribute("member");
         String email = loginMember.getEmail();
-        Integer result = postService.edit(id, email, post.getTitle(), post.getContents());
+        Integer result = postService.edit(Integer.parseInt(id), email, post.getTitle(), post.getContents());
 
         if (result == 1){
             return ResponseEntity.notFound().build();

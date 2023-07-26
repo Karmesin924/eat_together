@@ -1,16 +1,9 @@
 package SWST.eat_together.domain.comment;
 
-
 import SWST.eat_together.domain.member.Member;
-import SWST.eat_together.domain.post.Post;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,22 +36,21 @@ public class CommentService {
         return 1;
     }
 
-    public Integer delete(Long commentId, String email) {
+    public Integer deleteComment(Long commentId, String email) {
         Comment comment = commentRepository.getReferenceById(commentId);
 
         if(!email.equals(comment.getEmail()))
-            return 1;
+            return -1;
         commentRepository.delete(comment);
 
         return 0;
     }
 
-    public Integer edit(Long commentId, String email, String contents) {
+    public Integer editComment(Long commentId, String email, String contents) {
         Comment comment = commentRepository.getReferenceById(commentId);
 
         if (!email.equals(comment.getEmail()))
-            return 1;
-        /*postRepository.edit(idx, title, contents);*/
+            return -1;
         comment.setContents(contents);
         commentRepository.save(comment);
         return 0;

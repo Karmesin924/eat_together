@@ -9,5 +9,4 @@ public class EatTogetherApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(EatTogetherApplication.class, args);
 	}
-
 }

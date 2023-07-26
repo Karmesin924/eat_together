@@ -3,7 +3,6 @@ package SWST.eat_together.domain.post;
 import SWST.eat_together.domain.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -74,5 +73,4 @@ public class PostService {
         postRepository.save(post);
         return 0;
     }
-
 }
