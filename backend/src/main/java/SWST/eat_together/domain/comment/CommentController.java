@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.util.List;
 
+import static SWST.eat_together.domain.member.AuthUtil.Not_logged_in;
+import static SWST.eat_together.domain.member.AuthUtil.checkLoggedInUserOr401;
+
 @RestController
 @RequestMapping("/posts/comment")
 @RequiredArgsConstructor
@@ -19,12 +22,13 @@ public class CommentController {
         System.out.println("idx = " + idx);
         System.out.println("regiComment = " + regiComment);
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            System.out.println("비로그인 상태");
-            return ResponseEntity.badRequest().build();
-        }
-        Member loginMember = (Member) session.getAttribute("member");
 
+        String email = checkLoggedInUserOr401(session);
+        if (email == Not_logged_in){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        Member loginMember = (Member) session.getAttribute("member");
         commentService.addComment(loginMember, regiComment, Long.valueOf(idx));
 
         return ResponseEntity.ok().build();
@@ -32,38 +36,24 @@ public class CommentController {
 
     @GetMapping("{idx}")
     public ResponseEntity<List<CommentDetailDTO>> getComments(@PathVariable("idx") String idx, HttpServletRequest request) {
-        HttpSession session = request.getSession(false);
-        Member loginMember = null;
-        String email = "0"; // 기본값으로 '0'으로 설정
-
-        if (session != null) {
-            loginMember = (Member) session.getAttribute("member");
-            if (loginMember != null) {
-                email = loginMember.getEmail();
-            }
-        }
+        String email = checkLoggedInUserOr401(request.getSession(false));
 
         List<CommentDetailDTO> comments = commentService.getCommentDetailDTOs(idx, email);
         System.out.println("comments = " + comments);
 
         return ResponseEntity.ok(comments);
     }
+
     @DeleteMapping("{commentIdx}")
     public ResponseEntity deleteComment(@PathVariable("commentIdx") Long commentIdx, HttpServletRequest request) {
         System.out.println("commentIdx = " + commentIdx);
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 세션이 없는 경우 401 Unauthorized 반환
+
+        String email = checkLoggedInUserOr401(request.getSession(false));
+        if (email == Not_logged_in){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Member loginMember = (Member) session.getAttribute("member");
-        if (loginMember == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 로그인 회원 정보가 없는 경우 401 Unauthorized 반환
-        }
-
-        String email = loginMember.getEmail();
         Integer result = commentService.deleteComment(commentIdx, email);
-
         if (result == -1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 작성자 본인이 아닐 경우 401 Unauthorized 반환
         }
@@ -75,17 +65,13 @@ public class CommentController {
     public ResponseEntity editComment(@PathVariable("commentIdx") Long commentIdx, @RequestBody CommentDTO regiComment, HttpServletRequest request){
         System.out.println("commentIdx = " + commentIdx);
         System.out.println("CommentDTO = " + regiComment);
-        HttpSession session = request.getSession(false);
-        if (session == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 세션이 없는 경우 401 Unauthorized 반환
+
+        String email = checkLoggedInUserOr401(request.getSession(false));
+        if (email == Not_logged_in){
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        Member loginMember = (Member) session.getAttribute("member");
-        if (loginMember == null) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 로그인 회원 정보가 없는 경우 401 Unauthorized 반환
-        }
-
-        Integer result = commentService.editComment(commentIdx, loginMember.getEmail(), regiComment.getContents());
+        Integer result = commentService.editComment(commentIdx, email, regiComment.getContents());
 
         if (result == -1) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build(); // 작성자 본인이 아닐 경우 401 Unauthorized 반환

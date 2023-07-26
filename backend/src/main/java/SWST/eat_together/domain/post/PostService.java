@@ -57,7 +57,7 @@ public class PostService {
         Post post=postRepository.findById(id);
 
         if (!email.equals(post.getEmail()))
-            return 1;
+            return -1;
         postRepository.delete(post);
 
         return 0;
@@ -67,7 +67,7 @@ public class PostService {
         Post post=postRepository.findById(id);
 
         if (!email.equals(post.getEmail()))
-            return 1;
+            return -1;
 
         post.setTitle(title);
         post.setContents(contents);
