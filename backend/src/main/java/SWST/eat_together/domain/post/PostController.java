@@ -28,21 +28,24 @@ public class PostController {
     }
 
     @GetMapping("/{idx}")
-    public ResponseEntity detail(@PathVariable("idx") int id, HttpServletRequest request){
+    public ResponseEntity<Post> detail(@PathVariable("idx") int id, HttpServletRequest request) {
+        String email = "0"; // 기본값으로 '0'으로 설정
 
-        String email = null;
         HttpSession session = request.getSession(false);
         if (session != null) {
             Member loginMember = (Member) session.getAttribute("member");
-            email = loginMember.getEmail();
+            if (loginMember != null) {
+                email = loginMember.getEmail();
+            }
         }
 
         Post post = postService.detail(id, email);
 
-        if (post == null){
+        if (post == null) {
             return ResponseEntity.notFound().build();
         }
-        System.out.println("post = " + post);
+
+        System.out.println("post = " + post.getId());
         return ResponseEntity.ok(post);
     }
     

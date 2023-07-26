@@ -10,6 +10,7 @@ import ReplyList from "../components/ReplyList";
 const BoardDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  console.log("아이디 : ", id)
   const [loading, setLoading] = useState(true);
   const [board, setBoard] = useState({
     title: "",
