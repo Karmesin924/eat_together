@@ -25,38 +25,33 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
 
   return (
     <div>
-      <div className="flex flex-col items-center text-center">
-        <div className="flex p-4 flex-row border-b-4 border-buttonhover w-4/5 justify-between">
-          <div></div>
-          <div className="flex">
-            <p className="font-semibold text-xl m-auto">글쓴이 : {nickname}</p>
-            <p className="pl-4 font-semibold text-xl text-inputfocus m-auto">
+      <div className="flex flex-col items-center">
+        <div className="mt-5 border-b-4 border-buttonhover w-4/5"></div>
+        <div className="flex flex-row items-center p-2 font-bold text-2xl border-b-4 border-buttonhover w-4/5 bg-orange-100 justify-between">
+          <div className="w-1/6">
+            <p className="font-semibold text-base text-center">{nickname}</p>
+            <p className="font-semibold text-base text-center text-inputfocus">
               {new Date(
                 createdDate.replace(" at ", " ").replace(" KST", "")
               ).toLocaleString("ko-KR", {
                 year: "2-digit",
                 month: "2-digit",
                 day: "2-digit",
-                weekday: "short",
                 hour: "2-digit",
                 minute: "2-digit",
               })}
             </p>
           </div>
-          <div>
-            {author && (
-              <div>
-                <MyButton text={"수정"} onClick={handleEdit} />
-                <span className="pl-2"></span>
-                <MyButton text={"삭제"} onClick={handleDelete} />
-              </div>
-            )}
-          </div>
+          <p className="flex ">{title}</p>
+          {author && (
+            <div className="flex">
+              <MyButton text={"수정"} onClick={handleEdit} />
+              <span className="pl-2"></span>
+              <MyButton text={"삭제"} onClick={handleDelete} />
+            </div>
+          )}
         </div>
-        <p className="p-4  font-bold text-2xl border-b-4 border-buttonhover w-4/5 bg-orange-100">
-          {title}
-        </p>
-        <p className="p-4 font-semibold text-lg border-b-4 border-buttonhover w-4/5 h-auto break-words text-left">
+        <p className="p-4 pt-10 pb-10 font-semibold text-lg border-b-4 border-buttonhover w-4/5 break-words text-left">
           {contents}
         </p>
       </div>

@@ -56,7 +56,7 @@ const BoardDetail = () => {
       {loading ? (
         <h2>loading...</h2>
       ) : (
-        <div className=" mb-10">
+        <div className="mb-10">
           <Board
             id={board?.id}
             title={board?.title}
