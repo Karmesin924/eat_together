@@ -44,27 +44,29 @@ const ReplyList = ({ id }) => {
           {replies.map((reply) => (
             <li key={reply.id}>
               <div className="flex flex-row items-center justify-between text-center p-4 border-b-2 border-buttonhover">
-                <p className="w-1/6">{reply.nickname}</p>
+                <p className="flex flex-col w-1/6 justify-end">
+                  <p className="">{reply.nickname}</p>
+                  <p>
+                    {new Date(
+                      reply.createdDate.replace(" at ", " ").replace(" KST", "")
+                    ).toLocaleString("ko-KR", {
+                      year: "2-digit",
+                      month: "2-digit",
+                      day: "2-digit",
+                      weekday: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </p>
                 <p
                   className={`${
-                    reply.author ? "w-3/6" : "w-4/6"
+                    reply.author ? "w-3/6 text-left" : "w-4/6 text-left"
                   } font-bold text-lg`}
                 >
                   {reply.contents}
                 </p>
-                <p className="w-1/6">
-                  {new Date(
-                    reply.createdDate.replace(" at ", " ").replace(" KST", "")
-                  ).toLocaleString("ko-KR", {
-                    year: "2-digit",
-                    month: "2-digit",
-                    day: "2-digit",
-                    weekday: "short",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
-                </p>
-                <p className="w-1/6">
+                <p className="w-1/6 items-end">
                   {reply.author && (
                     <MyButton
                       text={"삭제"}
