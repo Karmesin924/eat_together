@@ -8,6 +8,7 @@ const ReplyForm = ({ id }) => {
   const [replycontents, setReplycontents] = useState("");
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,10 +17,16 @@ const ReplyForm = ({ id }) => {
       contents: replycontents,
     };
 
+    if (!loggedIn) {
+      alert("댓글을 작성하려면 먼저 로그인하세요!");
+      navigate("/SignIn");
+      return;
+    }
     if (replycontents.trim() === "") {
       alert("댓글 내용을 입력하세요!");
       return;
     }
+
     try {
       const response = await axios.post(`/posts/comment/${id}/add`, replyData);
       // 성공적으로 작성되었을 때의 처리 로직
@@ -42,9 +49,11 @@ const ReplyForm = ({ id }) => {
         const response = await axios.get("/users/validate");
         const { nickname } = response.data;
         setNickname(nickname);
+        setLoggedIn(true);
         setLoading(false);
       } catch (error) {
-        console.log("유저 정보를 가져오는데 실패했습니다.", error);
+        setNickname("먼저 로그인하세요!");
+        setLoggedIn(false);
         setLoading(false);
       }
     };
