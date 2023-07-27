@@ -1,10 +1,10 @@
-import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
-import axios from 'axios';
-import MyButton from '../components/MyButton';
-import MyHeader from '../components/MyHeader';
-import MyContext from '../components/MyContext';
+import { useNavigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { io } from "socket.io-client";
+import axios from "axios";
+import MyButton from "../components/MyButton";
+import MyHeader from "../components/MyHeader";
+import MyContext from "../components/MyContext";
 
 const Matching = () => {
   const navigate = useNavigate();
@@ -16,22 +16,22 @@ const Matching = () => {
 
   useEffect(() => {
     // 백엔드와 소켓 연결 설정
-    const newSocket = io('localhost:8080');
+    const newSocket = io("localhost:8080");
 
     // 연결 성공 시 이벤트 핸들러
-    newSocket.on('connect', () => {
-      console.log('소켓 연결 성공');
+    newSocket.on("connect", () => {
+      console.log("소켓 연결 성공");
     });
 
     // 백엔드에서 매칭 정보를 받아오는 이벤트 핸들러
-    newSocket.on('matchingData', (data) => {
+    newSocket.on("matchingData", (data) => {
       setMatchedUsers(data);
       setMatchedCount(data.length);
     });
 
     // 연결 해제 시 이벤트 핸들러
-    newSocket.on('disconnect', () => {
-      console.log('소켓 연결 해제');
+    newSocket.on("disconnect", () => {
+      console.log("소켓 연결 해제");
     });
 
     setSocket(newSocket);
@@ -46,7 +46,7 @@ const Matching = () => {
     // 일정한 간격으로 백엔드에 요청 보내기
     const interval = setInterval(() => {
       if (socket) {
-        socket.emit('requestMatchingData');
+        socket.emit("requestMatchingData");
       }
     }, 5000); // 5초마다 요청 보냄
 
@@ -56,11 +56,11 @@ const Matching = () => {
   }, [socket]);
 
   useEffect(() => {
-    if (people === '2') {
+    if (people === "2") {
       setMatchingLimit(2);
-    } else if (people === '3') {
+    } else if (people === "3") {
       setMatchingLimit(3);
-    } else if (people === '4') {
+    } else if (people === "4") {
       setMatchingLimit(4);
     } else {
       setMatchingLimit(5); //아 상관없음은 또 어떻게 해야하냐 미친~
@@ -69,9 +69,9 @@ const Matching = () => {
 
   useEffect(() => {
     if (matchedUsers.length === matchingLimit) {
-      alert('매칭이 완료되었습니다.');
+      alert("매칭이 완료되었습니다.");
       setTimeout(() => {
-        navigate('/ChatList');
+        navigate("/ChatList");
       }, 2000); // 2초 후에 페이지 이동
     }
   }, [matchedUsers, matchingLimit, navigate]);
@@ -93,10 +93,10 @@ const Matching = () => {
   return (
     <div>
       <MyHeader
-        headText={'매칭 중'}
+        headText={"매칭 중"}
         leftChild={
           <MyButton
-            text={'뒤로가기'}
+            text={"뒤로가기"}
             onClick={() => {
               navigate(-1);
             }}
@@ -112,11 +112,11 @@ const Matching = () => {
           <div
             key={index}
             style={{
-              width: '20px',
-              height: '20px',
-              borderRadius: '50%',
-              backgroundColor: index < matchedCount ? 'orange' : 'gray',
-              margin: '5px',
+              width: "20px",
+              height: "20px",
+              borderRadius: "50%",
+              backgroundColor: index < matchedCount ? "orange" : "gray",
+              margin: "5px",
             }}
           ></div>
         ))}

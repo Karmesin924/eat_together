@@ -10,7 +10,6 @@ import ReplyList from "../components/ReplyList";
 const BoardDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  console.log("아이디 : ", id)
   const [loading, setLoading] = useState(true);
   const [board, setBoard] = useState({
     title: "",
@@ -57,7 +56,7 @@ const BoardDetail = () => {
       {loading ? (
         <h2>loading...</h2>
       ) : (
-        <div>
+        <div className=" mb-10">
           <Board
             id={board?.id}
             title={board?.title}
@@ -70,7 +69,7 @@ const BoardDetail = () => {
           <p className="p-4 font-bold text-xl border-b-4 border-buttonhover w-4/5 mx-auto bg-orange-100">
             댓글
           </p>
-          <ReplyForm />
+          <ReplyForm id={id} />
           <ReplyList id={id} />
         </div>
       )}

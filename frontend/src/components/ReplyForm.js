@@ -3,13 +3,11 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const ReplyForm = () => {
+const ReplyForm = ({ id }) => {
   const navigate = useNavigate();
   const [replycontents, setReplycontents] = useState("");
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
-  const { postIdx } = useParams();
-  const [replies, setReplies] = useState([]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,15 +27,15 @@ const ReplyForm = () => {
       contents: replycontents,
     };
 
+    if (replycontents.trim() === "") {
+      alert("댓글 내용을 입력하세요!");
+      return;
+    }
     try {
-      const response = await axios.post(
-        `/posts/comment/${postIdx}/add`,
-        replyData
-      );
+      const response = await axios.post(`/posts/comment/${id}/add`, replyData);
       // 성공적으로 작성되었을 때의 처리 로직
       console.log("댓글이 성공적으로 작성되었습니다.", response.data);
       alert("댓글이 성공적으로 작성되었습니다.");
-      setReplies((prevReplies) => [...prevReplies, response.data]);
     } catch (error) {
       // 오류 발생 시의 처리 로직
       alert("댓글 작성에 실패했습니다.");
