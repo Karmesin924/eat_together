@@ -43,30 +43,35 @@ const ReplyList = ({ id }) => {
         <ul>
           {replies.map((reply) => (
             <li key={reply.id}>
-              <div className="flex flex-row p-4 border-b-2 border-buttonhover">
-                <p className="w-1/5">{reply.nickname}</p>
-                <p className="w-3/5">{reply.contents}</p>
-                <p className="w-1/5">
-                  {new Date(
-                    reply.createdDate.replace(" at ", " ").replace(" KST", "")
-                  ).toLocaleString("ko-KR", {
-                    year: "2-digit",
-                    month: "2-digit",
-                    day: "2-digit",
-                    weekday: "short",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+              <div className="flex flex-row items-center justify-between text-center p-4 border-b-2 border-buttonhover">
+                <p className="flex flex-col w-1/6 justify-end">
+                  <p className=" font-bold">{reply.nickname}</p>
+                  <p>
+                    {new Date(
+                      reply.createdDate.replace(" at ", " ").replace(" KST", "")
+                    ).toLocaleString("ko-KR", {
+                      year: "2-digit",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+                </p>
+                <p className="w-3/6 text-left font-bold text-lg">
+                  {reply.contents}
+                </p>
+                <p className="w-1/6 items-end">
+                  {reply.author && (
+                    <MyButton
+                      text={"삭제"}
+                      onClick={() => {
+                        handleDelete(reply.id);
+                      }}
+                    />
+                  )}
                 </p>
               </div>
-              {reply.author && (
-                <MyButton
-                  text={"삭제"}
-                  onClick={() => {
-                    handleDelete(reply.id);
-                  }}
-                />
-              )}
             </li>
           ))}
         </ul>

@@ -9,9 +9,7 @@ const Home = () => {
       <MyHeader
         leftChild={
           <Link to="http://127.0.0.1:8000">
-            <MyButton
-            text={"채팅"}
-            />
+            <MyButton text={"채팅"} />
           </Link>
         }
         headText={"같이 먹자"}

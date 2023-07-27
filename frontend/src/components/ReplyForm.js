@@ -3,41 +3,36 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const ReplyForm = () => {
+const ReplyForm = ({ id }) => {
   const navigate = useNavigate();
   const [replycontents, setReplycontents] = useState("");
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
-  const { postIdx } = useParams();
-  const [replies, setReplies] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    try {
-      const response = await axios.get("/users/validate");
-      if (response.status === 404) {
-        alert("댓글을 작성하려면 먼저 로그인을 해주세요.");
-        navigate("/SignIn");
-        return; // 함수 실행 중단
-      }
-    } catch (err) {
-      console.log("로그인이 되어있습니다.");
-    }
 
     const replyData = {
       contents: replycontents,
     };
 
+    if (!loggedIn) {
+      alert("댓글을 작성하려면 먼저 로그인하세요!");
+      navigate("/SignIn");
+      return;
+    }
+    if (replycontents.trim() === "") {
+      alert("댓글 내용을 입력하세요!");
+      return;
+    }
+
     try {
-      const response = await axios.post(
-        `/posts/comment/${postIdx}/add`,
-        replyData
-      );
+      const response = await axios.post(`/posts/comment/${id}/add`, replyData);
       // 성공적으로 작성되었을 때의 처리 로직
       console.log("댓글이 성공적으로 작성되었습니다.", response.data);
       alert("댓글이 성공적으로 작성되었습니다.");
-      setReplies((prevReplies) => [...prevReplies, response.data]);
+      window.location.reload(); //일단 강제로 새로고침 했는데, 컴포넌트 리렌더링으로 수정해야함.
     } catch (error) {
       // 오류 발생 시의 처리 로직
       alert("댓글 작성에 실패했습니다.");
@@ -54,9 +49,11 @@ const ReplyForm = () => {
         const response = await axios.get("/users/validate");
         const { nickname } = response.data;
         setNickname(nickname);
+        setLoggedIn(true);
         setLoading(false);
       } catch (error) {
-        console.log("유저 정보를 가져오는데 실패했습니다.", error);
+        setNickname("먼저 로그인하세요!");
+        setLoggedIn(false);
         setLoading(false);
       }
     };

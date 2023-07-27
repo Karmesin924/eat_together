@@ -1,18 +1,18 @@
-import { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import MyHeader from '../components/MyHeader';
-import MyButton from '../components/MyButton';
-import MyContext from '../components/MyContext';
+import { useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import MyHeader from "../components/MyHeader";
+import MyButton from "../components/MyButton";
+import MyContext from "../components/MyContext";
 
 const FilterDetail = () => {
   const navigate = useNavigate();
   const { handleSaveFilters } = useContext(MyContext);
   const [filters, setFilters] = useState({
-    people: '',
-    gender: '',
-    age: '',
-    menu: '',
-    conversation: '',
+    people: "",
+    gender: "",
+    age: "",
+    menu: "",
+    conversation: "",
   });
 
   const handleCheckboxChange = (event) => {
@@ -20,30 +20,30 @@ const FilterDetail = () => {
 
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [name]: checked ? value : '',
+      [name]: checked ? value : "",
     }));
   };
 
   const handleApplyFilters = () => {
     const updatedFilters = {
       ...filters,
-      people: filters.people || '상관없음',
-      gender: filters.gender || '상관없음',
-      age: filters.age || '상관없음',
-      menu: filters.menu || '상관없음',
-      conversation: filters.conversation || '상관없음',
+      people: filters.people || "상관없음",
+      gender: filters.gender || "상관없음",
+      age: filters.age || "상관없음",
+      menu: filters.menu || "상관없음",
+      conversation: filters.conversation || "상관없음",
     };
     handleSaveFilters(updatedFilters);
-    navigate('/LetsEat');
+    navigate("/LetsEat");
   };
 
   return (
     <div>
       <MyHeader
-        headText={'필터 상세 설정'}
+        headText={"필터 상세 설정"}
         leftChild={
           <MyButton
-            text={'뒤로가기'}
+            text={"뒤로가기"}
             onClick={() => {
               navigate(-1);
             }}
@@ -60,7 +60,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="any"
                   name="people"
-                  checked={filters.people === 'any'}
+                  checked={filters.people === "any"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
@@ -70,7 +70,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="2"
                   name="people"
-                  checked={filters.people === '2'}
+                  checked={filters.people === "2"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">2인</span>
@@ -80,7 +80,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="3"
                   name="people"
-                  checked={filters.people === '3'}
+                  checked={filters.people === "3"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">3인</span>
@@ -90,7 +90,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="4"
                   name="people"
-                  checked={filters.people === '4'}
+                  checked={filters.people === "4"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">4인</span>
@@ -103,7 +103,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="any"
                   name="gender"
-                  checked={filters.gender === 'any'}
+                  checked={filters.gender === "any"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
@@ -113,7 +113,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="same"
                   name="gender"
-                  checked={filters.gender === 'same'}
+                  checked={filters.gender === "same"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">동성만</span>
@@ -126,7 +126,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="any"
                   name="age"
-                  checked={filters.age === 'any'}
+                  checked={filters.age === "any"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
@@ -136,7 +136,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="peer"
                   name="age"
-                  checked={filters.age === 'peer'}
+                  checked={filters.age === "peer"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">또래만</span>
@@ -151,7 +151,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="any"
                   name="menu"
-                  checked={filters.menu === 'any'}
+                  checked={filters.menu === "any"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">상관없음</span>
@@ -161,7 +161,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Korean"
                   name="menu"
-                  checked={filters.menu === 'Korean'}
+                  checked={filters.menu === "Korean"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">한식</span>
@@ -171,7 +171,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Chinese"
                   name="menu"
-                  checked={filters.menu === 'Chinese'}
+                  checked={filters.menu === "Chinese"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">중식</span>
@@ -181,7 +181,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Japanese"
                   name="menu"
-                  checked={filters.menu === 'Japanese'}
+                  checked={filters.menu === "Japanese"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">일식</span>
@@ -191,7 +191,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Western"
                   name="menu"
-                  checked={filters.menu === 'Western'}
+                  checked={filters.menu === "Western"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">양식</span>
@@ -201,7 +201,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Vietnamese"
                   name="menu"
-                  checked={filters.menu === 'Vietnamese'}
+                  checked={filters.menu === "Vietnamese"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">베트남식</span>
@@ -211,7 +211,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Bunsik"
                   name="menu"
-                  checked={filters.menu === 'Bunsik'}
+                  checked={filters.menu === "Bunsik"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">분식</span>
@@ -221,7 +221,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Dessert"
                   name="menu"
-                  checked={filters.menu === 'Dessert'}
+                  checked={filters.menu === "Dessert"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">디저트</span>
@@ -234,7 +234,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Little"
                   name="conversation"
-                  checked={filters.conversation === 'Little'}
+                  checked={filters.conversation === "Little"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">적음</span>
@@ -244,7 +244,7 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Normal"
                   name="conversation"
-                  checked={filters.conversation === 'Normal'}
+                  checked={filters.conversation === "Normal"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">보통</span>
@@ -254,14 +254,14 @@ const FilterDetail = () => {
                   type="checkbox"
                   value="Many"
                   name="conversation"
-                  checked={filters.conversation === 'Many'}
+                  checked={filters.conversation === "Many"}
                   onChange={handleCheckboxChange}
                 />
                 <span className="ml-1 mr-1">많음</span>
               </label>
             </div>
           </div>
-          <MyButton text={'적용하기'} onClick={handleApplyFilters} />
+          <MyButton text={"적용하기"} onClick={handleApplyFilters} />
         </div>
       </div>
     </div>
