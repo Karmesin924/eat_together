@@ -15,8 +15,7 @@
 ## ✍️ 기술 스택
 
 ### Front-End
-<img src="https://img.shields.io/badge/javascript-F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black"/>
-<img src="https://img.shields.io/badge/react-61DAFB.svg?style=for-the-badge&logo=react&logoColor=black"/>
+<img src="https://img.shields.io/badge/javascript-F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black"/> <img src="https://img.shields.io/badge/react-61DAFB.svg?style=for-the-badge&logo=react&logoColor=black"/>
 <img src="https://img.shields.io/badge/React%20Router-CA4245.svg?style=for-the-badge&logo=React%20Router&logoColor=white"/>
 <img src="https://img.shields.io/badge/axios-5A29E4.svg?style=for-the-badge&logo=axios&logoColor=while"/>
 <img src="https://img.shields.io/badge/Socket.io-010101.svg?style=for-the-badge&logo=Socket.io&logoColor=while"/>
@@ -25,8 +24,7 @@
 
 
 ### Back-end
-<img src="https://img.shields.io/badge/java-orange.svg?style=for-the-badge&logo=java&logoColor=black"/>
-<img src="https://img.shields.io/badge/spring-6DB33F.svg?style=for-the-badge&logo=spring&logoColor=white"/>
+<img src="https://img.shields.io/badge/java-orange.svg?style=for-the-badge&logo=java&logoColor=black"/> <img src="https://img.shields.io/badge/spring-6DB33F.svg?style=for-the-badge&logo=spring&logoColor=white"/>
 <img src="https://img.shields.io/badge/spring%20boot-6DB33F.svg?style=for-the-badge&logo=spring%20boot&logoColor=white"/>
 <img src="https://img.shields.io/badge/JPA-6DB33F.svg?style=for-the-badge&logo=JPA&logoColor=white"/>
 <img src="https://img.shields.io/badge/mysql-4479A1.svg?style=for-the-badge&logo=mysql&logoColor=white"/>
