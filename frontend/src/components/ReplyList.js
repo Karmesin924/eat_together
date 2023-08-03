@@ -21,16 +21,17 @@ const ReplyList = ({ id }) => {
   };
 
   const handleDelete = (replyId) => {
-    console.log("삭제 버튼 클릭");
-    axios
-      .delete(`/posts/comment/${replyId}`)
-      .then((res) => {
-        alert("댓글이 삭제되었습니다!");
-        getReplies();
-      })
-      .catch((err) => {
-        alert("글 삭제 중 오류가 발생했습니다.");
-      });
+    if (window.confirm("댓글을 삭제하시겠습니까?")) {
+      axios
+        .delete(`/posts/comment/${replyId}`)
+        .then((res) => {
+          alert("댓글이 삭제되었습니다!");
+          getReplies();
+        })
+        .catch((err) => {
+          alert("글 삭제 중 오류가 발생했습니다.");
+        });
+    }
   };
 
   return (
