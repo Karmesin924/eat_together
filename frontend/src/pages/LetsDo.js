@@ -10,7 +10,7 @@ const LetsDo = () => {
   const navigate = useNavigate();
   const [isPreviousDisabled, setIsPreviousDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const { pageNumber } = useParams();
 
   const getBoardList = async (page) => {
@@ -35,7 +35,7 @@ const LetsDo = () => {
 
   useEffect(() => {
     setIsPreviousDisabled(currentPage === 1);
-    setIsNextDisabled(currentPage === totalPages);
+    setIsNextDisabled(currentPage >= totalPages);
   }, [currentPage, totalPages]);
 
   const goToPreviousPage = () => {
