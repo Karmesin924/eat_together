@@ -83,7 +83,7 @@ const ReplyForm = ({ id }) => {
             required
           />
         </div>
-        <span className="pt-4">
+        <span className="pt-4 text-end">
           <MyButton text={"댓글 작성"} onClick={handleSubmit} />
         </span>
       </div>

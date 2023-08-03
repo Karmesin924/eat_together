@@ -66,7 +66,7 @@ const BoardDetail = () => {
             replies={board?.replies || []}
             author={author}
           />
-          <p className="p-4 font-bold text-xl border-b-4 border-buttonhover w-5/6 mx-auto bg-orange-100">
+          <p className="pt-4 text-center font-bold text-lg border-buttonhover w-5/6 mx-auto">
             댓글
           </p>
           <ReplyForm id={id} />

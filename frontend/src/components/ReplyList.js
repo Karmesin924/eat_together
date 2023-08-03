@@ -49,12 +49,12 @@ const ReplyList = ({ id }) => {
                     <p className="flex text-base font-bold text-project">
                       {reply.nickname}
                     </p>
-                    <p className="flex p-2 text-left font-bold text-lg">
+                    <p className="flex p-2 text-left font-bold text-base">
                       {reply.contents}
                     </p>
                   </div>
                   <div className="flex">
-                    <p className="font-semibold text-sm text-inputfocus ">
+                    <p className="font-semibold text-sm text-gray-500 ">
                       {new Date(
                         reply.createdDate
                           .replace(" at ", " ")
