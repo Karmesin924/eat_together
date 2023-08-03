@@ -103,7 +103,7 @@ const MyPage = () => {
         rightChild={<MyButton text={"로그아웃"} onClick={onClickLogout} />}
       />
       <div className="flex flex-col items-center">
-        <div className="flex flex-col border-4 border-project rounded-xl mt-10 p-4 w-4/5">
+        <div className="flex flex-col border-4 border-project rounded-xl mt-10 p-4 w-5/6">
           <p className="font-bold text-3xl text-center">내 프로필</p>
 
           <p className="text-2xl">
@@ -117,14 +117,14 @@ const MyPage = () => {
           </p>
         </div>
 
-        <div className="flex flex-col border-4 border-project rounded-xl mt-6 p-4 w-4/5">
+        <div className="flex flex-col border-4 border-project rounded-xl mt-6 p-4 w-5/6">
           <p className="font-bold text-3xl text-center">현재 버전</p>
           <p className="text-2xl pt-3">
             버전 : <span>{"v1.0.0"}</span>
           </p>
         </div>
 
-        <div className="flex flex-col border-4 border-project rounded-xl mt-6 p-4 w-4/5">
+        <div className="flex flex-col border-4 border-project rounded-xl mt-6 p-4 w-5/6">
           <p className="font-bold text-3xl text-center">이용 약관</p>
           <p className="text-2xl pt-3">
             <span>이용약관 확인하기...</span>
