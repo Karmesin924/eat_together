@@ -44,6 +44,13 @@ const LetsDo = () => {
     }
   };
 
+  const trimText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength - 3) + "...";
+    }
+    return text;
+  };
+
   useEffect(() => {
     if (pageNumber) {
       getBoardList(pageNumber);
@@ -98,9 +105,10 @@ const LetsDo = () => {
                   <span className="flex items-center justify-start w-1/4 pl-1 font-semibold text-lg text-gray-500">
                     {item.nickname}
                   </span>
-                  <span className="flex items-center justify-center w-1/2 text-xl font-bold text-orange-600">
-                    {item.title}
+                  <span className="flex items-center justify-center w-1/2 text-xl font-bold text-orange-600 whitespace-nowrap overflow-hidden overflow-ellipsis">
+                    {trimText(item.title, 11)}
                   </span>
+
                   <span className="flex items-center justify-end w-1/4 pr-1 font-semibold text-xm text-gray-500">
                     {formatDate(item.createdDate)}
                   </span>
