@@ -14,27 +14,6 @@ const Write = () => {
   const [loading, setLoading] = useState(true);
   const isEditMode = location.state && location.state.isEditMode;
 
-  const getCurrentDateTime = () => {
-    const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
-    const hours = String(now.getHours()).padStart(2, "0");
-    const minutes = String(now.getMinutes()).padStart(2, "0");
-    const seconds = String(now.getSeconds()).padStart(2, "0");
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  };
-
-  const formatDateForDisplay = (dateString) => {
-    const weekdays = ["일", "월", "화", "수", "목", "금", "토"];
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const weekday = weekdays[date.getDay()];
-    return `${year}-${month}-${day} (${weekday})`;
-  };
-
   useEffect(() => {
     let isMounted = true;
     const source = axios.CancelToken.source();
@@ -173,15 +152,7 @@ const Write = () => {
             <div className="p-4 flex flex-row justify-between border-b-4 border-orange-100">
               <div>
                 <input
-                  className=" font-semibold text-lg"
-                  type="text"
-                  value={formatDateForDisplay(getCurrentDateTime())}
-                  readOnly
-                />
-              </div>
-              <div>
-                <input
-                  className=" w-full text-right font-semibold text-lg text-project"
+                  className=" w-full text-left font-semibold text-lg text-project"
                   type="text"
                   placeholder="닉네임"
                   value={loading ? "" : nickname}
