@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 
 const ReplyForm = ({ id }) => {
@@ -62,7 +62,7 @@ const ReplyForm = ({ id }) => {
   }, []);
 
   return (
-    <div className="w-4/5 mx-auto">
+    <div className="w-5/6 mx-auto">
       <div className="flex flex-col">
         <div className="flex flex-row p-4">
           <p className="font-semibold text-base">닉네임:</p>

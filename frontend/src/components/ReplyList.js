@@ -34,7 +34,7 @@ const ReplyList = ({ id }) => {
   };
 
   return (
-    <div className="w-4/5 text-left mx-auto">
+    <div className="w-5/6 text-left mx-auto">
       {replies.length === 0 ? (
         <p className="pt-10 font-bold text-lg">
           아직 댓글이 없습니다. 댓글을 달아보세요!
@@ -43,24 +43,32 @@ const ReplyList = ({ id }) => {
         <ul>
           {replies.map((reply) => (
             <li key={reply.id}>
-              <div className="flex flex-row items-center justify-between text-center p-4 border-b-2 border-buttonhover">
-                <p className="flex flex-col w-1/6 justify-end">
-                  <p className=" font-bold">{reply.nickname}</p>
-                  <p>
-                    {new Date(
-                      reply.createdDate.replace(" at ", " ").replace(" KST", "")
-                    ).toLocaleString("ko-KR", {
-                      year: "2-digit",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
-                  </p>
-                </p>
-                <p className="w-3/6 text-left font-bold text-lg">
-                  {reply.contents}
-                </p>
+              <div className="flex flex-row items-center justify-between text-center p-2 border-b-2 border-buttonhover">
+                <div className="flex flex-col w-full">
+                  <div className="flex flex-row items-center">
+                    <p className="flex text-base font-bold text-project">
+                      {reply.nickname}
+                    </p>
+                    <p className="flex p-2 text-left font-bold text-lg">
+                      {reply.contents}
+                    </p>
+                  </div>
+                  <div className="flex">
+                    <p className="font-semibold text-sm text-inputfocus ">
+                      {new Date(
+                        reply.createdDate
+                          .replace(" at ", " ")
+                          .replace(" KST", "")
+                      ).toLocaleString("ko-KR", {
+                        year: "2-digit",
+                        month: "2-digit",
+                        day: "2-digit",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      })}
+                    </p>
+                  </div>
+                </div>
                 <p className="w-1/6 items-end">
                   {reply.author && (
                     <MyButton

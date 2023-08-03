@@ -26,38 +26,43 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
   return (
     <div>
       <div className="flex flex-col items-center">
-        <div className="mt-5 border-b-4 border-buttonhover w-4/5"></div>
-        <div className="flex flex-row items-center p-2 font-bold text-2xl border-b-4 border-buttonhover w-4/5 bg-orange-100">
-          <div className="w-1/6 justify-start">
-            <p className="font-semibold text-base text-center">{nickname}</p>
-            <p className="font-semibold text-base text-center text-inputfocus">
-              {new Date(
-                createdDate.replace(" at ", " ").replace(" KST", "")
-              ).toLocaleString("ko-KR", {
-                year: "2-digit",
-                month: "2-digit",
-                day: "2-digit",
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </p>
-          </div>
-          <div className="flex justify-center m-auto">
+        <div className="mt-5 border-b-4 border-buttonhover w-5/6"></div>
+        <div className="flex flex-row items-center p-2 font-bold text-2xl border-b-4 border-buttonhover w-5/6 bg-orange-100">
+          <div className="flex justify-center text-start w-auto m-auto">
             <p>{title}</p>
           </div>
-
-          <div className="justify-end flex w-1/6">
-            {author && (
-              <div className="flex ">
-                <MyButton text={"수정"} onClick={handleEdit} />
-                <span className="pl-2"></span>
-                <MyButton text={"삭제"} onClick={handleDelete} />
-              </div>
-            )}
-          </div>
         </div>
-        <p className="p-4 pt-10 pb-10 font-semibold text-lg border-b-4 border-buttonhover w-4/5 break-words text-left">
-          {contents}
+        <p className="border-b-4 border-buttonhover w-5/6 break-words text-left">
+          <p className="border-b-2 border-buttonhover p-2 pt-10 pb-10 font-semibold text-lg">
+            {contents}
+          </p>
+          <div className="pt-2 pb-2 flex flex-row justify-between">
+            <div className="flex flex-col pl-2">
+              <p className="flex font-semibold text-base text-left text-project">
+                {nickname}
+              </p>
+              <p className="flex font-semibold text-sm text-left text-inputfocus">
+                {new Date(
+                  createdDate.replace(" at ", " ").replace(" KST", "")
+                ).toLocaleString("ko-KR", {
+                  year: "2-digit",
+                  month: "2-digit",
+                  day: "2-digit",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </p>
+            </div>
+            <div className="flex pr-2">
+              {author && (
+                <div className="flex flex-row">
+                  <MyButton text={"수정"} onClick={handleEdit} />
+                  <span className="pl-2"></span>
+                  <MyButton text={"삭제"} onClick={handleDelete} />
+                </div>
+              )}
+            </div>
+          </div>
         </p>
       </div>
     </div>

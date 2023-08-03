@@ -140,7 +140,7 @@ const Write = () => {
         }
       />
       <div className="flex flex-col pt-10 items-center justify-center">
-        <div className="p-4 w-4/5 border-4 border-project rounded-lg">
+        <div className="p-4 w-5/6 border-4 border-project rounded-lg">
           <div>
             <input
               className="pt-4 px-4 font-bold text-2xl w-full"
