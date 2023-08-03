@@ -114,11 +114,6 @@ function SignIn() {
         </p>
         <p>비밀번호를 잊어버리셨나요?</p>
       </div>
-      <div className="flex m-auto">
-        <MyButton text={"카카오로그인"} onClick={() => {}} />
-        <span className="pl-2"></span>
-        <MyButton text={"네이버로그인"} onClick={() => {}} />
-      </div>
     </div>
   );
 }
