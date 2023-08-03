@@ -10,7 +10,7 @@ const LetsDo = () => {
   const navigate = useNavigate();
   const [isPreviousDisabled, setIsPreviousDisabled] = useState(true);
   const [isNextDisabled, setIsNextDisabled] = useState(false);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
   const { pageNumber } = useParams();
 
   const getBoardList = async (page) => {
@@ -24,6 +24,33 @@ const LetsDo = () => {
     }
   };
 
+  const formatDate = (dateString) => {
+    const currentDate = new Date();
+    const postDate = new Date(
+      dateString.replace(" at ", " ").replace(" KST", "")
+    );
+
+    if (currentDate.toDateString() === postDate.toDateString()) {
+      return postDate.toLocaleTimeString("ko-KR", {
+        hour: "2-digit",
+        minute: "2-digit",
+      });
+    } else {
+      return postDate.toLocaleDateString("ko-KR", {
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
+      });
+    }
+  };
+
+  const trimText = (text, maxLength) => {
+    if (text.length > maxLength) {
+      return text.substring(0, maxLength - 3) + "...";
+    }
+    return text;
+  };
+
   useEffect(() => {
     if (pageNumber) {
       getBoardList(pageNumber);
@@ -35,7 +62,7 @@ const LetsDo = () => {
 
   useEffect(() => {
     setIsPreviousDisabled(currentPage === 1);
-    setIsNextDisabled(currentPage === totalPages);
+    setIsNextDisabled(currentPage >= totalPages);
   }, [currentPage, totalPages]);
 
   const goToPreviousPage = () => {
@@ -72,31 +99,24 @@ const LetsDo = () => {
       <div className="flex flex-col">
         <div className="flex flex-col items-center pt-10">
           {boardList.map((item) => (
-            <li className="list-none w-4/5 text-center" key={item.id}>
+            <li className="list-none w-5/6 text-center" key={item.id}>
               <Link className="cursor-pointer" to={`/posts/${item.id}`}>
                 <div className="flex pt-3 pb-3 border-t-4 border-homehover">
-                  <span className="flex items-center justify-start w-1/3 pl-4 font-semibold text-lg text-gray-500">
+                  <span className="flex items-center justify-start w-1/4 pl-1 font-semibold text-lg text-gray-500">
                     {item.nickname}
                   </span>
-                  <span className="flex items-center justify-center w-1/3 text-3xl font-bold text-orange-600">
-                    {item.title}
+                  <span className="flex items-center justify-center w-1/2 text-xl font-bold text-orange-600 whitespace-nowrap overflow-hidden overflow-ellipsis">
+                    {trimText(item.title, 11)}
                   </span>
-                  <span className="flex items-center justify-end w-1/3 pr-4 font-semibold text-lg text-gray-500">
-                    {new Date(
-                      item.createdDate.replace(" at ", " ").replace(" KST", "")
-                    ).toLocaleString("ko-KR", {
-                      year: "2-digit",
-                      month: "2-digit",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                    })}
+
+                  <span className="flex items-center justify-end w-1/4 pr-1 font-semibold text-xm text-gray-500">
+                    {formatDate(item.createdDate)}
                   </span>
                 </div>
               </Link>
             </li>
           ))}
-          <div className="border-t-4 w-4/5 border-homehover"></div>
+          <div className="border-t-4 w-5/6 border-homehover"></div>
         </div>
         <div className="flex flex-col items-center pt-10">
           <p>

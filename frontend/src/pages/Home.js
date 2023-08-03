@@ -22,9 +22,9 @@ const Home = () => {
           />
         }
       />
-      <div className="flex flex-row justify-center items-center pt-24 p-1 gap-6 ">
+      <div className="flex flex-row justify-center items-center pt-24 p-1 gap-2 ">
         <div
-          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
+          className="ml-3 pt-2 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsEat");
           }}
@@ -42,7 +42,7 @@ const Home = () => {
           />
         </div>
         <div
-          className="pt-5 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
+          className="mr-3 pt-2 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
             navigate("/LetsDo");
           }}

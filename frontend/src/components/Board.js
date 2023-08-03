@@ -26,11 +26,18 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
   return (
     <div>
       <div className="flex flex-col items-center">
-        <div className="mt-5 border-b-4 border-buttonhover w-4/5"></div>
-        <div className="flex flex-row items-center p-2 font-bold text-2xl border-b-4 border-buttonhover w-4/5 bg-orange-100">
-          <div className="w-1/6 justify-start">
-            <p className="font-semibold text-base text-center">{nickname}</p>
-            <p className="font-semibold text-base text-center text-inputfocus">
+        <div className="mt-5 border-b-4 border-buttonhover w-5/6"></div>
+        <div className="flex flex-row items-center p-2 font-bold text-2xl border-b-4 border-buttonhover w-5/6 bg-orange-100">
+          <div className="flex justify-center text-start w-auto m-auto">
+            <p>{title}</p>
+          </div>
+        </div>
+        <div className="pt-2 pb-2 w-5/6 flex flex-row justify-between text-left">
+          <div className="flex flex-col pl-2">
+            <p className="flex font-semibold text-base text-left text-project">
+              {nickname}
+            </p>
+            <p className="flex font-semibold text-sm text-left text-gray-500">
               {new Date(
                 createdDate.replace(" at ", " ").replace(" KST", "")
               ).toLocaleString("ko-KR", {
@@ -42,13 +49,9 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
               })}
             </p>
           </div>
-          <div className="flex justify-center m-auto">
-            <p>{title}</p>
-          </div>
-
-          <div className="justify-end flex w-1/6">
+          <div className="flex pr-2">
             {author && (
-              <div className="flex ">
+              <div className="flex flex-row">
                 <MyButton text={"수정"} onClick={handleEdit} />
                 <span className="pl-2"></span>
                 <MyButton text={"삭제"} onClick={handleDelete} />
@@ -56,8 +59,10 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
             )}
           </div>
         </div>
-        <p className="p-4 pt-10 pb-10 font-semibold text-lg border-b-4 border-buttonhover w-4/5 break-words text-left">
-          {contents}
+        <p className="border-b-4 border-buttonhover w-5/6 break-words text-left">
+          <p className="border-t-2 border-buttonhover p-2 pt-10 pb-10 font-semibold text-lg">
+            {contents}
+          </p>
         </p>
       </div>
     </div>
