@@ -12,8 +12,17 @@ const LetsEat = () => {
   const [mapLoaded, setMapLoaded] = useState(false);
   const [locationError, setLocationError] = useState(false);
 
-  const { people, gender, age, menu, conversation, handleSaveFilters, latitude, longitude, handleLocation } =
-    useContext(MyContext);
+  const {
+    people = 'any',
+    gender = 'any',
+    age = 'any',
+    menu = 'any',
+    conversation = 'Normal',
+    handleSaveFilters,
+    latitude,
+    longitude,
+    handleLocation,
+  } = useContext(MyContext);
 
   useEffect(() => {
     let isMounted = true;

@@ -66,14 +66,6 @@ function SignIn() {
             }}
           />
         }
-        rightChild={
-          <MyButton
-            text={'회원가입'}
-            onClick={() => {
-              navigate('/SignUp');
-            }}
-          />
-        }
       />
       <div className=" pt-8 pb-3 text-6xl text-center">
         같이
@@ -109,7 +101,16 @@ function SignIn() {
           로그인
         </button>
       </div>
-      <div className="m-auto mt-11 mb-8 text-projectthick text-base font-semibold cursor-pointer text-center"></div>
+      <div className="m-auto mt-11 mb-8 text-projectthick text-base font-semibold cursor-pointer text-center">
+        <p
+          className="pb-3"
+          onClick={() => {
+            navigate('/SignUp');
+          }}
+        >
+          회원 가입
+        </p>
+      </div>
     </div>
   );
 }
