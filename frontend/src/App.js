@@ -16,10 +16,10 @@ import Matching from './pages/Matching';
 
 function App() {
   const [people, setPeople] = useState();
-  const [gender, setGender] = useState('');
-  const [age, setAge] = useState('');
-  const [menu, setMenu] = useState([]);
-  const [conversation, setConversation] = useState('');
+  const [gender, setGender] = useState();
+  const [age, setAge] = useState();
+  const [menu, setMenu] = useState();
+  const [conversation, setConversation] = useState();
 
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);

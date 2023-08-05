@@ -150,7 +150,7 @@ const FilterDetail = () => {
                   checked={filters.age === 'peer'}
                   onChange={handleCheckboxChange}
                 />
-                <span className="ml-1 mr-1">또래만</span>
+                <span className="ml-1 mr-1">또래만(±2)</span>
               </label>
             </div>
 
