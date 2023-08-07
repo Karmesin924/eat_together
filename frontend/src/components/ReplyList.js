@@ -49,7 +49,7 @@ const ReplyList = ({ id }) => {
                   <div className="flex p-2 text-left font-bold text-base w-full border-none">
                     {reply.contents}
                   </div>
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-baseline gap-4">
                     <p className="flex text-base font-bold text-project">
                       {reply.nickname}
                     </p>
