@@ -126,11 +126,16 @@ const SignUp = () => {
     } else {
       setPasswordMessage("올바른 형식입니다");
       setIsPassword(true);
+
+      if (currentPassword === passwordConfirm) {
+        setIsPasswordConfirm(true);
+      } else {
+        setIsPasswordConfirm(false);
+      }
     }
 
     checkButtonEnabled();
   };
-
   const onChangePasswordConfirm = (e) => {
     const currentPasswordConfirm = e.target.value;
     setPasswordConfirm(currentPasswordConfirm);
