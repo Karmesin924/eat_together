@@ -46,15 +46,13 @@ const ReplyList = ({ id }) => {
             <li key={reply.id}>
               <div className="flex flex-row items-center justify-between text-center p-2 border-b-2 border-buttonhover">
                 <div className="flex flex-col w-full">
-                  <div className="flex flex-row items-center">
+                  <div className="flex p-2 text-left font-bold text-base w-full border-none">
+                    {reply.contents}
+                  </div>
+                  <div className="flex items-center gap-4">
                     <p className="flex text-base font-bold text-project">
                       {reply.nickname}
                     </p>
-                    <p className="flex p-2 text-left font-bold text-base">
-                      {reply.contents}
-                    </p>
-                  </div>
-                  <div className="flex">
                     <p className="font-semibold text-sm text-gray-500 ">
                       {new Date(
                         reply.createdDate
