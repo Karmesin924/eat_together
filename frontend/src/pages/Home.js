@@ -1,9 +1,36 @@
 import { Link, useNavigate } from "react-router-dom";
 import MyHeader from "../components/MyHeader";
 import MyButton from "../components/MyButton";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const Home = () => {
   const navigate = useNavigate();
+  const [isSignInButtonVisible, setIsSignInButtonVisible] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const goToSignInPage = () => {
+    navigate("/SignIn");
+  };
+
+  useEffect(() => {
+    axios
+      .get("/users/validate")
+      .then((res) => {
+        if (res.status === 200) {
+          setIsLoggedIn(true);
+        } else {
+          setIsSignInButtonVisible(true);
+        }
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          return;
+        }
+        setIsSignInButtonVisible(true);
+      });
+  }, []); // 로그인 체크는 최초 한 번만 수행
+
   return (
     <div className="w-auto">
       <MyHeader
@@ -60,6 +87,11 @@ const Home = () => {
           />
         </div>
       </div>
+      {!isLoggedIn && isSignInButtonVisible && (
+        <div className="flex justify-center items-center mt-4">
+          <MyButton text={"로그인 하러가기"} onClick={goToSignInPage} />
+        </div>
+      )}
     </div>
   );
 };

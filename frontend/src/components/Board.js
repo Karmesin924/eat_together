@@ -33,7 +33,7 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
           </div>
         </div>
         <div className="pt-2 pb-2 w-5/6 flex flex-row justify-between text-left">
-          <div className="flex flex-col pl-2">
+          <div className="flex flex-row pl-2 justify-center items-baseline gap-2">
             <p className="flex font-semibold text-base text-left text-project">
               {nickname}
             </p>
