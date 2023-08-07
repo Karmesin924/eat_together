@@ -19,4 +19,7 @@ public class BoardService {
         return postRepository.findAll(pageRequest);
     }
 
+    public long count() {
+        return postRepository.count();
+    }
 }

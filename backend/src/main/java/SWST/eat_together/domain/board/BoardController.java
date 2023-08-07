@@ -9,7 +9,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/board")
@@ -18,7 +20,7 @@ public class BoardController {
     private final BoardService boardService;
 
     @GetMapping("/{page}")
-    public ResponseEntity<List<Post>> getBoard(@PathVariable("page") int page) {
+    public ResponseEntity<Map<String, Object>> getBoard(@PathVariable("page") int page) {
         int pageSize = 10;
         int pageNumber = page - 1;
 
@@ -29,7 +31,11 @@ public class BoardController {
         }
 
         List<Post> board = postPage.getContent();
-        return ResponseEntity.ok(board);
-    }
+        long totalPosts = boardService.count();
+        Map<String, Object> response = new HashMap<>();
+        response.put("totalPages", totalPosts);
+        response.put("data", board);
 
+        return ResponseEntity.ok(response);
+    }
 }
