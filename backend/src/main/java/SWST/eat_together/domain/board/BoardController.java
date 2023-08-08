@@ -31,7 +31,7 @@ public class BoardController {
         }
 
         List<Post> board = postPage.getContent();
-        long totalPosts = boardService.count();
+        long totalPosts = boardService.count()/10+1;
         Map<String, Object> response = new HashMap<>();
         response.put("totalPages", totalPosts);
         response.put("data", board);
