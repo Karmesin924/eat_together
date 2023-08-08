@@ -17,7 +17,7 @@ const LetsDo = () => {
     try {
       const resp = await axios.get(`/board/${page}`);
       setBoardList(resp.data);
-      setTotalPages(resp.data.totalPages);
+      setTotalPages(resp.totalPages);
       console.log(resp.pagination);
     } catch (err) {
       console.log("게시글 목록을 가져오는데 실패했습니다.", err);
@@ -52,16 +52,12 @@ const LetsDo = () => {
   };
 
   useEffect(() => {
-    if (pageNumber) {
-      getBoardList(pageNumber);
-      setCurrentPage(pageNumber);
-    } else {
-      getBoardList(currentPage);
-    }
+    const pageNumberToFetch = pageNumber || currentPage;
+    getBoardList(pageNumberToFetch);
   }, [pageNumber, currentPage]);
 
   useEffect(() => {
-    setIsPreviousDisabled(currentPage === 1);
+    setIsPreviousDisabled(currentPage <= 1);
     setIsNextDisabled(currentPage >= totalPages);
   }, [currentPage, totalPages]);
 
@@ -72,7 +68,9 @@ const LetsDo = () => {
   };
 
   const goToNextPage = () => {
-    setCurrentPage(currentPage + 1);
+    if (currentPage < totalPages) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
   return (
