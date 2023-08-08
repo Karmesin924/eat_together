@@ -14,9 +14,18 @@ public class MemberService {
     public void setMemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;}
 
-    public void saveUser(SignUpDTO form) {
-        Member member = new Member();
+    public String saveUser(SignUpDTO form) {
+        // Check if email already exists
+        if (memberRepository.existsByEmail(form.getEmail())) {
+            return "email";
+        }
 
+        // Check if nickname already exists
+        if (memberRepository.existsByNickname(form.getNickname())) {
+            return "nickname";
+        }
+
+        Member member = new Member();
         member.setEmail(form.getEmail());
         member.setName(form.getName());
         member.setNickname(form.getNickname());
@@ -25,8 +34,9 @@ public class MemberService {
         member.setGender(form.getGender());
 
         memberRepository.save(member);
-    }
 
+        return "0";
+    }
     public Member login(LoginDTO form)
     //loginId를 조회해 password와 일치하는지 검증. 일치하면 MemberDTO 객체 반환, 일치하지 않으면 null 반환.
     {

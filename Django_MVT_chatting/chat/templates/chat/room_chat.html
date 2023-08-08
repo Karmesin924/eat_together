@@ -81,6 +81,7 @@
         chat_messages_tag: null,
         ws: null,
         retry: 0,
+        username_set: new Set(),
 
         init(){
             this.chat_messages_tag = document.querySelector("#chat_messages");
@@ -135,10 +136,19 @@
             const message_json = event.data;
             console.log("메세지 수신 :", message_json);
 
-            const {type, message, sender} = JSON.parse(message_json);
+            const {type, message, sender, username} = JSON.parse(message_json);
+
             switch (type){
                 case "chat.message":
                     this.append_message(message, sender);
+                    break;
+                case "chat.user.join":
+                    this.append_message(`${username}님이 들어오셨습니다.`, 'system');
+                    this.username_set.add(username);
+                    break;
+                case "chat.user.leave":
+                    this.append_message(`${username}님이 나가셨습니다.`, 'system')
+                    this.username_set.delete(username);
                     break;
                 default:
                     console.error(`Invalid message type : ${type}`);

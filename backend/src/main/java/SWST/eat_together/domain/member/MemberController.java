@@ -1,6 +1,7 @@
 package SWST.eat_together.domain.member;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +17,12 @@ public class MemberController {
     @PostMapping("/signup")
     public ResponseEntity signup(@RequestBody SignUpDTO member) {
         System.out.println("member = " + member);
-        memberService.saveUser(member);
-        return ResponseEntity.ok().build();
+        String result = memberService.saveUser(member);
+        if ("0".equals(result)) {
+            return ResponseEntity.status(HttpStatus.CREATED).build();
+        } else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(result);
+        }
     }
 
     @PostMapping("/login")
