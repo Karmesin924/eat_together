@@ -24,7 +24,7 @@ class SignupAPIView(CreateAPIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class CustomLoginView(LoginView):
+class ChatLoginView(LoginView):
     template_name = "partials/form.html"
     authentication_form = CustomAuthenticationForm
     extra_context = {
