@@ -1,7 +1,7 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import JsonWebsocketConsumer
 
-from chat.models import OpenRoom, MatchingRoom
+from chat.models import OpenRoom, MatchingRoom, OpenRoomMessage, MatchingRoomMessage
 
 
 class ChatConsumer(JsonWebsocketConsumer):
@@ -39,6 +39,15 @@ class ChatConsumer(JsonWebsocketConsumer):
         if _type == "chat.message":
             sender = user.username
             message = content["message"]
+            room_pk = self.scope["url_route"]["kwargs"]["room_pk"]
+            room = MatchingRoom.objects.get(pk=room_pk)
+
+            MatchingRoomMessage.objects.create(
+                user=user,
+                room=room,
+                content=message
+            )
+
             async_to_sync(self.channel_layer.group_send)(
                 self.group_name,
                 {
@@ -61,6 +70,7 @@ class ChatConsumer(JsonWebsocketConsumer):
     def chat_room_deleted(self, message_dict):
         custom_code = 4000
         self.close(code=custom_code)
+
 
 class OpenChatConsumer(ChatConsumer):
     def connect(self):
@@ -118,6 +128,33 @@ class OpenChatConsumer(ChatConsumer):
                             "username": user.username,
                         }
                     )
+
+    def receive_json(self, content, **kwargs):
+        user = self.scope["user"]
+        _type = content["type"]
+
+        if _type == "chat.message":
+            sender = user.username
+            message = content["message"]
+            room_pk = self.scope["url_route"]["kwargs"]["room_pk"]
+            room = OpenRoom.objects.get(pk=room_pk)
+
+            OpenRoomMessage.objects.create(
+                user=user,
+                room=room,
+                content=message
+            )
+
+            async_to_sync(self.channel_layer.group_send)(
+                self.group_name,
+                {
+                    "type": "chat.message",
+                    "message": message,
+                    "sender": sender,
+                }
+            )
+        else:
+            print(f"Invalid message type : ${_type}")
 
     def chat_user_join(self, message_dict):
         self.send_json({

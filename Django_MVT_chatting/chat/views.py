@@ -31,7 +31,7 @@ def open_room_new(request):
             created_room = form.save(commit=False)
             created_room.owner = request.user
             created_room.save()
-            return redirect("chat:room_chat", created_room.pk)
+            return redirect("chat:open_room_chat", created_room.pk)
     else:
         form = RoomForm()
 
