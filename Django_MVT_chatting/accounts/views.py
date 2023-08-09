@@ -1,7 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.views import LoginView, LogoutView
-from django.views.generic import TemplateView, CreateView
 from rest_framework import status
 from rest_framework.generics import CreateAPIView
 from rest_framework.response import Response
@@ -36,10 +34,3 @@ class ChatLoginView(LoginView):
 logout = LogoutView.as_view(
     next_page="accounts:login",
 )
-
-
-class ProfileView(LoginRequiredMixin, TemplateView):
-    template_name = "accounts/profile.html"
-
-
-profile = ProfileView.as_view()

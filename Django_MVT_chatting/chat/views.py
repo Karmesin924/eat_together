@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -132,3 +133,15 @@ def matching_chat_messages(request, room_pk):
         return Response(status=404)
 
 
+@login_required
+def open_room_users(request, room_pk):
+    room = get_object_or_404(OpenRoom, pk=room_pk)
+
+    if not room.is_joined_user(request.user):
+        return HttpResponse("Unauthorized user", status=401)
+
+    username_list = room.get_online_usernames()
+
+    return JsonResponse({
+        "username_list": username_list,
+    })

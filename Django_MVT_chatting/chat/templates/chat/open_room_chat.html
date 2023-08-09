@@ -41,7 +41,23 @@
                 <div class="card" style="height: 600px;">
                     <div class="card-header">
                         채팅방 : {{ room.name }}
+                        <div class="col-sm-12 mt-3">
+                            <div class="accordion" id="participant_list">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="participant_heading">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#participants" aria-expanded="false" aria-controls="participants">
+                                            참가자 목록 <span id="user_count"></span>
+                                        </button>
+                                    </h2>
+                                <div id="participants" class="accordion-collapse collapse" aria-labelledby="participant_heading">
+                                    <div class="accordion-body">
+                                        <ul class="list-group" id="user_list"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
                     <div class="card-body overflow-hidden">
                         <div id="chat_messages" class="w-100 h-100 border-0 overflow-scroll"></div>
                     </div>
@@ -111,6 +127,14 @@
             console.log("웹소켓 서버와 접속");
             this.retry = 0;
 
+            fetch('{% url "chat:open_room_users" room.pk %}')
+                .then(response => response.json())
+                .then(({ username_list }) => {
+                    this.username_set = new Set([...this.username_set, ...username_list]);
+                    this.update_user_list();
+                })
+                .catch(error => console.error('Error fetching user list:', error));
+
             fetch(`http://127.0.0.1:8000/chat/{{ room.pk }}/open_chat_messages`)
                  .then(response => response.json())
                  .then(messages => {
@@ -160,10 +184,12 @@
                 case "chat.user.join":
                     this.append_message(`${username}님이 들어오셨습니다.`, 'system');
                     this.username_set.add(username);
+                    this.update_user_list();
                     break;
                 case "chat.user.leave":
                     this.append_message(`${username}님이 나가셨습니다.`, 'system')
                     this.username_set.delete(username);
+                    this.update_user_list();
                     break;
                 default:
                     console.error(`Invalid message type : ${type}`);
@@ -217,6 +243,17 @@
                 message: message,
             }))
         },
+
+        update_user_list() {
+            const html = [...this.username_set]
+                .map(username => `<li class="list-group-item">${username}</li>`)
+                .join('');
+            document.querySelector("#user_list").innerHTML = html;
+
+            document.querySelector("#user_count").textContent =
+                `(${this.username_set.size}명)`;
+        },
+
         modal(message, ok_handler) {
             const modal_ele = document.querySelector("#staticBackdrop");
             const body_ele = modal_ele.querySelector(".modal-body");
