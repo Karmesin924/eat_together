@@ -2,11 +2,13 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from chat.forms import RoomForm
-from chat.models import OpenRoom, MatchingRoom
+from chat.models import OpenRoom, MatchingRoom, OpenRoomMessage, MatchingRoomMessage
+from chat.serializers import OpenRoomMessageSerializer, MatchingRoomMessageSerializer
 
 
 def index(request):
@@ -95,3 +97,22 @@ class MatchingRoomNew(APIView):
             room.register_user_in_room(user)
 
         return Response({'message': '매칭방 생성 완료'}, status=201)
+
+
+@api_view(['GET'])
+def open_chat_messages(request, room_pk):
+    try:
+        room_messages = OpenRoomMessage.objects.filter(room__pk=room_pk)
+        serializer = OpenRoomMessageSerializer(room_messages, many=True)
+        return Response(serializer.data)
+    except OpenRoomMessage.DoesNotExist:
+        return Response(status=404)
+
+@api_view(['GET'])
+def matching_chat_messages(request, room_pk):
+    try:
+        room_messages = MatchingRoomMessage.objects.filter(room__pk=room_pk)
+        serializer = MatchingRoomMessageSerializer(room_messages, many=True)
+        return Response(serializer.data)
+    except MatchingRoomMessage.DoesNotExist:
+        return Response(status=404)

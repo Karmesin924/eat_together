@@ -112,6 +112,16 @@
         onopen(){
             console.log("웹소켓 서버와 접속");
             this.retry = 0;
+
+            fetch(`http://127.0.0.1:8000/chat/{{ room.pk }}/open_chat_messages`)
+                 .then(response => response.json())
+                 .then(messages => {
+                     messages.forEach(message => {
+                         this.append_message(message.content, message.user);
+                     });
+                 })
+                 .catch(error => console.error('Error fetching chat messages:', error));
+
         },
         onclose(event){
             const close_code = event.code;

@@ -10,4 +10,6 @@ urlpatterns = [
     path("<str:room_pk>/open_chat/", views.open_room_chat, name="open_room_chat"),
     path("<str:room_pk>/matching_chat/", views.matching_room_chat, name="matching_room_chat"),
     path("<str:room_pk>/delete/", views.room_delete, name="room_delete"),
+    path("<str:room_pk>/open_chat_messages/", views.open_chat_messages, name="open_chat_messages"),  # Rest API
+    path("<str:room_pk>/matching_chat_messages/", views.matching_chat_messages, name="matching_chat_messages"), # Rest API
 ]
