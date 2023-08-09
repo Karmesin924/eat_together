@@ -1,0 +1,11 @@
+{% extends "chat/base.html" %}
+
+{% block content %}
+    <h2>{{ room.name }} 나가기</h2>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="alert alert-danger">채팅방을 나가시겠습니까?</div>
+        <input type="submit" class="btn btn-danger" value="나가겠습니다." />
+    </form>
+{% endblock %}

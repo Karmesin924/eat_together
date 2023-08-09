@@ -62,7 +62,7 @@ def matching_room_chat(request, room_pk):
 
 
 @login_required
-def room_delete(request, room_pk):
+def open_room_delete(request, room_pk):
     room = get_object_or_404(OpenRoom, pk=room_pk)
 
     if room.owner != request.user:
@@ -75,6 +75,20 @@ def room_delete(request, room_pk):
         return redirect("chat:index")
 
     return render(request, "chat/room_confirm_delete.html", {
+        "room": room,
+    })
+
+
+@login_required
+def exit_matching_room(request, room_pk):
+    room = get_object_or_404(MatchingRoom, pk=room_pk)
+
+    if request.method == "POST":
+        room.exit_room(request.user)
+        messages.success(request, "채팅방을 나갔습니다.")
+        return redirect("chat:index")
+
+    return render(request, "chat/room_confirm_exit.html", {
         "room": room,
     })
 
@@ -116,3 +130,5 @@ def matching_chat_messages(request, room_pk):
         return Response(serializer.data)
     except MatchingRoomMessage.DoesNotExist:
         return Response(status=404)
+
+

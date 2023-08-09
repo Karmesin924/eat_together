@@ -110,6 +110,10 @@ class MatchingRoom(models.Model):
             room_member.save()
         else:
             raise ValueError("room 또는 member가 존재하지 않습니다.")
+    def exit_room(self, user):
+        room_member = MatchingRoomMember.objects.get(room=self, user=user)
+        room_member.delete()
+
 
 class OpenRoomMessage(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
