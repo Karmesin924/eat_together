@@ -11,7 +11,12 @@ from chat.models import OpenRoom, MatchingRoom
 
 def index(request):
     open_room_qs = OpenRoom.objects.all()
-    matching_room_qs = MatchingRoom.objects.all()
+    if request.user.is_authenticated:
+        matching_room_qs = request.user.matching_room_set.all()
+        if request.user.username=='admin':
+            matching_room_qs = MatchingRoom.objects.all()
+    else:
+        matching_room_qs=None
     return render(request, "chat/index.html", {
         "open_room_list": open_room_qs,
         "matching_room_list": matching_room_qs,
@@ -36,9 +41,16 @@ def open_room_new(request):
 
 
 @login_required
-def room_chat(request, room_pk):
+def open_room_chat(request, room_pk):
     room = get_object_or_404(OpenRoom, pk=room_pk)
-    return render(request, "chat/room_chat.html", {
+    return render(request, "chat/open_room_chat.html", {
+        "room": room,
+    })
+
+@login_required
+def matching_room_chat(request, room_pk):
+    room = get_object_or_404(MatchingRoom, pk=room_pk)
+    return render(request, "chat/matching_room_chat.html", {
         "room": room,
     })
 
