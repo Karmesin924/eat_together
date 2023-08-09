@@ -1,16 +1,20 @@
 from django.contrib import admin
 
-from chat.models import OpenRoom, MatchingRoom, OpenRoomMember
+from chat.models import OpenRoom, MatchingRoom, OpenRoomMember, MatchingRoomMember
 
 
 @admin.register(OpenRoom)
-class RoomAdmin(admin.ModelAdmin):
+class OpenRoomAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(MatchingRoom)
-class RoomAdmin(admin.ModelAdmin):
+class MatchingRoomAdmin(admin.ModelAdmin):
     pass
 
 @admin.register(OpenRoomMember)
-class RoomMemberAdmin(admin.ModelAdmin):
+class OpenRoomMemberAdmin(admin.ModelAdmin):
+    pass
+
+@admin.register(MatchingRoomMember)
+class MatchingRoomMemberAdmin(admin.ModelAdmin):
     pass

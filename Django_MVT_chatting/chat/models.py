@@ -95,6 +95,21 @@ class MatchingRoom(models.Model):
         return "chat-%s" % (room_pk or room.pk)
 
 
+    mathing_room_user_set = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through="MatchingRoomMember",
+        blank=True,
+        related_name="matching_room_set",
+    )
+
+    def register_user_in_room(self, user):
+        room_member = MatchingRoomMember(room=self, user=user)
+
+        if room_member.room and room_member.user:
+            room_member.save()
+        else:
+            raise ValueError("room 또는 member가 존재하지 않습니다.")
+
 def room__on_post_delete(instance: OpenRoom, **kwargs):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
@@ -114,4 +129,10 @@ post_delete.connect(
 class OpenRoomMember(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     room = models.ForeignKey(OpenRoom, on_delete=models.CASCADE)
+    channel_names = models.JSONField(default=set, encoder=ExtendedJSONEncoder, decoder=ExtendedJSONDecoder)
+
+
+class MatchingRoomMember(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    room = models.ForeignKey(MatchingRoom, on_delete=models.CASCADE)
     channel_names = models.JSONField(default=set, encoder=ExtendedJSONEncoder, decoder=ExtendedJSONDecoder)

@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import render, redirect, get_object_or_404
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -65,6 +66,16 @@ class MatchingRoomNew(APIView):
         data = request.data
         user_names = data.get('user_nicknames', [])
 
-        MatchingRoom.objects.create(name=','.join(user_names))
+        for user_name in user_names:
+            try:
+                User.objects.get(username=user_name)
+            except User.DoesNotExist:
+                return Response({'message': '해당 닉네임의 유저가 존재하지 않습니다. : '+user_name}, status=404)
 
-        return Response({'message': 'Matching rooms created successfully'}, status=201)
+        room = MatchingRoom.objects.create(name=', '.join(user_names))
+        for user_name in user_names:
+            user = User.objects.get(username=user_name)
+            print(user.username)
+            room.register_user_in_room(user)
+
+        return Response({'message': '매칭방 생성 완료'}, status=201)
