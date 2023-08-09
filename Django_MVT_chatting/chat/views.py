@@ -50,6 +50,10 @@ def open_room_chat(request, room_pk):
 @login_required
 def matching_room_chat(request, room_pk):
     room = get_object_or_404(MatchingRoom, pk=room_pk)
+    matching_room_set = request.user.matching_room_set.all()
+    if room not in matching_room_set and request.user.username!='admin':
+        messages.error(request, "접근할 수 없습니다.")
+        return redirect("chat:index")
     return render(request, "chat/matching_room_chat.html", {
         "room": room,
     })
