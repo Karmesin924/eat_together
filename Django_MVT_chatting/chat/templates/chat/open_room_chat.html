@@ -188,9 +188,13 @@
             }
             else if (sender){
                 footer = ` from ${sender}`;
-                wrapper.textContent = sender+' : '+message;
+                const nickname = document.createElement("span");
+                nickname.textContent = sender;
+                element.appendChild(nickname);
+                element.appendChild(document.createElement("br"));
+                wrapper.textContent = message;
+                wrapper.style.marginTop = "0px";
             }
-
 
             element.appendChild(wrapper);
 

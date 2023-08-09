@@ -166,18 +166,27 @@
             const element = document.createElement("div");
             element.className = "chat-message";
 
+            const wrapper = document.createElement("div");
             let footer = "";
             if (sender === "{{ user.username }}"){
                 element.className += " me";
+                wrapper.textContent = message;
+            }
+            else if (sender === "system"){
+                element.className += " system";
+                wrapper.textContent = message;
             }
             else if (sender){
                 footer = ` from ${sender}`;
+                const nickname = document.createElement("span");
+                nickname.textContent = sender;
+                element.appendChild(nickname);
+                element.appendChild(document.createElement("br"));
+                wrapper.textContent = message;
+                wrapper.style.marginTop = "0px";
             }
 
-            const wrapper = document.createElement("div");
-            wrapper.textContent = sender+' : '+message;
             element.appendChild(wrapper);
-
             //element.textContent = message;
 
             this.chat_messages_tag.appendChild(element);
