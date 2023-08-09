@@ -48,15 +48,13 @@
                     <div class="card-footer">
                         <form id="message_form" class="d-flex flex-nowrap gap-3">
                             <input type="text" name="message" class="form-control flex-fill" autofocus autocomplete="off" />
-                            <button type="submit" class="btn btn-primary text-nowrap">전송</button>
+                            <button type="submit" class="btn btn-warning text-nowrap">전송</button>
                         </form>
                     </div>
                 </div>
             </div>
 
             <hr class="my-3" />
-
-            <a href="{% url 'chat:index' %}" class="btn btn-primary">대기실로 이동</a>
 
             {% if request.user == room.owner %}
                 <a href="{% url 'chat:open_room_delete' room.pk %}" class="btn btn-danger">
@@ -75,7 +73,7 @@
                 </div>
                 <div class="modal-body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">OK</button>
+                    <button type="button" class="btn btn-warning">OK</button>
                 </div>
             </div>
         </div>
