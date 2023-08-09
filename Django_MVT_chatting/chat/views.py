@@ -1,6 +1,9 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from chat.forms import RoomForm
 from chat.models import OpenRoom, MatchingRoom
 
@@ -15,7 +18,7 @@ def index(request):
 
 
 @login_required
-def room_new(request):
+def open_room_new(request):
     if request.method == "POST":
         form = RoomForm(request.POST)
         if form.is_valid():
@@ -55,3 +58,13 @@ def room_delete(request, room_pk):
     return render(request, "chat/room_confirm_delete.html", {
         "room": room,
     })
+
+
+class MatchingRoomNew(APIView):
+    def post(self, request, format=None):
+        data = request.data
+        user_names = data.get('user_nicknames', [])
+
+        MatchingRoom.objects.create(name=','.join(user_names))
+
+        return Response({'message': 'Matching rooms created successfully'}, status=201)
