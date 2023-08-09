@@ -105,8 +105,13 @@ const SignUp = () => {
     const currentNickname = e.target.value;
     setNickname(currentNickname);
 
+    const hangulConsonantVowelRegExp = /^[ㄱ-ㅎㅏ-ㅣ]+$/;
+
     if (currentNickname.length < 2 || currentNickname.length > 8) {
       setNicknameMessage("닉네임은 2글자 이상 8글자 이하로 입력해주세요");
+      setIsNickname(false);
+    } else if (hangulConsonantVowelRegExp.test(currentNickname)) {
+      setNicknameMessage("닉네임에 한글 자음 또는 모음만을 사용할 수 없습니다");
       setIsNickname(false);
     } else {
       setNicknameMessage("올바른 형식입니다");
@@ -170,12 +175,32 @@ const SignUp = () => {
     axios
       .post("/users/signup", userData, { withCredentials: true })
       .then((response) => {
-        console.log(response.data);
         alert("회원가입이 완료되었습니다.");
         navigate("/SignIn"); // 가입 성공 시 이동할 경로를 설정해주세요
       })
       .catch((error) => {
-        alert("오류로 인해 회원가입이 완료되지 않았습니다.");
+        // 서버에서 에러 응답을 받았을 경우 처리
+        if (error.response && error.response.status === 400) {
+          let errorMessage = "";
+
+          console.log(error.response.data);
+          // 이메일 중복 체크
+          if (error.response.data === "email") {
+            errorMessage +=
+              "이메일이 중복되었습니다. 다른 이메일로 회원가입해주세요!";
+          }
+
+          // 닉네임 중복 체크
+          if (error.response.data === "nickname") {
+            errorMessage +=
+              "닉네임이 중복되었습니다. 다른 닉네임으로 회원가입해주세요!";
+          }
+
+          alert(errorMessage);
+        } else {
+          // 다른 에러
+          alert("오류로 인해 회원가입이 완료되지 않았습니다.");
+        }
         console.error(error);
       });
   };
