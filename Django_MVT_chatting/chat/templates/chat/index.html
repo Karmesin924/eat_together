@@ -1,12 +1,12 @@
 {% extends "chat/base.html" %}
 
 {% block content %}
-    <h1>매칭 채팅방 목록</h1>
+    <h1>매칭 채팅방</h1>
     <br>
     <div class="container">
         <div class="row">
         {% if not user.is_authenticated %}
-            <p>먼저 로그인해주세요.</p>
+            <p>먼저 로그인해 주세요.</p>
         {% else %}
             {% if not matching_room_list %}
                 <p>매칭된 방이 없습니다.</p>
@@ -27,7 +27,7 @@
     </div>
     <br>
     <hr>
-    <h1>공개 채팅방 목록</h1>
+    <h1>공개 채팅방</h1>
     <br>
     <div class="container">
         <div class="row">
@@ -42,10 +42,10 @@
                 </div>
             {% endfor %}
         </div>
-    </div>
-    <a href="{% url 'chat:open_room_new' %}">
+        <a href="{% url 'chat:open_room_new' %}" class="btn btn-outline-warning" style="color: black;">
         새 공개 채팅방 만들기
-    </a>
+        </a>
+    </div>
     <br>
     <span>닉네임 : {{ user.username }}</span>
 {% endblock %}
