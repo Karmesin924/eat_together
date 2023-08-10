@@ -30,10 +30,8 @@ const MyPage = () => {
       })
       .catch((error) => {
         if (axios.isCancel(error)) {
-          // Request was canceled
           return;
         }
-        console.log("Failed to validate user:", error);
         alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
         navigate("/SignIn");
       });
@@ -43,20 +41,6 @@ const MyPage = () => {
       source.cancel("Request canceled");
     };
   }, [navigate]);
-
-  // useEffect(() => {
-  //   // 더미 데이터 생성
-  //   const dummyData = {
-  //     name: "John Doe",
-  //     email: "johndoe@example.com",
-  //     nickname: "johndoe123",
-  //   };
-
-  //   // 더미 데이터 설정
-  //   setName(dummyData.name);
-  //   setEmail(dummyData.email);
-  //   setNickname(dummyData.nickname);
-  // }, []);
 
   const onClickLogout = () => {
     axios
@@ -71,22 +55,6 @@ const MyPage = () => {
         console.error(error);
       });
   };
-
-  // const onClickLogout = () => { // 로그아웃 시뮬레이션
-  //   console.log("로그아웃 요청");
-
-  //   // 로그아웃 성공 시 수행될 동작
-  //   const handleLogoutSuccess = () => {
-  //     console.log("로그아웃 성공");
-  //     alert("로그아웃 되었습니다.");
-  //     navigate("/SignIn"); // 로그아웃 성공 시 이동할 경로를 설정해주세요
-  //   };
-
-  //   // 로그아웃 요청을 시뮬레이션하기 위한 딜레이
-  //   setTimeout(() => {
-  //     handleLogoutSuccess();
-  //   }, 2000);
-  // };
 
   return (
     <div>
