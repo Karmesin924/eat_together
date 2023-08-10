@@ -77,7 +77,7 @@ const Map = ({ center }) => {
     kakao.maps.event.addListener(map, "zoom_changed", () => {
       setDepth(map.getLevel());
     });
-  }, [center, handleLocation]);
+  }, [center, depth, handleLocation]);
 
   return (
     <div className="flex flex-col items-center w-full">
