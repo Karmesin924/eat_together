@@ -3,10 +3,18 @@ import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 import { useEffect, useState } from "react";
 
-const Board = ({ id, title, contents, nickname, createdDate, author }) => {
+const Board = ({
+  id,
+  title,
+  contents,
+  nickname,
+  currentNickname,
+  createdDate,
+  author,
+  isLoggedIn,
+}) => {
   const navigate = useNavigate();
   const [isChatButtonVisible, setIsChatButtonVisible] = useState(false);
-  const [currentNickname, setCurrentNickname] = useState("");
 
   const handleEdit = () => {
     navigate(`/write/${id}`, { state: { isEditMode: true } });
@@ -17,9 +25,9 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
       user_nicknames: [currentNickname, nickname],
     };
     axios
-      .get("/chat/new_matching_room/", chatData)
+      .post("http://127.0.0.1:8000/chat/new_matching_room/", chatData)
       .then(() => {
-        navigate("http://127.0.0.1:8000/accounts/login/");
+        window.location.replace("http://127.0.0.1:8000/accounts/login/");
       })
       .catch((err) => {
         console.log("채팅 페이지로 이동에 실패했습니다.", err);
@@ -39,20 +47,11 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
   };
 
   useEffect(() => {
-    axios
-      .get("/users/validate")
-      .then((res) => {
-        const fetchedNickname = res.data.nickname;
-        setCurrentNickname(fetchedNickname);
-        if (fetchedNickname !== nickname) {
-          setIsChatButtonVisible(true);
-        } else {
-          setIsChatButtonVisible(false);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (isLoggedIn && currentNickname !== nickname) {
+      setIsChatButtonVisible(true);
+    } else {
+      setIsChatButtonVisible(false);
+    }
   }, [currentNickname, nickname]);
 
   return (
