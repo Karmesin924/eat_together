@@ -75,32 +75,34 @@ function SignIn() {
       <div className=" mt-3 h-14 text-center text-lg font-normal">
         외로운 혼밥러들을 위해
       </div>
-      <div className="flex flex-col justify-center items-center clear-both">
-        <input
-          className=" mt-1 mb-3 w-80 h-10 pl-3 text-base border-buttonhover border-4 border-solid rounded-xl placeholder:text-base focus:border-project focus:font-bold outline-none"
-          type="text"
-          value={inputEmail}
-          onChange={handleinputEmail}
-          placeholder="이메일"
-        />
+      <form onSubmit={onClickSignIn}>
+        <div className="flex flex-col justify-center items-center clear-both">
+          <input
+            className=" mt-1 mb-3 w-80 h-10 pl-3 text-base border-buttonhover border-4 border-solid rounded-xl placeholder:text-base focus:border-project focus:font-bold outline-none"
+            type="text"
+            value={inputEmail}
+            onChange={handleinputEmail}
+            placeholder="이메일"
+          />
 
-        <input
-          className=" mt-3 mb-3 w-80 h-10 pl-3 text-base border-buttonhover border-4 border-solid rounded-xl placeholder:text-base focus:border-project focus:font-bold outline-none"
-          type="password"
-          value={inputPassword}
-          onChange={handleinputPassword}
-          placeholder="비밀번호"
-        />
-      </div>
+          <input
+            className=" mt-3 mb-3 w-80 h-10 pl-3 text-base border-buttonhover border-4 border-solid rounded-xl placeholder:text-base focus:border-project focus:font-bold outline-none"
+            type="password"
+            value={inputPassword}
+            onChange={handleinputPassword}
+            placeholder="비밀번호"
+          />
+        </div>
+        <div className="flex m-auto mt-3 w-80 h-10">
+          <button
+            className=" pl-2 pr-2 pt-2 pb-2 w-full bg-project text-white rounded-xl cursor-pointer hover:bg-buttonhover hover:text-buttonhovercolor hover:font-bold"
+            type="submit"
+          >
+            로그인
+          </button>
+        </div>
+      </form>
 
-      <div className="flex m-auto mt-3 w-80 h-10">
-        <button
-          className=" pl-2 pr-2 pt-2 pb-2 w-full bg-project text-white rounded-xl cursor-pointer hover:bg-buttonhover hover:text-buttonhovercolor hover:font-bold"
-          onClick={onClickSignIn}
-        >
-          로그인
-        </button>
-      </div>
       <div className="m-auto mt-11 mb-8 text-projectthick text-base font-semibold cursor-pointer text-center">
         <p
           className="pb-3"

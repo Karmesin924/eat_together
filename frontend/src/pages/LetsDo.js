@@ -18,9 +18,7 @@ const LetsDo = () => {
       const resp = await axios.get(`/board/${page}`);
       setBoardList(resp.data.data);
       setTotalPages(resp.data.totalPages);
-    } catch (err) {
-      alert("게시글 목록을 가져오는데 실패했습니다.");
-    }
+    } catch (err) {}
   };
 
   const formatDate = (dateString) => {
