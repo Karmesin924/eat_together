@@ -12,13 +12,6 @@ class OnlineUserMixin(models.Model):
     class Meta:
         abstract = True
 
-    online_user_set = models.ManyToManyField(
-        settings.AUTH_USER_MODEL,
-        through="OpenRoomMember",
-        blank=True,
-        related_name="joined_room_set",
-    )
-
     def get_online_users(self):
         return self.online_user_set.all()
 
@@ -61,6 +54,13 @@ class OnlineUserMixin(models.Model):
 
 
 class OpenRoom(OnlineUserMixin, models.Model):
+    online_user_set = models.ManyToManyField(
+        settings.AUTH_USER_MODEL,
+        through="OpenRoomMember",
+        blank=True,
+        related_name="joined_room_set",
+    )
+
     owner = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
