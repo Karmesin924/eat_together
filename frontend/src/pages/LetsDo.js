@@ -18,11 +18,7 @@ const LetsDo = () => {
       const resp = await axios.get(`/board/${page}`);
       setBoardList(resp.data.data);
       setTotalPages(resp.data.totalPages);
-      console.log(resp);
-      console.log("총페이지 :  ", resp.data.totalPages);
-    } catch (err) {
-      console.log("게시글 목록을 가져오는데 실패했습니다.", err);
-    }
+    } catch (err) {}
   };
 
   const formatDate = (dateString) => {
