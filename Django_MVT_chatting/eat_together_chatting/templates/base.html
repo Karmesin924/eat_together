@@ -11,30 +11,37 @@
     {% bootstrap_css %}
     {% bootstrap_javascript %}
     {% block extra-style %}{% endblock %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+
+        body {
+            font-family: 'IBM Plex Sans KR', sans-serif;
+        }
+    </style>
 </head>
 <body>
 
-<div class="container">
-    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
-        <div class="col-4 d-flex justify-content-start">
-            <a href="/" class="btn btn-outline-warning btn-sm d-flex align-items-center justify-content-center text-nowrap" style="color: black;">
-                채팅방 목록
-            </a>
-        </div>
-        <div class="col-4 d-flex justify-content-center">
-            <ul class="nav col-12 col-md-auto justify-content-center">
-            <h2><a href="http://localhost:3000/" class="nav-link px-2 link-secondary"><strong style="color: black;">같이먹자</strong></a></h2>
-        </ul>
-        </div>
-        <div class="col-4 d-flex justify-content-end">
-            {% if not user.is_authenticated %}
-                <a href="{% url 'accounts:login' %}" class="btn btn-outline-warning btn-sm me-2 text-nowrap" style="color: black;">로그인</a>
-            {% else %}
-                <a href="{% url 'accounts:logout' %}" class="btn btn-outline-warning btn-sm text-nowrap" style="color: black;">로그아웃</a>
-            {% endif %}
-        </div>
-    </header>
+<header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom" style="background-color: #ff9900; margin: 0;">
+    <div class="col-4 d-flex justify-content-start">
+        <a href="/" class="btn btn-outline-warning d-flex align-items-center justify-content-center text-nowrap" style="color: white; border: none;">
+            <strong>채팅방 목록</strong>
+        </a>
+    </div>
+    <div class="col-4 d-flex justify-content-center">
+        <ul class="nav col-12 col-md-auto justify-content-center">
+        <h1><a href="http://localhost:3000/" class="nav-link px-2 link-secondary"><strong style="color: black;">같이 먹자</strong></a></h1>
+    </ul>
+    </div>
+    <div class="col-4 d-flex justify-content-end">
+        {% if not user.is_authenticated %}
+            <a href="{% url 'accounts:login' %}" class="btn btn-outline-warning me-2 text-nowrap" style="color: white; border: none;"><strong>로그인</strong></a>
+        {% else %}
+            <a href="{% url 'accounts:logout' %}" class="btn btn-outline-warning text-nowrap" style="color: white; border: none;"><strong>로그아웃</strong></a>
+        {% endif %}
+    </div>
+</header>
 
+<div class="container">
     {% bootstrap_messages %}
 
     {% block content %}{% endblock %}
