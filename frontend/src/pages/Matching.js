@@ -6,9 +6,10 @@ import MyHeader from '../components/MyHeader';
 
 const Matching = () => {
   const navigate = useNavigate();
-  const [matchedUsers, setMatchedUsers] = useState([]); // 백에서주는 매칭유저 정보? 배열로 받음
   const [socket, setSocket] = useState(null);
-  const [matchingComplete, setMatchingComplete] = useState(false);
+  const [matchedUsers, setMatchedUsers] = useState([]); // 백에서주는 매칭유저 정보 배열로 받음
+  const [matchingComplete, setMatchingComplete] = useState(false); // 매칭 완료 확인
+  const [roomPk, setRoomPk] = useState(null); // 채팅방 번호
 
   useEffect(() => {
     //백엔드와 소켓 연결
@@ -26,6 +27,9 @@ const Matching = () => {
 
         // 매칭된 사람들 저장
         setMatchedUsers(data.member.split(', ').map((name) => `${name}님`));
+
+        // 채팅 방 번호 저장
+        setRoomPk(data.room_pk);
 
         // 소켓 연결 해제
         newSocket.disconnect();
@@ -84,7 +88,7 @@ const Matching = () => {
           text={matchingComplete ? '채팅 방으로 이동' : '매칭 취소'}
           onClick={() => {
             if (matchingComplete) {
-              navigate('/ChatList');
+              navigate(`http://127.0.0.1:8000/chat/${roomPk}/matching_chat/`);
             } else {
               navigate(-1);
             }
