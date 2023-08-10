@@ -111,7 +111,7 @@ class MatchingRoomNew(APIView):
             print(user.username)
             room.register_user_in_room(user)
 
-        return Response({'message': '매칭방 생성 완료'}, status=201)
+        return Response({'room_pk': room.pk}, status=201)
 
 
 @api_view(['GET'])
