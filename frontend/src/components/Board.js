@@ -26,8 +26,10 @@ const Board = ({
     };
     axios
       .post("http://127.0.0.1:8000/chat/new_matching_room/", chatData)
-      .then(() => {
-        window.location.replace("http://127.0.0.1:8000/accounts/login/");
+      .then((resp) => {
+        window.location.replace(
+          `http://127.0.0.1:8000/chat/${resp.room_pk}/matching_chat/`
+        );
       })
       .catch((err) => {
         console.log("채팅 페이지로 이동에 실패했습니다.", err);
