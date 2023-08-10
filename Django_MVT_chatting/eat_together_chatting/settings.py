@@ -32,7 +32,7 @@ SECRET_KEY = env('SECRET_KEY')  #.env 파일 사용
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    '20af-182-215-251-13.ngrok-free.app',
+    'f37b-182-215-251-13.ngrok-free.app',
     '127.0.0.1'
 ]
 
@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'django_bootstrap5',
     'accounts',
@@ -55,6 +56,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -63,6 +65,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'eat_together_chatting.urls'
 
@@ -158,4 +162,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CSRF_TRUSTED_ORIGINS = ["https://20af-182-215-251-13.ngrok-free.app"] #ngrok 설정
+CSRF_TRUSTED_ORIGINS = ["https://f37b-182-215-251-13.ngrok-free.app"] #ngrok 설정

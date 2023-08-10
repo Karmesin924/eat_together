@@ -22,25 +22,49 @@
     text-align: left;
 }
 
+.chat-message.admin {
+    text-align: center;
+}
+.chat-message.admin > div {
+    background-color: lightgreen;
+    color: black;
+    text-align: left;
+}
+
+
 </style>
 {% endblock %}
 {% block content %}
-    {# TODO: 웹소켓으로 실시간 채팅 기능 구현하기 #}
-
     <div class="container my-5">
         <div class="row">
             <div class="col-sm-12">
                 <div class="card" style="height: 600px;">
                     <div class="card-header">
                         채팅방 : {{ room.name }}
+                        <div class="col-sm-12 mt-3">
+                            <div class="accordion" id="participant_list">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="participant_heading">
+                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#participants" aria-expanded="false" aria-controls="participants">
+                                            참가자 목록 <span id="user_count"></span>
+                                        </button>
+                                    </h2>
+                                <div id="participants" class="accordion-collapse collapse" aria-labelledby="participant_heading">
+                                    <div class="accordion-body">
+                                        <ul class="list-group" id="user_list"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                </div>
                     <div class="card-body overflow-hidden">
                         <div id="chat_messages" class="w-100 h-100 border-0 overflow-scroll"></div>
                     </div>
                     <div class="card-footer">
                         <form id="message_form" class="d-flex flex-nowrap gap-3">
                             <input type="text" name="message" class="form-control flex-fill" autofocus autocomplete="off" />
-                            <button type="submit" class="btn btn-primary text-nowrap">전송</button>
+                            <button type="submit" class="btn btn-warning text-nowrap">전송</button>
                         </form>
                     </div>
                 </div>
@@ -48,10 +72,8 @@
 
             <hr class="my-3" />
 
-            <a href="{% url 'chat:index' %}" class="btn btn-primary">대기실로 이동</a>
-
             {% if request.user == room.owner %}
-                <a href="{% url 'chat:room_delete' room.pk %}" class="btn btn-danger">
+                <a href="{% url 'chat:open_room_delete' room.pk %}" class="btn btn-danger">
                     채팅방 삭제하기
                 </a>
             {% endif %}
@@ -67,7 +89,7 @@
                 </div>
                 <div class="modal-body"></div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">OK</button>
+                    <button type="button" class="btn btn-warning">OK</button>
                 </div>
             </div>
         </div>
@@ -104,6 +126,23 @@
         onopen(){
             console.log("웹소켓 서버와 접속");
             this.retry = 0;
+
+            fetch('{% url "chat:open_room_users" room.pk %}')
+                .then(response => response.json())
+                .then(({ username_list }) => {
+                    this.username_set = new Set([...this.username_set, ...username_list]);
+                    this.update_user_list();
+                })
+                .catch(error => console.error('Error fetching user list:', error));
+
+            fetch(`http://127.0.0.1:8000/chat/{{ room.pk }}/open_chat_messages`)
+                 .then(response => response.json())
+                 .then(messages => {
+                     messages.forEach(message => {
+                         this.append_message(message.content, message.user);
+                     });
+                 })
+                 .catch(error => console.error('Error fetching chat messages:', error));
         },
         onclose(event){
             const close_code = event.code;
@@ -143,12 +182,14 @@
                     this.append_message(message, sender);
                     break;
                 case "chat.user.join":
-                    this.append_message(`${username}님이 들어오셨습니다.`, 'system');
+                    this.append_message(`${username}님이 들어오셨습니다.`, 'admin');
                     this.username_set.add(username);
+                    this.update_user_list();
                     break;
                 case "chat.user.leave":
-                    this.append_message(`${username}님이 나가셨습니다.`, 'system')
+                    this.append_message(`${username}님이 나가셨습니다.`, 'admin')
                     this.username_set.delete(username);
+                    this.update_user_list();
                     break;
                 default:
                     console.error(`Invalid message type : ${type}`);
@@ -158,16 +199,26 @@
             const element = document.createElement("div");
             element.className = "chat-message";
 
+            const wrapper = document.createElement("div");
             let footer = "";
             if (sender === "{{ user.username }}"){
                 element.className += " me";
+                wrapper.textContent = message;
+            }
+            else if (sender === "admin"){
+                element.className += " admin";
+                wrapper.textContent = message;
             }
             else if (sender){
                 footer = ` from ${sender}`;
+                const nickname = document.createElement("span");
+                nickname.textContent = sender;
+                element.appendChild(nickname);
+                element.appendChild(document.createElement("br"));
+                wrapper.textContent = message;
+                wrapper.style.marginTop = "0px";
             }
 
-            const wrapper = document.createElement("div");
-            wrapper.textContent = sender+' : '+message;
             element.appendChild(wrapper);
 
             //element.textContent = message;
@@ -192,6 +243,17 @@
                 message: message,
             }))
         },
+
+        update_user_list() {
+            const html = [...this.username_set]
+                .map(username => `<li class="list-group-item">${username}</li>`)
+                .join('');
+            document.querySelector("#user_list").innerHTML = html;
+
+            document.querySelector("#user_count").textContent =
+                `(${this.username_set.size}명)`;
+        },
+
         modal(message, ok_handler) {
             const modal_ele = document.querySelector("#staticBackdrop");
             const body_ele = modal_ele.querySelector(".modal-body");

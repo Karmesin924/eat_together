@@ -28,7 +28,7 @@ const Board = ({
       .post("http://127.0.0.1:8000/chat/new_matching_room/", chatData)
       .then((resp) => {
         window.location.replace(
-          `http://127.0.0.1:8000/chat/${resp.room_pk}/matching_chat/`
+          `http://127.0.0.1:8000/chat/${resp.data.room_pk}/matching_chat/`
         );
       })
       .catch((err) => {

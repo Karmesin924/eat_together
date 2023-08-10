@@ -1,16 +1,28 @@
 from django.contrib import admin
 
-from chat.models import OpenRoom, MatchingRoom, OpenRoomMember
+from chat.models import OpenRoom, MatchingRoom, OpenRoomMember, MatchingRoomMember, OpenRoomMessage, MatchingRoomMessage
 
 
 @admin.register(OpenRoom)
-class RoomAdmin(admin.ModelAdmin):
-    pass
+class OpenRoomAdmin(admin.ModelAdmin):
+    list_display = ('name', 'pk')
 
 @admin.register(MatchingRoom)
-class RoomAdmin(admin.ModelAdmin):
-    pass
+class MatchingRoomAdmin(admin.ModelAdmin):
+    list_display = ('name', )
 
 @admin.register(OpenRoomMember)
-class RoomMemberAdmin(admin.ModelAdmin):
-    pass
+class OpenRoomMemberAdmin(admin.ModelAdmin):
+    list_display = ('user', 'room')
+
+@admin.register(MatchingRoomMember)
+class MatchingRoomMemberAdmin(admin.ModelAdmin):
+    list_display = ('user', 'room')
+
+@admin.register(OpenRoomMessage)
+class OpenRoomMessageAdmin(admin.ModelAdmin):
+    list_display = ('user', 'room', 'content', 'timestamp')
+
+@admin.register(MatchingRoomMessage)
+class MatchingRoomMessageAdmin(admin.ModelAdmin):
+    list_display = ('user', 'room', 'content', 'timestamp')
