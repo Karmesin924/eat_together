@@ -92,7 +92,7 @@ const Write = () => {
         const shouldUpdate = window.confirm("수정하시겠습니까?");
         if (shouldUpdate) {
           // 글 수정 요청 처리
-          const response = await axios.put(`/posts/${id}`, {
+          axios.put(`/posts/${id}`, {
             title,
             contents,
           });
@@ -103,7 +103,7 @@ const Write = () => {
         const shouldSubmit = window.confirm("작성하시겠습니까?");
         if (shouldSubmit) {
           // 글 작성 요청 처리
-          const response = await axios.post("/posts/add", {
+          await axios.post("/posts/add", {
             title,
             contents,
           });
