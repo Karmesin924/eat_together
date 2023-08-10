@@ -29,10 +29,7 @@ const ReplyForm = ({ id }) => {
 
     try {
       if (window.confirm("댓글을 작성하시겠습니까?")) {
-        const response = await axios.post(
-          `/posts/comment/${id}/add`,
-          replyData
-        );
+        await axios.post(`/posts/comment/${id}/add`, replyData);
 
         // 성공적으로 작성되었을 때의 처리 로직
         alert("댓글이 성공적으로 작성되었습니다!");

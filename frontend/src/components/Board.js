@@ -1,12 +1,29 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
+import { useEffect, useState } from "react";
 
 const Board = ({ id, title, contents, nickname, createdDate, author }) => {
   const navigate = useNavigate();
+  const [isChatButtonVisible, setIsChatButtonVisible] = useState(false);
+  const [currentNickname, setCurrentNickname] = useState("");
 
   const handleEdit = () => {
     navigate(`/write/${id}`, { state: { isEditMode: true } });
+  };
+
+  const handleChat = () => {
+    const chatData = {
+      user_nicknames: [currentNickname, nickname],
+    };
+    axios
+      .get("/chat/new_matching_room/", chatData)
+      .then(() => {
+        navigate("http://127.0.0.1:8000/accounts/login/");
+      })
+      .catch((err) => {
+        console.log("채팅 페이지로 이동에 실패했습니다.", err);
+      });
   };
 
   const handleDelete = () => {
@@ -21,6 +38,23 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
       });
   };
 
+  useEffect(() => {
+    axios
+      .get("/users/validate")
+      .then((res) => {
+        const fetchedNickname = res.data.nickname;
+        setCurrentNickname(fetchedNickname);
+        if (fetchedNickname !== nickname) {
+          setIsChatButtonVisible(true);
+        } else {
+          setIsChatButtonVisible(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [currentNickname, nickname]);
+
   return (
     <div>
       <div className="flex flex-col items-center">
@@ -31,7 +65,7 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
           </div>
         </div>
         <div className="pt-2 pb-2 w-5/6 flex flex-row justify-between items-center text-left">
-          <div className="flex flex-row pl-2 justify-center items-baseline gap-2">
+          <div className="flex flex-col pl-2 justify-center items-baseline gap-2">
             <p className="flex font-semibold text-base text-left text-project">
               {nickname}
             </p>
@@ -53,6 +87,11 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
                 <MyButton text={"수정"} onClick={handleEdit} />
                 <span className="pl-2"></span>
                 <MyButton text={"삭제"} onClick={handleDelete} />
+              </div>
+            )}
+            {!author && isChatButtonVisible && (
+              <div className="flex flex-row">
+                <MyButton text={"1:1 채팅"} onClick={handleChat} />
               </div>
             )}
           </div>
