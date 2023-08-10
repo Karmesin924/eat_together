@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const ReplyForm = ({ id }) => {
+const ReplyForm = ({ id, currentNickname }) => {
   const navigate = useNavigate();
   const [replycontents, setReplycontents] = useState("");
   const [nickname, setNickname] = useState("");
@@ -29,7 +29,7 @@ const ReplyForm = ({ id }) => {
 
     try {
       if (window.confirm("댓글을 작성하시겠습니까?")) {
-        await axios.post(`/posts/comment/${id}/add`, replyData);
+        axios.post(`/posts/comment/${id}/add`, replyData);
 
         // 성공적으로 작성되었을 때의 처리 로직
         alert("댓글이 성공적으로 작성되었습니다!");
@@ -44,22 +44,15 @@ const ReplyForm = ({ id }) => {
   };
 
   useEffect(() => {
-    // 서버에서 유저 정보를 가져와서 닉네임 고정
-    const fetchUserNickname = async () => {
-      try {
-        const response = await axios.get("/users/validate");
-        const { nickname } = response.data;
-        setNickname(nickname);
-        setLoggedIn(true);
-        setLoading(false);
-      } catch (error) {
-        setNickname("먼저 로그인하세요!");
-        setLoggedIn(false);
-        setLoading(false);
-      }
-    };
-
-    fetchUserNickname();
+    if (currentNickname !== null) {
+      setNickname(currentNickname);
+      setLoggedIn(true);
+      setLoading(false);
+    } else {
+      setNickname("먼저 로그인하세요!");
+      setLoggedIn(false);
+      setLoading(false);
+    }
   }, []);
 
   return (
