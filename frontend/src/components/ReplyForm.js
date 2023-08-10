@@ -33,18 +33,14 @@ const ReplyForm = ({ id }) => {
           `/posts/comment/${id}/add`,
           replyData
         );
+
         // 성공적으로 작성되었을 때의 처리 로직
-        console.log("댓글이 성공적으로 작성되었습니다.", response.data);
         alert("댓글이 성공적으로 작성되었습니다!");
       }
-      window.location.reload(); //일단 강제로 새로고침 했는데, 컴포넌트 리렌더링으로 수정해야함.
+      window.location.reload(); //새로고침
     } catch (error) {
       // 오류 발생 시의 처리 로직
-      alert("댓글 작성에 실패했습니다.");
-      console.log(
-        "댓글 작성에 실패했습니다. 잠시 후에 다시 시도해주세요.",
-        error
-      );
+      alert("댓글 작성에 실패했습니다, 잠시 후에 다시 시도해주세요.");
     } finally {
       setReplycontents("");
     }

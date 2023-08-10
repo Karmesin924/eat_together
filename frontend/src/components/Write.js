@@ -28,7 +28,6 @@ const Write = () => {
         if (axios.isCancel(error)) {
           return;
         }
-        console.log("Failed to validate user:", error);
         alert("글을 작성하시려면 먼저 로그인해주세요!");
         navigate("/SignIn");
       });
@@ -52,7 +51,6 @@ const Write = () => {
           alert("글을 쓰기 위해서 로그인이 필요합니다!");
           navigate("/SignIn");
         } else {
-          console.log("유저 정보를 가져오는데 실패했습니다.", error);
           setLoading(false);
         }
       }
@@ -72,7 +70,7 @@ const Write = () => {
           setContents(contents);
           setNickname(nickname);
         } catch (error) {
-          console.log("글 불러오기에 실패했습니다.", error);
+          alert("글을 불러올 수 없습니다, 잠시 후에 시도해주세요.");
         }
       };
 
@@ -98,7 +96,6 @@ const Write = () => {
             title,
             contents,
           });
-          console.log("글이 성공적으로 수정되었습니다.", response.data);
           alert("글이 성공적으로 수정되었습니다.");
           navigate(`/posts/${id}`);
         }
@@ -110,14 +107,12 @@ const Write = () => {
             title,
             contents,
           });
-          console.log("글이 성공적으로 저장되었습니다.", response.data);
           alert("글이 성공적으로 저장되었습니다.");
           navigate("/LetsDo");
         }
       }
     } catch (error) {
-      console.log("글 저장 또는 수정에 실패했습니다.", error);
-      alert("글 저장 또는 수정에 실패했습니다..");
+      alert("글 저장에 실패했습니다..");
       if (isEditMode) {
         navigate(`/posts/${id}`);
       } else {

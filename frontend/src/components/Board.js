@@ -6,12 +6,10 @@ const Board = ({ id, title, contents, nickname, createdDate, author }) => {
   const navigate = useNavigate();
 
   const handleEdit = () => {
-    console.log("수정 버튼 클릭");
     navigate(`/write/${id}`, { state: { isEditMode: true } });
   };
 
   const handleDelete = () => {
-    console.log("삭제 버튼 클릭");
     axios
       .delete(`/posts/${id}`)
       .then(() => {

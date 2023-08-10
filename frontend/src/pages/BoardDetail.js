@@ -30,7 +30,7 @@ const BoardDetail = () => {
       setAuthor(author);
       setLoading(false);
     } catch (err) {
-      console.log("게시글을 가져오는데 실패했습니다.", err);
+      alert("게시글을 가져오는데 실패했습니다.", err);
       setLoading(false);
     }
   }, [id]);
