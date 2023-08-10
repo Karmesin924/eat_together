@@ -18,7 +18,6 @@ const LetsEat = () => {
     age = "any",
     menu = "any",
     conversation = "Normal",
-    handleSaveFilters,
     latitude,
     longitude,
     handleLocation,
@@ -38,6 +37,7 @@ const LetsEat = () => {
         if (axios.isCancel(error)) {
           return;
         }
+        console.log("Failed to validate user:", error);
         alert("같이 먹자 페이지는 로그인 후 사용하실 수 있습니다.");
         navigate("/SignIn");
       });
@@ -91,6 +91,7 @@ const LetsEat = () => {
         if (accuracy > 100) {
           setLocationError(true);
         }
+        console.log("latitude : " + latitude + ", longitude : " + longitude);
         handleLocation(latitude, longitude);
         setMapLoaded(true);
       };
@@ -112,12 +113,17 @@ const LetsEat = () => {
   };
 
   useEffect(() => {
-    axios.get("/users/validate").then((res) => {
-      if (res.status === 404) {
-        alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
-        navigate("/SignIn");
-      }
-    });
+    axios
+      .get("/users/validate")
+      .then((res) => {
+        if (res.status === 404) {
+          alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
+          navigate("/SignIn");
+        }
+      })
+      .catch(() => {
+        console.log("로그인 OK");
+      });
   }, [navigate]);
 
   //현재 시간
