@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 from eat_together_chatting.json_extended import ExtendedJSONEncoder, ExtendedJSONDecoder
 
@@ -128,8 +129,8 @@ class MatchingRoomMessage(models.Model):
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-
-def room__on_post_delete(instance: OpenRoom, **kwargs):
+@receiver(post_delete, sender=OpenRoom, dispatch_uid="room__on_post_delete")
+def open_room__on_post_delete(instance: OpenRoom, **kwargs):
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         instance.chat_group_name,
@@ -138,12 +139,6 @@ def room__on_post_delete(instance: OpenRoom, **kwargs):
         }
     )
 
-
-post_delete.connect(
-    room__on_post_delete,
-    sender=OpenRoom,
-    dispatch_uid="room__on_post_delete",
-)
 
 class OpenRoomMember(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
@@ -155,3 +150,18 @@ class MatchingRoomMember(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     room = models.ForeignKey(MatchingRoom, on_delete=models.CASCADE)
     channel_names = models.JSONField(default=set, encoder=ExtendedJSONEncoder, decoder=ExtendedJSONDecoder)
+
+@receiver(post_delete, sender=MatchingRoomMember, dispatch_uid="matching_room_member__on_post_delete")
+def matching_room_member__on_post_delete(sender, instance, **kwargs):
+    channel_layer = get_channel_layer()
+
+    if instance.room:
+        room_members = MatchingRoomMember.objects.filter(room=instance.room).exclude(user=instance.user)
+        for member in room_members:
+            async_to_sync(channel_layer.group_send)(
+                member.room.chat_group_name,
+                {
+                    "type": "matching_chat_user_exit",
+                    "username": instance.user.username,
+                }
+            )

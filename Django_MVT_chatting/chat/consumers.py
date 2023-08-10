@@ -1,5 +1,6 @@
 from asgiref.sync import async_to_sync
 from channels.generic.websocket import JsonWebsocketConsumer
+from django.contrib.auth.models import User
 
 from chat.models import OpenRoom, MatchingRoom, OpenRoomMessage, MatchingRoomMessage
 
@@ -153,7 +154,6 @@ class MatchingChatConsumer(JsonWebsocketConsumer):
             message = content["message"]
             room_pk = self.scope["url_route"]["kwargs"]["room_pk"]
             room = MatchingRoom.objects.get(pk=room_pk)
-
             MatchingRoomMessage.objects.create(
                 user=user,
                 room=room,
@@ -171,10 +171,26 @@ class MatchingChatConsumer(JsonWebsocketConsumer):
         else:
             print(f"Invalid message type : ${_type}")
 
-
     def chat_message(self, message_dict):
         self.send_json({
             "type": "chat.message",
             "message": message_dict["message"],
             "sender": message_dict["sender"],
         })
+
+    def matching_chat_user_exit(self, message_dict):
+        room_pk = self.scope["url_route"]["kwargs"]["room_pk"]
+        room = MatchingRoom.objects.get(pk=room_pk)
+        admin_user = User.objects.get(username="admin")
+
+        MatchingRoomMessage.objects.create(
+            user=admin_user,
+            room=room,
+            content=message_dict["username"]+'님이 퇴장하셨습니다.'
+        )
+
+        self.send_json({
+            "type": "chat.user.exit",
+            "username": message_dict["username"],
+        })
+

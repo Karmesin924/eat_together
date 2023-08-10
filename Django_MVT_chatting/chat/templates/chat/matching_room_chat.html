@@ -22,6 +22,16 @@
     text-align: left;
 }
 
+.chat-message.admin {
+    text-align: center;
+}
+.chat-message.admin > div {
+    background-color: lightgreen;
+    color: black;
+    text-align: left;
+}
+
+
 </style>
 {% endblock %}
 {% block content %}
@@ -146,13 +156,9 @@
                 case "chat.message":
                     this.append_message(message, sender);
                     break;
-                case "chat.user.join":
-                    this.append_message(`${username}님이 들어오셨습니다.`, 'system');
-                    this.username_set.add(username);
-                    break;
-                case "chat.user.leave":
-                    this.append_message(`${username}님이 나가셨습니다.`, 'system')
-                    this.username_set.delete(username);
+                case "chat.user.exit":
+                    console.log(`${username}님이 퇴장하셨습니다.`)
+                    this.append_message(`${username}님이 퇴장하셨습니다.`, 'admin')
                     break;
                 default:
                     console.error(`Invalid message type : ${type}`);
@@ -168,8 +174,8 @@
                 element.className += " me";
                 wrapper.textContent = message;
             }
-            else if (sender === "system"){
-                element.className += " system";
+            else if (sender === "admin"){
+                element.className += " admin";
                 wrapper.textContent = message;
             }
             else if (sender){

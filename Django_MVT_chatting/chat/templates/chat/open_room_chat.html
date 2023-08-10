@@ -22,10 +22,10 @@
     text-align: left;
 }
 
-.chat-message.system {
+.chat-message.admin {
     text-align: center;
 }
-.chat-message.system > div {
+.chat-message.admin > div {
     background-color: lightgreen;
     color: black;
     text-align: left;
@@ -182,12 +182,12 @@
                     this.append_message(message, sender);
                     break;
                 case "chat.user.join":
-                    this.append_message(`${username}님이 들어오셨습니다.`, 'system');
+                    this.append_message(`${username}님이 들어오셨습니다.`, 'admin');
                     this.username_set.add(username);
                     this.update_user_list();
                     break;
                 case "chat.user.leave":
-                    this.append_message(`${username}님이 나가셨습니다.`, 'system')
+                    this.append_message(`${username}님이 나가셨습니다.`, 'admin')
                     this.username_set.delete(username);
                     this.update_user_list();
                     break;
@@ -205,8 +205,8 @@
                 element.className += " me";
                 wrapper.textContent = message;
             }
-            else if (sender === "system"){
-                element.className += " system";
+            else if (sender === "admin"){
+                element.className += " admin";
                 wrapper.textContent = message;
             }
             else if (sender){
