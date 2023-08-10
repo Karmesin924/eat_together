@@ -15,8 +15,7 @@ const ReplyList = ({ id }) => {
       const repliesData = response.data;
       setReplies(repliesData);
     } catch (err) {
-      alert("댓글을 가져오는데 실패했습니다.");
-      console.log("댓글을 가져오는데 실패했습니다.", err);
+      alert("댓글을 가져오는데 실패했습니다, 잠시후에 다시 시도해주세요.");
     }
   };
 

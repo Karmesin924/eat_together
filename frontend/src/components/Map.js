@@ -37,7 +37,7 @@ const Map = ({ center }) => {
 
   useEffect(() => {
     if (!kakao) {
-      console.error("Kakao 지도 API가 로드되지 않았습니다.");
+      alert("Kakao 지도 API가 로드되지 않았습니다.");
       return;
     }
 

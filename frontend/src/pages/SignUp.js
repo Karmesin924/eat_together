@@ -176,14 +176,12 @@ const SignUp = () => {
       .post("/users/signup", userData, { withCredentials: true })
       .then((response) => {
         alert("회원가입이 완료되었습니다.");
-        navigate("/SignIn"); // 가입 성공 시 이동할 경로를 설정해주세요
+        navigate("/SignIn");
       })
       .catch((error) => {
-        // 서버에서 에러 응답을 받았을 경우 처리
         if (error.response && error.response.status === 400) {
           let errorMessage = "";
 
-          console.log(error.response.data);
           // 이메일 중복 체크
           if (error.response.data === "email") {
             errorMessage +=
@@ -198,7 +196,6 @@ const SignUp = () => {
 
           alert(errorMessage);
         } else {
-          // 다른 에러
           alert("오류로 인해 회원가입이 완료되지 않았습니다.");
         }
         console.error(error);
