@@ -15,11 +15,15 @@ import MyContext from './components/MyContext';
 import Matching from './pages/Matching';
 
 function App() {
+  const [nickname, setNickname] = useState('');
+
   const [people, setPeople] = useState();
   const [gender, setGender] = useState();
   const [age, setAge] = useState();
   const [menu, setMenu] = useState();
   const [conversation, setConversation] = useState();
+
+  const [startTime, setStartTime] = useState('');
 
   const [latitude, setLatitude] = useState(null);
   const [longitude, setLongitude] = useState(null);
@@ -46,9 +50,13 @@ function App() {
         age,
         menu,
         conversation,
+        startTime,
+        setStartTime,
         latitude,
         longitude,
         handleLocation,
+        nickname,
+        setNickname,
       }}
     >
       <BrowserRouter>

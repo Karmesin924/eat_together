@@ -3,6 +3,8 @@ import { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import MyButton from '../components/MyButton';
 import MyHeader from '../components/MyHeader';
+import MyContext from '../components/MyContext';
+import { useContext } from 'react';
 
 const Matching = () => {
   const navigate = useNavigate();
@@ -11,13 +13,29 @@ const Matching = () => {
   const [matchingComplete, setMatchingComplete] = useState(false); // 매칭 완료 확인
   const [roomPk, setRoomPk] = useState(null); // 채팅방 번호
 
+  const { nickname, people, gender, age, menu, startTime, conversation, latitude, longitude } = useContext(MyContext);
+
+  const newFilters = {
+    type: 'matching_start',
+    people,
+    gender,
+    age,
+    menu,
+    conversation,
+    latitude,
+    longitude,
+    startTime,
+    nickname,
+  };
+
   useEffect(() => {
     //백엔드와 소켓 연결
-    const newSocket = io('localhost:8080');
+    const newSocket = io('/matching/start');
 
     //연결 성공시
     newSocket.on('connect', () => {
       console.log('소켓 연결 성공');
+      newSocket.emit('sendFilters', newFilters);
     });
 
     newSocket.on('matchingData', (data) => {
