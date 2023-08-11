@@ -2,7 +2,9 @@ package SWST.eat_together.domain.member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 @RequiredArgsConstructor
@@ -15,15 +17,17 @@ public class MemberService {
         this.memberRepository = memberRepository;}
 
     public String saveUser(SignUpDTO form) {
-        // Check if email already exists
         if (memberRepository.existsByEmail(form.getEmail())) {
             return "email";
         }
 
-        // Check if nickname already exists
         if (memberRepository.existsByNickname(form.getNickname())) {
             return "nickname";
         }
+
+        String DjangoApiUrl = "http://127.0.0.1:8000/accounts/signup/";
+        signUpRequest(DjangoApiUrl, form.getNickname(), form.getEmail(), form.getPassword());
+
 
         Member member = new Member();
         member.setEmail(form.getEmail());
@@ -37,9 +41,7 @@ public class MemberService {
 
         return "0";
     }
-    public Member login(LoginDTO form)
-    //loginId를 조회해 password와 일치하는지 검증. 일치하면 MemberDTO 객체 반환, 일치하지 않으면 null 반환.
-    {
+    public Member login(LoginDTO form){
         Member member = new Member();
         member = memberRepository.findByEmail(form.getEmail());
         if (member == null) {
@@ -52,5 +54,21 @@ public class MemberService {
             return member;
 
         return null;
+    }
+
+    public static void signUpRequest(String apiUrl, String nickname, String email, String password) {
+        String jsonBody = String.format("{\"nickname\":\"%s\",\"email\":\"%s\",\"password\":\"%s\"}", nickname, email, password);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(jsonBody, headers);
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.POST, requestEntity, String.class);
+        HttpStatus statusCode = response.getStatusCode();
+        String responseBody = response.getBody();
+
+        System.out.println("Response Status Code: " + statusCode);
+        System.out.println("Response Body: " + responseBody);
     }
 }
