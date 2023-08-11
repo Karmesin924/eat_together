@@ -29,19 +29,3 @@ CREATE TABLE `eat_together_db`.`user_info` (
   KEY `idx_userinfo_nickname` (`nickname`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin;
 USE eat_together_db;
-CREATE TABLE `request_list` (
-    `request_id` bigint NOT NULL AUTO_INCREMENT,
-    `user_id` bigint DEFAULT NULL,
-    `people` varchar(255) NOT NULL,
-    `gender` varchar(255) NOT NULL,
-    `age` varchar(255) NOT NULL,
-    `menu` varchar(255) NOT NULL,
-    `conversation` varchar(255) NOT NULL,
-    `latitude` double NOT NULL,
-    `longitude` double NOT NULL,
-    `start_time` time NOT NULL,
-    PRIMARY KEY (`request_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
-
-

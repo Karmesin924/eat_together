@@ -1,6 +1,7 @@
 package SWST.eat_together.domain.matching;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
@@ -8,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 @Service
@@ -59,7 +61,7 @@ public class MatchService {
         System.out.println("----- MatchService.sendMatchingCompletedMessage -----");
         MatchedList messageToChat = new MatchedList();
 //        message.setMember(String.join(", ", matchedUserNicknames));
-        messageToChat.setMember(matchedUserNicknames);
+        messageToChat.setUser_nicknames(matchedUserNicknames);
 
 
         System.out.println("message = " + messageToChat);
@@ -72,21 +74,22 @@ public class MatchService {
 
 
         // 대상 서버 URL 설정
-        String targetUrl = "http://127.0.0.1:8000/chat/new_matching_room";
+        String targetUrl = "http://127.0.0.1:8000/chat/new_matching_room/";
 
         // HTTP POST 요청 보내기
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Integer> response = restTemplate.exchange(targetUrl, HttpMethod.POST, requestEntity, Integer.class);
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(targetUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<Map<String, Object>>() {});
         System.out.println("response = " + response);
 
         if (response.getStatusCode() == HttpStatus.CREATED) {
-//            int roomPk = response.getBody();
-            int roomPk = 1;
-            System.out.println("roomPk = " + roomPk);
+            Map<String, Object> responseBody = response.getBody();
+            if (responseBody != null && responseBody.containsKey("room_pk")) {
+                int roomPk = (int) responseBody.get("room_pk");
+                System.out.println("roomPk = " + roomPk);
 
-            messageToFront.setRoomPk(roomPk);
-            messagingTemplate.convertAndSend("/matching/result", messageToFront);
-
+                messageToFront.setRoomPk(roomPk);
+                messagingTemplate.convertAndSend("/matching/result", messageToFront);
+            }
 
         } else {
             System.err.println("Failed to send matching completed message. Status code: " + response.getStatusCode());

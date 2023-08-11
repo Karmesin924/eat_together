@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class MatchedList {
-    private List<String> member;
+    private List<String> user_nicknames;
 }
