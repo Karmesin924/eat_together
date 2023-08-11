@@ -78,6 +78,7 @@ const BoardDetail = () => {
             title={board?.title}
             contents={board?.contents}
             nickname={board?.nickname}
+            currentNickname={currentNickname}
             createdDate={board?.createdDate}
             replies={board?.replies || []}
             author={author}
