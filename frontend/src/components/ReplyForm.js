@@ -1,10 +1,8 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import MyButton from "./MyButton";
 
-const ReplyForm = ({ id, currentNickname }) => {
-  const navigate = useNavigate();
+const ReplyForm = ({ id }) => {
   const [replycontents, setReplycontents] = useState("");
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
@@ -17,11 +15,6 @@ const ReplyForm = ({ id, currentNickname }) => {
       contents: replycontents,
     };
 
-    if (!loggedIn) {
-      alert("댓글을 작성하려면 먼저 로그인하세요!");
-      navigate("/SignIn");
-      return;
-    }
     if (replycontents.trim() === "") {
       alert("댓글 내용을 입력하세요!");
       return;
@@ -44,15 +37,21 @@ const ReplyForm = ({ id, currentNickname }) => {
   };
 
   useEffect(() => {
-    if (currentNickname !== null) {
-      setNickname(currentNickname);
-      setLoggedIn(true);
-      setLoading(false);
-    } else {
-      setNickname("먼저 로그인하세요!");
-      setLoggedIn(false);
-      setLoading(false);
-    }
+    const fetchUserNickname = async () => {
+      try {
+        const response = await axios.get("/users/validate");
+        const { nickname } = response.data;
+        setNickname(nickname);
+        setLoggedIn(true);
+        setLoading(false);
+      } catch (error) {
+        setNickname("먼저 로그인하세요!");
+        setLoggedIn(false);
+        setLoading(false);
+      }
+    };
+
+    fetchUserNickname();
   }, []);
 
   return (
