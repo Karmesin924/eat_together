@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import MyButton from "./MyButton";
+import { useNavigate } from "react-router-dom";
 
 const ReplyForm = ({ id }) => {
+  const navigate = useNavigate();
   const [replycontents, setReplycontents] = useState("");
   const [nickname, setNickname] = useState("");
   const [loading, setLoading] = useState(true);
@@ -14,6 +16,12 @@ const ReplyForm = ({ id }) => {
     const replyData = {
       contents: replycontents,
     };
+
+    if (!loggedIn) {
+      alert("댓글을 작성하려면 먼저 로그인하세요!");
+      navigate("/SignIn");
+      return;
+    }
 
     if (replycontents.trim() === "") {
       alert("댓글 내용을 입력하세요!");
