@@ -5,6 +5,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
+@CrossOrigin(origins = "http://localhost:3000")
 @Service
 public class MatchService {
 
@@ -87,8 +89,12 @@ public class MatchService {
                 int roomPk = (int) responseBody.get("room_pk");
                 System.out.println("roomPk = " + roomPk);
 
+                String matchedMembers = String.join(", ", matchedUserNicknames);
                 messageToFront.setRoomPk(roomPk);
-                messagingTemplate.convertAndSend("/matching/result", messageToFront);
+                messageToFront.setMember(matchedMembers);
+                messageToFront.setType("matching_completed");
+                System.out.println("messageToFront = " + messageToFront);
+                messagingTemplate.convertAndSend("matchingData", messageToFront);
             }
 
         } else {
