@@ -11,7 +11,9 @@ const BoardDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [currentNickname, setCurrentNickname] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [board, setBoard] = useState({
     title: "",
     contents: "",
@@ -44,13 +46,16 @@ const BoardDetail = () => {
   useEffect(() => {
     axios
       .get("/users/validate")
-      .then(() => {
+      .then((res) => {
+        const fetchedNickname = res.data.nickname;
+        setCurrentNickname(fetchedNickname);
         setIsLoggedIn(true);
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [currentNickname]);
+
   return (
     <div>
       <MyHeader
