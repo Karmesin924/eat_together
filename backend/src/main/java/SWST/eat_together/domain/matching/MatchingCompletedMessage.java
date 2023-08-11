@@ -7,6 +7,6 @@ import java.util.List;
 @Data
 public class MatchingCompletedMessage {
     private String type;
-    private String member;
+    private List<String> nickname;
     private int roomPk;
 }

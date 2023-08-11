@@ -3,7 +3,9 @@ import lombok.Data;
 
 @Data
 public class MatchRequest {
+    private String type;
     private String nickname;
+
     private String people;
     private String gender;
     private String age;
