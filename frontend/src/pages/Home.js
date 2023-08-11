@@ -1,24 +1,28 @@
-import { Link, useNavigate } from "react-router-dom";
-import MyHeader from "../components/MyHeader";
-import MyButton from "../components/MyButton";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { Link, useNavigate } from 'react-router-dom';
+import MyHeader from '../components/MyHeader';
+import MyButton from '../components/MyButton';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
+import { useContext } from 'react';
+import MyContext from '../components/MyContext';
 
 const Home = () => {
   const navigate = useNavigate();
   const [isSignInButtonVisible, setIsSignInButtonVisible] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const { setNickname } = useContext(MyContext);
 
   const goToSignInPage = () => {
-    navigate("/SignIn");
+    navigate('/SignIn');
   };
 
   useEffect(() => {
     axios
-      .get("/users/validate")
+      .get('/users/validate')
       .then((res) => {
         if (res.status === 200) {
           setIsLoggedIn(true);
+          setNickname(res.data.nickname);
         } else {
           setIsSignInButtonVisible(true);
         }
@@ -36,15 +40,15 @@ const Home = () => {
       <MyHeader
         leftChild={
           <Link to="http://127.0.0.1:8000">
-            <MyButton text={"채팅"} />
+            <MyButton text={'채팅'} />
           </Link>
         }
-        headText={"같이 먹자"}
+        headText={'같이 먹자'}
         rightChild={
           <MyButton
-            text={"마이 페이지"}
+            text={'마이 페이지'}
             onClick={() => {
-              navigate("/MyPage");
+              navigate('/MyPage');
             }}
           />
         }
@@ -53,43 +57,31 @@ const Home = () => {
         <div
           className="ml-3 pt-2 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
-            navigate("/LetsEat");
+            navigate('/LetsEat');
           }}
         >
           <p className="text-6xl pt-6">
             같이 <br />
             먹자
           </p>
-          <img
-            className="m-auto"
-            src="images/LetsEat.png"
-            alt="같이먹자"
-            width={200}
-            height={200}
-          />
+          <img className="m-auto" src="images/LetsEat.png" alt="같이먹자" width={200} height={200} />
         </div>
         <div
           className="mr-3 pt-2 text-center font-light rounded-3xl border-4 border-solid border-project min-w-0 cursor-pointer hover:bg-homehover"
           onClick={() => {
-            navigate("/LetsDo");
+            navigate('/LetsDo');
           }}
         >
           <p className="text-6xl pt-6">
             같이 <br />
             하자
           </p>
-          <img
-            className="m-auto"
-            src="images/LetsDo.png"
-            alt="같이하자"
-            width={200}
-            height={200}
-          />
+          <img className="m-auto" src="images/LetsDo.png" alt="같이하자" width={200} height={200} />
         </div>
       </div>
       {!isLoggedIn && isSignInButtonVisible && (
         <div className="flex justify-center items-center mt-4">
-          <MyButton text={"로그인 하러가기"} onClick={goToSignInPage} />
+          <MyButton text={'로그인 하러가기'} onClick={goToSignInPage} />
         </div>
       )}
     </div>

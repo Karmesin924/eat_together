@@ -1,23 +1,24 @@
-import { useNavigate } from "react-router-dom";
-import MyButton from "../components/MyButton";
-import MyHeader from "../components/MyHeader";
-import { useContext, useEffect, useState } from "react";
-import axios from "axios";
-import MyContext from "../components/MyContext";
-import Map from "../components/Map";
+import { useNavigate } from 'react-router-dom';
+import MyButton from '../components/MyButton';
+import MyHeader from '../components/MyHeader';
+import { useContext, useEffect, useState } from 'react';
+import axios from 'axios';
+import MyContext from '../components/MyContext';
+import Map from '../components/Map';
 
 const LetsEat = () => {
   const navigate = useNavigate();
-  const [startTime, setStartTime] = useState("");
   const [mapLoaded, setMapLoaded] = useState(false);
   const [locationError, setLocationError] = useState(false);
 
   const {
-    people = "any",
-    gender = "any",
-    age = "any",
-    menu = "any",
-    conversation = "Normal",
+    people = 'any',
+    gender = 'any',
+    age = 'any',
+    menu = 'any',
+    conversation = 'Normal',
+    startTime,
+    setStartTime,
     latitude,
     longitude,
     handleLocation,
@@ -28,7 +29,7 @@ const LetsEat = () => {
     const source = axios.CancelToken.source();
 
     axios
-      .get("/users/validate", { cancelToken: source.token })
+      .get('/users/validate', { cancelToken: source.token })
       .then((res) => {
         if (isMounted && res.status !== 404) {
         }
@@ -37,14 +38,14 @@ const LetsEat = () => {
         if (axios.isCancel(error)) {
           return;
         }
-        console.log("Failed to validate user:", error);
-        alert("같이 먹자 페이지는 로그인 후 사용하실 수 있습니다.");
-        navigate("/SignIn");
+        console.log('Failed to validate user:', error);
+        alert('같이 먹자 페이지는 로그인 후 사용하실 수 있습니다.');
+        navigate('/SignIn');
       });
 
     return () => {
       isMounted = false;
-      source.cancel("Request canceled");
+      source.cancel('Request canceled');
     };
   }, [navigate]);
 
@@ -52,33 +53,8 @@ const LetsEat = () => {
     setStartTime(event.target.value);
   };
 
-  const handleMatching = () => {
-    alert("matching start!!");
-
-    const filters = {
-      people,
-      gender,
-      age,
-      menu,
-      conversation,
-      latitude,
-      longitude,
-      startTime,
-    };
-
-    axios
-      .post("/matching/start", filters)
-      .then((response) => {
-        console.log("필터 선택 값들을 백엔드로 전송했습니다.", response.data);
-        navigate("/Matching");
-      })
-      .catch((error) => {
-        console.log("필터 선택 값을 백엔드로 전송하는데 실패했습니다.", error);
-      });
-  };
-
   const handleSelectFilter = () => {
-    navigate("/FilterDetail");
+    navigate('/FilterDetail');
   };
 
   const getCurrentLocation = () => {
@@ -91,47 +67,43 @@ const LetsEat = () => {
         if (accuracy > 100) {
           setLocationError(true);
         }
-        console.log("latitude : " + latitude + ", longitude : " + longitude);
+        console.log('latitude : ' + latitude + ', longitude : ' + longitude);
         handleLocation(latitude, longitude);
         setMapLoaded(true);
       };
 
       const errorCallback = (error) => {
-        console.log("위치 정보를 가져오는데 실패했습니다.", error);
+        console.log('위치 정보를 가져오는데 실패했습니다.', error);
         setLocationError(true);
       };
 
-      navigator.geolocation.getCurrentPosition(
-        successCallback,
-        errorCallback,
-        options
-      );
+      navigator.geolocation.getCurrentPosition(successCallback, errorCallback, options);
     } else {
-      console.log("Geolocation API가 지원되지 않습니다.");
+      console.log('Geolocation API가 지원되지 않습니다.');
       setLocationError(true);
     }
   };
 
   useEffect(() => {
     axios
-      .get("/users/validate")
+      .get('/users/validate')
       .then((res) => {
         if (res.status === 404) {
-          alert("로그인 정보가 없습니다. 다시 로그인해주세요.");
-          navigate("/SignIn");
+          alert('로그인 정보가 없습니다. 다시 로그인해주세요.');
+          navigate('/SignIn');
         }
       })
       .catch(() => {
-        console.log("로그인 OK");
+        console.log('로그인 OK');
       });
   }, [navigate]);
 
   //현재 시간
   useEffect(() => {
     const now = new Date();
-    const hours = now.getHours().toString().padStart(2, "0");
-    const minutes = now.getMinutes().toString().padStart(2, "0");
-    const currentTime = hours + ":" + minutes;
+    const hours = now.getHours().toString().padStart(2, '0');
+    const minutes = now.getMinutes().toString().padStart(2, '0');
+    const currentTime = hours + ':' + minutes;
     setStartTime(currentTime);
   }, []);
 
@@ -141,52 +113,52 @@ const LetsEat = () => {
 
   const toKorean = (value) => {
     switch (value) {
-      case "any":
-        return "상관없음";
-      case "2":
-        return "2인";
-      case "3":
-        return "3인";
-      case "4":
-        return "4인";
-      case "same":
-        return "동성만";
-      case "peer":
-        return "또래만";
-      case "Korean":
-        return "한식";
-      case "Chinese":
-        return "중식";
-      case "Japanese":
-        return "일식";
-      case "Western":
-        return "양식";
-      case "Vietnamese":
-        return "베트남식";
-      case "Bunsik":
-        return "분식";
-      case "Dessert":
-        return "디저트";
-      case "Little":
-        return "적음";
-      case "Normal":
-        return "보통";
-      case "Many":
-        return "많음";
+      case 'any':
+        return '상관없음';
+      case '2':
+        return '2인';
+      case '3':
+        return '3인';
+      case '4':
+        return '4인';
+      case 'same':
+        return '동성만';
+      case 'peer':
+        return '또래만';
+      case 'Korean':
+        return '한식';
+      case 'Chinese':
+        return '중식';
+      case 'Japanese':
+        return '일식';
+      case 'Western':
+        return '양식';
+      case 'Vietnamese':
+        return '베트남식';
+      case 'Bunsik':
+        return '분식';
+      case 'Dessert':
+        return '디저트';
+      case 'Little':
+        return '적음';
+      case 'Normal':
+        return '보통';
+      case 'Many':
+        return '많음';
       default:
-        return "";
+        return '';
     }
   };
 
   return (
     <div>
       <MyHeader
-        headText={"같이 먹자"}
+        headText={'같이 먹자'}
         leftChild={
           <MyButton
-            text={"뒤로가기"}
+            text={'뒤로가기'}
             onClick={() => {
-              navigate("/");
+              navigate('/');
             }}
           />
         }
@@ -200,18 +172,16 @@ const LetsEat = () => {
               type="text"
               placeholder="닉네임"
               value={new Date()
-                .toLocaleDateString("ko-KR", {
-                  year: "numeric",
-                  month: "2-digit",
-                  day: "2-digit",
-                  weekday: "short",
+                .toLocaleDateString('ko-KR', {
+                  year: 'numeric',
+                  month: '2-digit',
+                  day: '2-digit',
+                  weekday: 'short',
                 })
-                .replace(/\./g, " /")}
+                .replace(/\./g, ' /')}
               readOnly
             />
-            <p className=" text-gray-500 pb-3">
-              ※모임 날짜는 당일로 고정됩니다.
-            </p>
+            <p className=" text-gray-500 pb-3">※모임 날짜는 당일로 고정됩니다.</p>
           </div>
           <div className="flex flex-col justify-center items-center m-auto w-64 flex-shrink-0">
             <p className="font-bold text-3xl pt-3 pb-3">시간 선택</p>
@@ -231,36 +201,26 @@ const LetsEat = () => {
           <div className="text-xl pb-3">
             <p>
               <span className="font-bold">인원: </span>
-              <span className=" text-red-500 font-semibold">
-                {toKorean(people)}
-              </span>
+              <span className=" text-red-500 font-semibold">{toKorean(people)}</span>
             </p>
             <p>
               <span className="font-bold">성별: </span>
-              <span className=" text-red-500 font-semibold">
-                {toKorean(gender)}
-              </span>
+              <span className=" text-red-500 font-semibold">{toKorean(gender)}</span>
             </p>
             <p>
               <span className="font-bold">나이: </span>
-              <span className=" text-red-500 font-semibold">
-                {toKorean(age)}
-              </span>
+              <span className=" text-red-500 font-semibold">{toKorean(age)}</span>
             </p>
             <p>
               <span className="font-bold">메뉴: </span>
-              <span className=" text-red-500 font-semibold">
-                {toKorean(menu)}
-              </span>
+              <span className=" text-red-500 font-semibold">{toKorean(menu)}</span>
             </p>
             <p>
               <span className="font-bold">대화빈도: </span>
-              <span className=" text-red-500 font-semibold">
-                {toKorean(conversation)}
-              </span>
+              <span className=" text-red-500 font-semibold">{toKorean(conversation)}</span>
             </p>
             <div className="mt-2 text-center">
-              <MyButton text={"선택하기"} onClick={handleSelectFilter} />
+              <MyButton text={'선택하기'} onClick={handleSelectFilter} />
             </div>
           </div>
         </div>
@@ -274,10 +234,8 @@ const LetsEat = () => {
               {mapLoaded ? (
                 <div>
                   <Map center={{ latitude, longitude }} />
-                  <p className={locationError ? "text-red-500 m-2" : ""}>
-                    {locationError
-                      ? "위치가 정확하지 않을 수 있습니다. 지도를 이동하여 마커를 수정해주세요."
-                      : ""}
+                  <p className={locationError ? 'text-red-500 m-2' : ''}>
+                    {locationError ? '위치가 정확하지 않을 수 있습니다. 지도를 이동하여 마커를 수정해주세요.' : ''}
                   </p>
                 </div>
               ) : (
@@ -285,14 +243,18 @@ const LetsEat = () => {
               )}
             </div>
           ) : (
-            <p className={locationError ? "text-red-500" : ""}>
-              {locationError
-                ? "위치 정보를 가져오는 중 오류가 발생했습니다."
-                : "위치 정보를 가져오는 중..."}
+            <p className={locationError ? 'text-red-500' : ''}>
+              {locationError ? '위치 정보를 가져오는 중 오류가 발생했습니다.' : '위치 정보를 가져오는 중...'}
             </p>
           )}
           <div className="mb-2">
-            <MyButton text={"매칭 시작"} onClick={handleMatching} />
+            <MyButton
+              text={'매칭 시작'}
+              onClick={() => {
+                alert('매칭 시작!!');
+                navigate('/Matching');
+              }}
+            />
           </div>
         </div>
       </div>
