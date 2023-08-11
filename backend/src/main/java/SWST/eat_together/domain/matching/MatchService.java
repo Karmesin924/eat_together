@@ -1,5 +1,6 @@
 package SWST.eat_together.domain.matching;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -7,7 +8,10 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -19,22 +23,27 @@ public class MatchService {
 
     private Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(100);
     private boolean isMatchingInProgress = false;
+    private MatchedList matchedList;
+    private MatchingCompletedMessage matchingCompletedMessage;
+    private ObjectMapper objectMapper;
 
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public void handleMatchRequest(MatchRequest matchRequest) {
+    public MatchedList handleMatchRequest(MatchRequest matchRequest) {
+        System.out.println("*****MatchService.handleMatchRequest*****");
 
         matchQueue.offer(matchRequest);
-        System.out.println("matchQueue = " + matchQueue);
 
         if (!isMatchingInProgress) {
             isMatchingInProgress = true;
-            startMatching();
+            matchedList = startMatching(matchRequest);
         }
+
+        return matchedList;
     }
 
-    private void startMatching() {
+    private MatchedList startMatching(MatchRequest matchRequest) {
         System.out.println("*****MatchService.startMatching*****");
 
         while (matchQueue.size() >= 2) {
@@ -45,60 +54,63 @@ public class MatchService {
 
             System.out.println("matchedRequests = " + matchedRequests);
 
-            // Perform matching logic here...
-
-            List<String> matchedUserNicknames = new ArrayList<>();
+        List<String> matchedUserNicknames = new ArrayList<>();
             for (MatchRequest request : matchedRequests) {
                 matchedUserNicknames.add(request.getNickname());
             }
-            System.out.println("matchedUserNicknames = " + matchedUserNicknames);
-            sendMatchingCompletedMessage(matchedUserNicknames);
-        }
 
+            matchedList.setUser_nicknames(matchedUserNicknames);
+        }
         isMatchingInProgress = false;
+        return matchedList;
     }
 
-    private void sendMatchingCompletedMessage(List<String> matchedUserNicknames) {
+    public int interectionWithChat(MatchedList matchedList) {
+        System.out.println("*****MatchService.interectionWithChat*****");
 
-        System.out.println("----- MatchService.sendMatchingCompletedMessage -----");
-        MatchedList messageToChat = new MatchedList();
-//        message.setMember(String.join(", ", matchedUserNicknames));
-        messageToChat.setUser_nicknames(matchedUserNicknames);
-
-
-        System.out.println("message = " + messageToChat);
-
-        // HTTP 요청을 보내고 응답을 받아오기 위한 설정
+        int roomPk=0;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        HttpEntity<MatchedList> requestEntity = new HttpEntity<>(messageToChat, headers);
-        MatchingCompletedMessage messageToFront = new MatchingCompletedMessage();
 
+        MatchedList messageToChat = new MatchedList();
+        messageToChat.setUser_nicknames(matchedList.getUser_nicknames());
+
+        HttpEntity<MatchedList> requestEntity = new HttpEntity<>(messageToChat, headers);
 
         // 대상 서버 URL 설정
         String targetUrl = "http://127.0.0.1:8000/chat/new_matching_room/";
 
         // HTTP POST 요청 보내기
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(targetUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<Map<String, Object>>() {});
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(targetUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<Map<String, Object>>() {
+        });
         System.out.println("response = " + response);
 
         if (response.getStatusCode() == HttpStatus.CREATED) {
             Map<String, Object> responseBody = response.getBody();
             if (responseBody != null && responseBody.containsKey("room_pk")) {
-                int roomPk = (int) responseBody.get("room_pk");
+                roomPk = (int) responseBody.get("room_pk");
                 System.out.println("roomPk = " + roomPk);
-
-                String matchedMembers = String.join(", ", matchedUserNicknames);
-                messageToFront.setRoomPk(roomPk);
-                messageToFront.setMember(matchedMembers);
-                messageToFront.setType("matching_completed");
-                System.out.println("messageToFront = " + messageToFront);
-                messagingTemplate.convertAndSend("matchingData", messageToFront);
             }
-
         } else {
             System.err.println("Failed to send matching completed message. Status code: " + response.getStatusCode());
+        }
+        return roomPk;
+    }
+
+    public MatchingCompletedMessage CreateMessageToFront(int roomPk, MatchedList matchedList) {
+        matchingCompletedMessage.setType("matching_completed");
+        matchingCompletedMessage.setNickname(matchedList.getUser_nicknames());
+        matchingCompletedMessage.setRoomPk(roomPk);
+
+        return matchingCompletedMessage;
+    }
+
+    public void sendMessage(WebSocketSession session, MatchingCompletedMessage matchingCompletedMessage) {
+        try{
+            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(matchingCompletedMessage)));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
