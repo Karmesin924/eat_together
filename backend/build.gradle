@@ -26,6 +26,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	//Spring Web
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
 	//lombok
 	compileOnly 'org.projectlombok:lombok'
@@ -36,6 +37,8 @@ dependencies {
 
 	//Spring Data JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'com.fasterxml.jackson.core:jackson-databind'
+
 
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -43,6 +46,9 @@ dependencies {
 	//mysql-connector
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+
 
 }
 
