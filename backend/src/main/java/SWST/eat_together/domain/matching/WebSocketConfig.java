@@ -13,13 +13,12 @@
         @Override
         public void configureMessageBroker(MessageBrokerRegistry registry) {
             registry.enableSimpleBroker("/matching");
-            registry.setApplicationDestinationPrefixes("/app");
         }
 
         @Override
         public void registerStompEndpoints(StompEndpointRegistry registry) {
-            registry.addEndpoint("/socket.io") // 클라이언트에서 WebSocket 연결 시 사용할 endpoint
-                    .setAllowedOrigins("http://localhost:3000/Matching")
+            registry.addEndpoint("/socket") // 클라이언트에서 WebSocket 연결 시 사용할 endpoint
+                    .setAllowedOrigins("http://localhost:3000")
                     .withSockJS(); // SockJS 사용 여부
         }
 
