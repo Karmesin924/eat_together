@@ -6,6 +6,7 @@ import MyHeader from '../components/MyHeader';
 import MyContext from '../components/MyContext';
 import { useContext } from 'react';
 import SockJS from 'sockjs-client';
+import { type } from '@testing-library/user-event/dist/type';
 
 const Matching = () => {
   const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Matching = () => {
 
   useEffect(() => {
     const stompClient = new Client({
-      webSocketFactory: () => new SockJS('http://localhost:8080/ws'), // 백엔드의 WebSocket 연결 엔드포인트로 수정
+      webSocketFactory: () => new SockJS('http://localhost:8080/ws'),
       debug: (str) => {
         console.log(str);
       },
@@ -41,19 +42,26 @@ const Matching = () => {
       console.log('Connected:', frame);
 
       stompClient.subscribe('/topic/matching/start', (message) => {
-        const data = JSON.parse(message.body);
+        try {
+          const data = JSON.parse(message.body);
+          console.log(data);
+          console.log(data.type);
+          console.log(data.roomPk)
 
-        if (data.type === 'matching_completed') {
-          setMatchingComplete(true);
-          setMatchedUsers(data.member.split(', ').map((name) => `${name}님`));
-          setRoomPk(data.room_pk);
-          stompClient.deactivate();
-          console.log('매칭 완료 및 소켓 연결 해제');
+          if (data.type == 'matching_completed') {
+            setMatchingComplete(true);
+            setMatchedUsers(data.nickname.map((name) => `${name}님`));
+            setRoomPk(data.roomPk);
+            stompClient.deactivate();
+            console.log('매칭 완료 및 소켓 연결 해제');
+          }
+        } catch (error) {
+          console.error('Error parsing message:', error);
         }
       });
 
       stompClient.publish({
-        destination: '/app/matching/start', // Change to appropriate backend endpoint.
+        destination: '/app/matching/start',
         body: JSON.stringify(newFilters),
       });
     };
@@ -90,16 +98,16 @@ const Matching = () => {
         )}
       </h1>
       <div className="flex justify-center mt-5">
-        <MyButton
-          text={matchingComplete ? '채팅 방으로 이동' : '매칭 취소'}
-          onClick={() => {
-            if (matchingComplete) {
-              navigate(`http://127.0.0.1:8000/chat/${roomPk}/matching_chat/`);
-            } else {
-              navigate(-1);
-            }
-          }}
-        />
+      <MyButton
+        text={matchingComplete ? '채팅 방으로 이동' : '매칭 취소'}
+        onClick={() => {
+          if (matchingComplete) {
+          window.location.href = `http://127.0.0.1:8000/chat/${roomPk}/matching_chat/`;
+    } else {
+      navigate(-1);
+    }
+  }}
+/>
       </div>
     </div>
   );

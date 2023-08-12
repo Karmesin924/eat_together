@@ -102,7 +102,6 @@ public class MatchService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Map<String, Object>> response = restTemplate.exchange(targetUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<Map<String, Object>>() {
         });
-        System.out.println("response = " + response);
 
         if (response.getStatusCode() == HttpStatus.CREATED) {
             Map<String, Object> responseBody = response.getBody();
