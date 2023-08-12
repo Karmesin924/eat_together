@@ -2,6 +2,7 @@ package SWST.eat_together.domain.matching;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -13,6 +14,7 @@ public class MatchWebSocketController {
     private final MatchService matchService;
 
     @MessageMapping("/matching/start")
+    @SendTo("/topic/matching/start")
     public void receiveMatching(MatchRequest matchRequest) {
         System.out.println("matchRequest = " + matchRequest);
 
@@ -23,9 +25,11 @@ public class MatchWebSocketController {
         if (matchedList != null && matchedList.getUser_nicknames().size() == 2) {
             int roomPk = matchService.interectionWithChat(matchedList);
             MatchingCompletedMessage matchingCompletedMessage = matchService.CreateMessageToFront(roomPk, matchedList);
+            System.out.println("matchingCompletedMessage = " + matchingCompletedMessage);
 
             // 프론트엔드로 매칭 완료 메시지 전송
-            messagingTemplate.convertAndSend("/topic/matching/start", matchingCompletedMessage);
+            messagingTemplate.convertAndSend("/topic/matching/start", matchingCompletedMessage.toJson());
+            System.out.println("matchingCompletedMessage.toJson() = " + matchingCompletedMessage.toJson());
         }
     }
 }
