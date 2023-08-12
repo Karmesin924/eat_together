@@ -17,11 +17,11 @@ import Matching from './pages/Matching';
 function App() {
   const [nickname, setNickname] = useState('');
 
-  const [people, setPeople] = useState();
-  const [gender, setGender] = useState();
-  const [age, setAge] = useState();
-  const [menu, setMenu] = useState();
-  const [conversation, setConversation] = useState();
+  const [people, setPeople] = useState('any');
+  const [gender, setGender] = useState('any');
+  const [age, setAge] = useState('any');
+  const [menu, setMenu] = useState('any');
+  const [conversation, setConversation] = useState('Normal');
 
   const [startTime, setStartTime] = useState('');
 

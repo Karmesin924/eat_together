@@ -5,13 +5,13 @@ import MyButton from '../components/MyButton';
 import MyHeader from '../components/MyHeader';
 import MyContext from '../components/MyContext';
 import { useContext } from 'react';
-import SockJS from 'sockjs-client'
+import SockJS from 'sockjs-client';
 
 const Matching = () => {
   const navigate = useNavigate();
-  const [matchedUsers, setMatchedUsers] = useState([]); 
-  const [matchingComplete, setMatchingComplete] = useState(false); 
-  const [roomPk, setRoomPk] = useState(null); 
+  const [matchedUsers, setMatchedUsers] = useState([]);
+  const [matchingComplete, setMatchingComplete] = useState(false);
+  const [roomPk, setRoomPk] = useState(null);
 
   const { nickname, people, gender, age, menu, startTime, conversation, latitude, longitude } = useContext(MyContext);
 
@@ -30,8 +30,8 @@ const Matching = () => {
 
   useEffect(() => {
     const stompClient = new Client({
-      brokerURL: 'ws://localhost:8080/socket/websocket', // 백엔드의 WebSocket 주소로 수정
-      debug: function (str) {
+      webSocketFactory: () => new SockJS('http://localhost:8080/ws'), // 백엔드의 WebSocket 연결 엔드포인트로 수정
+      debug: (str) => {
         console.log(str);
       },
       reconnectDelay: 5000,
@@ -40,7 +40,7 @@ const Matching = () => {
     stompClient.onConnect = (frame) => {
       console.log('Connected:', frame);
 
-      stompClient.subscribe('/matching/start', (message) => {
+      stompClient.subscribe('/topic/matching/start', (message) => {
         const data = JSON.parse(message.body);
 
         if (data.type === 'matching_completed') {
@@ -53,8 +53,8 @@ const Matching = () => {
       });
 
       stompClient.publish({
-        destination: '/matching/start', // Change to appropriate backend endpoint.
-        body: JSON.stringify(newFilters)
+        destination: '/app/matching/start', // Change to appropriate backend endpoint.
+        body: JSON.stringify(newFilters),
       });
     };
 
