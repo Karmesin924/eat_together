@@ -99,11 +99,12 @@ public class MatchService {
     }
 
     public MatchingCompletedMessage CreateMessageToFront(int roomPk, MatchedList matchedList) {
-        matchingCompletedMessage.setType("matching_completed");
-        matchingCompletedMessage.setNickname(matchedList.getUser_nicknames());
-        matchingCompletedMessage.setRoomPk(roomPk);
+        MatchingCompletedMessage message = new MatchingCompletedMessage();
+        message.setType("matching_completed");
+        message.setNickname(matchedList.getUser_nicknames());
+        message.setRoomPk(roomPk);
 
-        return matchingCompletedMessage;
+        return message;
     }
 
     public void sendMessage(WebSocketSession session, MatchingCompletedMessage matchingCompletedMessage) {
