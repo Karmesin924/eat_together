@@ -1,17 +1,17 @@
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { Client } from '@stomp/stompjs';
 import MyButton from '../components/MyButton';
 import MyHeader from '../components/MyHeader';
 import MyContext from '../components/MyContext';
 import { useContext } from 'react';
+import SockJS from 'sockjs-client'
 
 const Matching = () => {
   const navigate = useNavigate();
-  const [socket, setSocket] = useState(null);
-  const [matchedUsers, setMatchedUsers] = useState([]); // 백에서주는 매칭유저 정보 배열로 받음
-  const [matchingComplete, setMatchingComplete] = useState(false); // 매칭 완료 확인
-  const [roomPk, setRoomPk] = useState(null); // 채팅방 번호
+  const [matchedUsers, setMatchedUsers] = useState([]); 
+  const [matchingComplete, setMatchingComplete] = useState(false); 
+  const [roomPk, setRoomPk] = useState(null); 
 
   const { nickname, people, gender, age, menu, startTime, conversation, latitude, longitude } = useContext(MyContext);
 
@@ -29,53 +29,41 @@ const Matching = () => {
   };
 
   useEffect(() => {
-    //백엔드와 소켓 연결
-    const newSocket = io('/matching/start');
-
-    //연결 성공시
-    newSocket.on('connect', () => {
-      console.log('소켓 연결 성공');
-      newSocket.emit('sendFilters', newFilters);
+    const stompClient = new Client({
+      brokerURL: 'ws://localhost:8080/socket/websocket', // 백엔드의 WebSocket 주소로 수정
+      debug: function (str) {
+        console.log(str);
+      },
+      reconnectDelay: 5000,
     });
 
-    newSocket.on('matchingData', (data) => {
-      if (data.type === 'matching_completed') {
-        // 매칭 완료 저장
-        setMatchingComplete(true);
+    stompClient.onConnect = (frame) => {
+      console.log('Connected:', frame);
 
-        // 매칭된 사람들 저장
-        setMatchedUsers(data.member.split(', ').map((name) => `${name}님`));
+      stompClient.subscribe('/matching/start', (message) => {
+        const data = JSON.parse(message.body);
 
-        // 채팅 방 번호 저장
-        setRoomPk(data.room_pk);
+        if (data.type === 'matching_completed') {
+          setMatchingComplete(true);
+          setMatchedUsers(data.member.split(', ').map((name) => `${name}님`));
+          setRoomPk(data.room_pk);
+          stompClient.deactivate();
+          console.log('매칭 완료 및 소켓 연결 해제');
+        }
+      });
 
-        // 소켓 연결 해제
-        newSocket.disconnect();
-        console.log('매칭 완료 및 소켓 연결 해제');
-      }
-    });
+      stompClient.publish({
+        destination: '/matching/start', // Change to appropriate backend endpoint.
+        body: JSON.stringify(newFilters)
+      });
+    };
 
-    newSocket.on('disconnect', () => {
-      console.log('소켓 연결 해제');
-    });
-
-    setSocket(newSocket);
+    stompClient.activate();
 
     return () => {
-      newSocket.disconnect();
+      stompClient.deactivate();
     };
   }, []);
-
-  //더미 데이터
-  // useEffect(() => {
-  //   const dummyData = {
-  //     type: 'matching_completed',
-  //     member: 'A, B, C',
-  //   };
-
-  //   setMatchingComplete(true);
-  //   setMatchedUsers(dummyData.member.split(', ').map((name) => `${name}님`)); // 이름에 "님" 추가
-  // }, []);
 
   return (
     <div>
