@@ -11,6 +11,9 @@ const BoardDetail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
+  const [currentNickname, setCurrentNickname] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
   const [board, setBoard] = useState({
     title: "",
     contents: "",
@@ -40,6 +43,19 @@ const BoardDetail = () => {
     getBoard();
   }, [getBoard]);
 
+  useEffect(() => {
+    axios
+      .get("/users/validate")
+      .then((res) => {
+        const fetchedNickname = res.data.nickname;
+        setCurrentNickname(fetchedNickname);
+        setIsLoggedIn(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [currentNickname]);
+
   return (
     <div>
       <MyHeader
@@ -62,9 +78,11 @@ const BoardDetail = () => {
             title={board?.title}
             contents={board?.contents}
             nickname={board?.nickname}
+            currentNickname={currentNickname}
             createdDate={board?.createdDate}
             replies={board?.replies || []}
             author={author}
+            isLoggedIn={isLoggedIn}
           />
           <p className="pt-4 text-center font-bold text-lg border-buttonhover w-5/6 mx-auto">
             댓글
