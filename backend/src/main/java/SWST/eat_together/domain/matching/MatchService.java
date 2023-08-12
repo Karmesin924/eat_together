@@ -1,6 +1,7 @@
 package SWST.eat_together.domain.matching;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
@@ -19,6 +20,7 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 @CrossOrigin(origins = "http://localhost:3000")
 @Service
+@RequiredArgsConstructor
 public class MatchService {
 
     private Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(100);
@@ -35,33 +37,48 @@ public class MatchService {
 
         matchQueue.offer(matchRequest);
 
-        if (!isMatchingInProgress) {
+        if (!isMatchingInProgress && matchQueue.size() >= 2) {
             isMatchingInProgress = true;
-            matchedList = startMatching(matchRequest);
+            matchedList = startMatching();
+            if (matchedList != null) { // startMatching에서 null 반환 시 예외 처리
+                int roomPk = interectionWithChat(matchedList);
+                MatchingCompletedMessage matchingCompletedMessage = CreateMessageToFront(roomPk, matchedList);
+                messagingTemplate.convertAndSend("/topic/matching/start", matchingCompletedMessage);
+            }
+            isMatchingInProgress = false;
         }
 
         return matchedList;
     }
 
-    private MatchedList startMatching(MatchRequest matchRequest) {
+    private MatchedList startMatching() {
         System.out.println("*****MatchService.startMatching*****");
 
+        if (matchQueue.size() < 2) {
+            return null; // 매칭할 수 있는 사람이 두 명 미만인 경우 null 반환
+        }
+
+        matchedList = new MatchedList();
+        List<MatchRequest> matchedRequests = new ArrayList<>();
+
         while (matchQueue.size() >= 2) {
-            List<MatchRequest> matchedRequests = new ArrayList<>();
+            matchedRequests.clear();
             for (int i = 0; i < 2; i++) {
                 matchedRequests.add(matchQueue.poll());
             }
 
             System.out.println("matchedRequests = " + matchedRequests);
 
-        List<String> matchedUserNicknames = new ArrayList<>();
+            List<String> matchedUserNicknames = new ArrayList<>();
             for (MatchRequest request : matchedRequests) {
                 matchedUserNicknames.add(request.getNickname());
             }
 
             matchedList.setUser_nicknames(matchedUserNicknames);
+
+            break; // 두 명의 매칭이 완료되면 매칭 종료
         }
-        isMatchingInProgress = false;
+
         return matchedList;
     }
 
@@ -73,6 +90,7 @@ public class MatchService {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         MatchedList messageToChat = new MatchedList();
+        System.out.println("messageToChat = " + messageToChat);
         messageToChat.setUser_nicknames(matchedList.getUser_nicknames());
 
         HttpEntity<MatchedList> requestEntity = new HttpEntity<>(messageToChat, headers);
