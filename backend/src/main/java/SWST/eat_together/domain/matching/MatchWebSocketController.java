@@ -18,10 +18,15 @@ public class MatchWebSocketController {
 
         // 매칭 로직 수행
         MatchedList matchedList = matchService.handleMatchRequest(matchRequest);
-        int roomPk = matchService.interectionWithChat(matchedList);
-        MatchingCompletedMessage matchingCompletedMessage = matchService.CreateMessageToFront(roomPk, matchedList);
 
-        // 프론트엔드로 매칭 완료 메시지 전송
-        messagingTemplate.convertAndSend("/topic/matching/start", matchingCompletedMessage);
+        // 매칭 결과가 null이 아닌 경우에만 API 호출
+        if (matchedList != null && matchedList.getUser_nicknames().size() == 2) {
+            int roomPk = matchService.interectionWithChat(matchedList);
+            MatchingCompletedMessage matchingCompletedMessage = matchService.CreateMessageToFront(roomPk, matchedList);
+
+            // 프론트엔드로 매칭 완료 메시지 전송
+            messagingTemplate.convertAndSend("/topic/matching/start", matchingCompletedMessage);
+        }
     }
 }
+
