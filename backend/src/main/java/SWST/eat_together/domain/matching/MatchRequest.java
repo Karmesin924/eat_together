@@ -15,3 +15,18 @@ public class MatchRequest {
     private double longitude;
     private String startTime;
 }
+
+/*
+    각 key별로 들어올 수 있는 value값과 형식.
+    (any는 어느 값이건 상관 없다는 것을 의미한다)
+            "type" : "matching_start"
+            "nickname" : "user1"
+            "people : any, 2, 3, 4
+            "gender" : any, same
+            "age" : any, peer
+            "menu" : any, Korean, Chinese, Japanese, Western, Vietnamese, Bunsik, Dessert
+            "conversation" : Little, Normal, Many
+            "latitude":
+            "longitude":
+            "time" : hh:mm
+*/
