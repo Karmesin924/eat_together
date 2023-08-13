@@ -1,6 +1,5 @@
 package SWST.eat_together.domain.matching;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -9,89 +8,111 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+
 @CrossOrigin(origins = "http://localhost:3000")
 @Service
 @RequiredArgsConstructor
 public class MatchService {
 
     private Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(100);
-    private boolean isMatchingInProgress = false;
-    private MatchedList matchedList;
-    private MatchingCompletedMessage matchingCompletedMessage;
-    private ObjectMapper objectMapper;
-
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
 
-    public MatchedList handleMatchRequest(MatchRequest matchRequest) {
+    public List<MatchRequest> handleMatchRequest(MatchRequest newRequest) {
         System.out.println("*****MatchService.handleMatchRequest*****");
 
-        matchQueue.offer(matchRequest);
+        matchQueue.offer(newRequest);
 
-        if (!isMatchingInProgress && matchQueue.size() >= 2) {
-            isMatchingInProgress = true;
-            matchedList = startMatching();
-            if (matchedList != null) { // startMatching에서 null 반환 시 예외 처리
-                int roomPk = interectionWithChat(matchedList);
-                MatchingCompletedMessage matchingCompletedMessage = CreateMessageToFront(roomPk, matchedList);
-                messagingTemplate.convertAndSend("/topic/matching/start", matchingCompletedMessage);
+        List<MatchRequest> matchingRequests = new ArrayList<>();
+
+        for (MatchRequest request1 : matchQueue) {
+            List<MatchRequest> tempMatches = new ArrayList<>();
+
+            for (MatchRequest request2 : matchQueue) {
+                if (request1 != request2 &&
+                        request1.getPeople().equals(request2.getPeople()) &&
+                        compareHours(request1.getStartTime(), request2.getStartTime()) ) {
+//&&
+//                        checkDistanceWithin500Meters(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude())
+                    System.out.println("실행");
+                    int score = calculateMatchingScore(request1, request2);
+
+                    if (score >= 3) {
+                        tempMatches.add(request2);
+                    }
+                }
             }
-            isMatchingInProgress = false;
+
+            if (tempMatches.size() >= Integer.parseInt(request1.getPeople()) - 1) {
+                matchingRequests.add(request1);
+                matchingRequests.addAll(tempMatches.subList(0, Integer.parseInt(request1.getPeople()) - 1));
+                matchQueue.removeAll(tempMatches.subList(0, Integer.parseInt(request1.getPeople()) - 1));
+            }
         }
 
-        return matchedList;
+        return matchingRequests;
     }
 
-    private MatchedList startMatching() {
-        System.out.println("*****MatchService.startMatching*****");
-
-        if (matchQueue.size() < 2) {
-            return null; // 매칭할 수 있는 사람이 두 명 미만인 경우 null 반환
+    private int calculateMatchingScore(MatchRequest request1, MatchRequest request2) {
+        int score = 0;
+        if (request1.getMenu().equals("any") || request1.getMenu().equals(request2.getMenu())) {
+            score++;
         }
-
-        matchedList = new MatchedList();
-        List<MatchRequest> matchedRequests = new ArrayList<>();
-
-        while (matchQueue.size() >= 2) {
-            matchedRequests.clear();
-            for (int i = 0; i < 2; i++) {
-                matchedRequests.add(matchQueue.poll());
-            }
-
-            System.out.println("matchedRequests = " + matchedRequests);
-
-            List<String> matchedUserNicknames = new ArrayList<>();
-            for (MatchRequest request : matchedRequests) {
-                matchedUserNicknames.add(request.getNickname());
-            }
-
-            matchedList.setUser_nicknames(matchedUserNicknames);
-
-            break; // 두 명의 매칭이 완료되면 매칭 종료
+        if (request1.getAge().equals("any") || request1.getAge().equals(request2.getAge())) {
+            score++;
         }
-
-        return matchedList;
+        if (request1.getGender().equals("any") || request1.getGender().equals(request2.getGender()) || request1.getGender().equals("same")) {
+            score++;
+        }
+        if (request1.getConversation().equals("any") || request1.getConversation().equals(request2.getConversation())) {
+            score++;
+        }
+        return score;
     }
 
-    public int interectionWithChat(MatchedList matchedList) {
+    public boolean compareHours(String time1, String time2) {
+        String[] timeParts1 = time1.split(":");
+        String[] timeParts2 = time2.split(":");
+
+        System.out.println("timeParts1[0] = " + timeParts1[0]);
+        System.out.println("timeParts2[0] = " + timeParts2[0]);
+        return timeParts1[0].equals(timeParts2[0]);
+    }
+
+    public boolean checkDistanceWithin500Meters(double lat1, double lon1, double lat2, double lon2) {
+        int earthRadiusInMeters = 6371000; // Earth's radius in meters
+
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        double distance = earthRadiusInMeters * c;
+
+        return distance <= 500; // Check if the distance is within 500 meters
+    }
+
+    public int interectionWithChat(List<MatchRequest> matchedRequests) {
         System.out.println("*****MatchService.interectionWithChat*****");
 
-        int roomPk=0;
+        int roomPk = 0;
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         MatchedList messageToChat = new MatchedList();
-        System.out.println("messageToChat = " + messageToChat);
-        messageToChat.setUser_nicknames(matchedList.getUser_nicknames());
+
+        List<String> userNicknames = new ArrayList<>();
+        for (MatchRequest request : matchedRequests) {
+            userNicknames.add(request.getNickname());
+        }
+        messageToChat.setUser_nicknames(userNicknames);
 
         HttpEntity<MatchedList> requestEntity = new HttpEntity<>(messageToChat, headers);
 
@@ -100,8 +121,12 @@ public class MatchService {
 
         // HTTP POST 요청 보내기
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(targetUrl, HttpMethod.POST, requestEntity, new ParameterizedTypeReference<Map<String, Object>>() {
-        });
+        ResponseEntity<Map<String, Object>> response = restTemplate.exchange(
+                targetUrl,
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<Map<String, Object>>() {}
+        );
 
         if (response.getStatusCode() == HttpStatus.CREATED) {
             Map<String, Object> responseBody = response.getBody();
@@ -112,23 +137,22 @@ public class MatchService {
         } else {
             System.err.println("Failed to send matching completed message. Status code: " + response.getStatusCode());
         }
+
         return roomPk;
     }
 
-    public MatchingCompletedMessage CreateMessageToFront(int roomPk, MatchedList matchedList) {
+    public MatchingCompletedMessage CreateMessageToFront(int roomPk, List<MatchRequest> matchedRequests) {
         MatchingCompletedMessage message = new MatchingCompletedMessage();
         message.setType("matching_completed");
-        message.setNickname(matchedList.getUser_nicknames());
+
+        List<String> userNicknames = new ArrayList<>();
+        for (MatchRequest request : matchedRequests) {
+            userNicknames.add(request.getNickname());
+        }
+        message.setNickname(userNicknames);
+
         message.setRoomPk(roomPk);
 
         return message;
-    }
-
-    public void sendMessage(WebSocketSession session, MatchingCompletedMessage matchingCompletedMessage) {
-        try{
-            session.sendMessage(new TextMessage(objectMapper.writeValueAsString(matchingCompletedMessage)));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

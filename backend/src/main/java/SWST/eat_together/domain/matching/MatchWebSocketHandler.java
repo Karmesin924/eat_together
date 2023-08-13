@@ -1,3 +1,5 @@
+/*
+
 package SWST.eat_together.domain.matching;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -59,3 +61,5 @@ public class MatchWebSocketHandler extends TextWebSocketHandler {
 
     }
 }
+
+*/
