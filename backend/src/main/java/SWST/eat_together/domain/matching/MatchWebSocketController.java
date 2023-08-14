@@ -6,6 +6,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
+import java.time.Instant;
 import java.util.List;
 
 @Controller
@@ -18,6 +19,7 @@ public class MatchWebSocketController {
     @MessageMapping("/matching/start")
     @SendTo("/topic/matching/start")
     public void receiveMatching(MatchRequest matchRequest) {
+        matchRequest.setReceivedTimestamp(Instant.now());
         System.out.println("matchRequest = " + matchRequest);
 
         // 매칭 로직 수행
