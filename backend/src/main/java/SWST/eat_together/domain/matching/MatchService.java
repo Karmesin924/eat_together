@@ -27,16 +27,20 @@ public class MatchService {
         matchQueue.offer(newRequest);
 
         List<MatchRequest> matchingRequests = new ArrayList<>();
+        List<MatchRequest> matchedRequests = new ArrayList<>();
 
         for (MatchRequest request1 : matchQueue) {
+            if (matchedRequests.contains(request1)) {
+                continue; // Skip already matched requests
+            }
+
             List<MatchRequest> tempMatches = new ArrayList<>();
 
             for (MatchRequest request2 : matchQueue) {
                 if (request1 != request2 &&
-                        request1.getPeople().equals(request2.getPeople()) &&
-                        compareHours(request1.getStartTime(), request2.getStartTime()) ) {
-//&&
-//                        checkDistanceWithin500Meters(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude())
+                        ("any".equals(request1.getPeople()) || "any".equals(request2.getPeople()) || request1.getPeople().equals(request2.getPeople())) &&
+                        compareHours(request1.getStartTime(), request2.getStartTime()) &&
+                        checkDistanceWithin700Meters(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude())) {
                     System.out.println("실행");
                     int score = calculateMatchingScore(request1, request2);
 
@@ -46,16 +50,49 @@ public class MatchService {
                 }
             }
 
-            if (tempMatches.size() >= Integer.parseInt(request1.getPeople()) - 1) {
-                matchingRequests.add(request1);
-                matchingRequests.addAll(tempMatches.subList(0, Integer.parseInt(request1.getPeople()) - 1));
-                matchQueue.removeAll(tempMatches.subList(0, Integer.parseInt(request1.getPeople()) - 1));
+            if (tempMatches.size() > 0) {
+                if ("any".equals(request1.getPeople())) {
+                    matchingRequests.add(request1);
+                    matchingRequests.addAll(tempMatches);
+                    matchedRequests.addAll(tempMatches);
+                } else {
+                    Map<String, Integer> peopleFrequency = new HashMap<>();
+
+                    for (MatchRequest tempMatch : tempMatches) {
+                        String people = tempMatch.getPeople();
+                        peopleFrequency.put(people, peopleFrequency.getOrDefault(people, 0) + 1);
+                    }
+
+                    String mostFrequentPeople = null;
+                    int highestFrequency = 0;
+
+                    for (Map.Entry<String, Integer> entry : peopleFrequency.entrySet()) {
+                        if (entry.getValue() > highestFrequency) {
+                            mostFrequentPeople = entry.getKey();
+                            highestFrequency = entry.getValue();
+                        }
+                    }
+
+                    int targetMatchCount = Math.min(highestFrequency, Integer.parseInt(request1.getPeople()) - 1);
+
+                    if (targetMatchCount > 0) {
+                        matchingRequests.add(request1);
+                        for (MatchRequest tempMatch : tempMatches) {
+                            if (tempMatch.getPeople().equals(mostFrequentPeople) && targetMatchCount > 0) {
+                                matchingRequests.add(tempMatch);
+                                targetMatchCount--;
+                                matchedRequests.add(tempMatch);
+                            }
+                        }
+                    }
+                }
             }
         }
 
+        matchQueue.removeAll(matchedRequests);
+
         return matchingRequests;
     }
-
     private int calculateMatchingScore(MatchRequest request1, MatchRequest request2) {
         int score = 0;
         if (request1.getMenu().equals("any") || request1.getMenu().equals(request2.getMenu())) {
@@ -154,5 +191,22 @@ public class MatchService {
         message.setRoomPk(roomPk);
 
         return message;
+    }
+
+    public boolean checkDistanceWithin700Meters(double lat1, double lon1, double lat2, double lon2) {
+        int earthRadiusInMeters = 6371000; // Earth's radius in meters
+
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+        double distance = earthRadiusInMeters * c;
+
+        return distance <= 700; // Check if the distance is within 700 meters
     }
 }
