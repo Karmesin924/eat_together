@@ -2,21 +2,24 @@ package SWST.eat_together.domain.matching;
 
 import SWST.eat_together.domain.member.Member;
 import SWST.eat_together.domain.member.MemberRepository;
-import SWST.eat_together.domain.member.MemberService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
+
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Calendar;
 import java.util.Date;
 
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @Service
@@ -24,11 +27,8 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class MatchService {
 
     private Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(100);
-    @Autowired
-    private SimpMessagingTemplate messagingTemplate;
-
-    private final MemberService memberService;
     private final MemberRepository memberRepository;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
     public List<MatchRequest> handleMatchRequest(MatchRequest newRequest) {
@@ -50,7 +50,7 @@ public class MatchService {
                 if (request1 != request2 &&
                         ("any".equals(request1.getPeople()) || "any".equals(request2.getPeople()) || request1.getPeople().equals(request2.getPeople())) &&
                         compareHours(request1.getStartTime(), request2.getStartTime()) &&
-                        checkDistanceWithin700Meters(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude())) {
+                        checkDistance(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude())) {
                     System.out.println("실행");
                     int score = calculateMatchingScore(request1, request2);
 
@@ -165,7 +165,7 @@ public class MatchService {
         return timeParts1[0].equals(timeParts2[0]);
     }
 
-    public boolean checkDistanceWithin500Meters(double lat1, double lon1, double lat2, double lon2) {
+    public boolean checkDistance(double lat1, double lon1, double lat2, double lon2) {
         int earthRadiusInMeters = 6371000; // Earth's radius in meters
 
         double dLat = Math.toRadians(lat2 - lat1);
@@ -179,7 +179,7 @@ public class MatchService {
 
         double distance = earthRadiusInMeters * c;
 
-        return distance <= 500; // Check if the distance is within 500 meters
+        return distance <= 700;
     }
 
     public int interectionWithChat(List<MatchRequest> matchedRequests) {
@@ -240,21 +240,50 @@ public class MatchService {
         return message;
     }
 
-    public boolean checkDistanceWithin700Meters(double lat1, double lon1, double lat2, double lon2) {
-        int earthRadiusInMeters = 6371000; // Earth's radius in meters
 
-        double dLat = Math.toRadians(lat2 - lat1);
-        double dLon = Math.toRadians(lon2 - lon1);
+    //시간 경과 관련 메서드들
+    public void startMatching() {
+        scheduler.scheduleAtFixedRate(this::handleMatchRequestPeriodically, 0, 10, TimeUnit.SECONDS); //배포 시 적절한 시간 입력 필요
+    }
 
-        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
-                * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    private boolean hasRequestExceededWaitingTime(MatchRequest request, Instant currentTime) {
+        return Duration.between(request.getReceivedTimestamp(), currentTime).getSeconds() >= 1;
+    }
 
-        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    private void handleMatchRequestPeriodically() {
+        Instant currentTime = Instant.now();
 
-        double distance = earthRadiusInMeters * c;
+        for (MatchRequest request : matchQueue) {
+            if (hasRequestExceededWaitingTime(request, currentTime)) {
+                CheckAndProcessAttributeChangesAfterTimeout(request, currentTime);
+            }
+        }
+    }
 
-        return distance <= 700; // Check if the distance is within 700 meters
+    private void CheckAndProcessAttributeChangesAfterTimeout(MatchRequest request, Instant currentTime) {
+        System.out.println("request = " + request);
+
+        if (!request.getMenu().equals("any")) {
+            request.setMenu("any");
+        } else if (!request.getAge().equals("any")) {
+            request.setAge("any");
+        } else if (!request.getGender().equals("any")) {
+            request.setGender("any");
+        } else if (!request.getConversation().equals("any")) {
+            request.setConversation("any");
+        }
+
+        request.setReceivedTimestamp(currentTime);
+
+        if (request.getMenu().equals("any") &&
+                request.getAge().equals("any") &&
+                request.getGender().equals("any") &&
+                request.getConversation().equals("any")) {
+            System.out.println("매칭 실패: " + request);
+            // 매칭 실패 시 실행 메서드 추가 필요
+            // 큐에서 request 유저 제거
+            // 제거 된 사람에게 type = "matching_failed" 전송
+        }
     }
 }
 

@@ -1,6 +1,8 @@
 package SWST.eat_together.domain.matching;
 import lombok.Data;
 
+import java.time.Instant;
+
 @Data
 public class MatchRequest {
     private String type;
@@ -14,6 +16,7 @@ public class MatchRequest {
     private double latitude;
     private double longitude;
     private String startTime;
+    private Instant receivedTimestamp;
 }
 
 /*
