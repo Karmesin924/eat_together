@@ -1,5 +1,8 @@
 package SWST.eat_together.domain.matching;
 
+import SWST.eat_together.domain.member.Member;
+import SWST.eat_together.domain.member.MemberRepository;
+import SWST.eat_together.domain.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -8,6 +11,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
+import java.util.Calendar;
+import java.util.Date;
+
 
 import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -20,6 +26,10 @@ public class MatchService {
     private Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(100);
     @Autowired
     private SimpMessagingTemplate messagingTemplate;
+
+    private final MemberService memberService;
+    private final MemberRepository memberRepository;
+
 
     public List<MatchRequest> handleMatchRequest(MatchRequest newRequest) {
         System.out.println("*****MatchService.handleMatchRequest*****");
@@ -50,7 +60,7 @@ public class MatchService {
                 }
             }
 
-            if (tempMatches.size() > 0) {
+            if (!tempMatches.isEmpty()) {
                 if ("any".equals(request1.getPeople())) {
                     matchingRequests.add(request1);
                     matchingRequests.addAll(tempMatches);
@@ -93,21 +103,57 @@ public class MatchService {
 
         return matchingRequests;
     }
+
     private int calculateMatchingScore(MatchRequest request1, MatchRequest request2) {
         int score = 0;
+
         if (request1.getMenu().equals("any") || request1.getMenu().equals(request2.getMenu())) {
             score++;
         }
+
         if (request1.getAge().equals("any") || request1.getAge().equals(request2.getAge())) {
             score++;
+        } else if (request1.getAge().equals("peer")) {
+            int ageDifference = calculateAgeDifference(request1.getNickname(), request2.getNickname());
+            if (ageDifference <= 2) {
+                score++;
+            }
         }
+
         if (request1.getGender().equals("any") || request1.getGender().equals(request2.getGender()) || request1.getGender().equals("same")) {
             score++;
         }
+
         if (request1.getConversation().equals("any") || request1.getConversation().equals(request2.getConversation())) {
             score++;
         }
+
         return score;
+    }
+
+    private int calculateAgeDifference(String nickname1, String nickname2) {
+        Member member1 = memberRepository.findByNickname(nickname1);
+        Member member2 = memberRepository.findByNickname(nickname2);
+
+        if (member1 != null && member2 != null) {
+            int age1 = calculateAge(member1.getDate());
+            int age2 = calculateAge(member2.getDate());
+
+            return Math.abs(age1 - age2);
+        }
+
+        return Integer.MAX_VALUE; // Return a high value to avoid unnecessary matches
+    }
+
+    private int calculateAge(Date birthDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(birthDate);
+        int birthYear = calendar.get(Calendar.YEAR);
+
+        Calendar currentCalendar = Calendar.getInstance();
+        int currentYear = currentCalendar.get(Calendar.YEAR);
+
+        return currentYear - birthYear;
     }
 
     public boolean compareHours(String time1, String time2) {
@@ -162,7 +208,8 @@ public class MatchService {
                 targetUrl,
                 HttpMethod.POST,
                 requestEntity,
-                new ParameterizedTypeReference<Map<String, Object>>() {}
+                new ParameterizedTypeReference<Map<String, Object>>() {
+                }
         );
 
         if (response.getStatusCode() == HttpStatus.CREATED) {
@@ -210,3 +257,4 @@ public class MatchService {
         return distance <= 700; // Check if the distance is within 700 meters
     }
 }
+

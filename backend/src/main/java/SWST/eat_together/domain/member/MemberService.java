@@ -6,6 +6,9 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalDate;
+import java.time.Period;
+
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -70,5 +73,15 @@ public class MemberService {
 
         System.out.println("Response Status Code: " + statusCode);
         System.out.println("Response Body: " + responseBody);
+    }
+
+    public int getAgeFromNickname(String nickname) {
+        Member member = memberRepository.findByNickname(nickname);
+        if (member != null && member.getDate() != null) {
+            LocalDate birthDate = member.getDate().toLocalDate();
+            LocalDate currentDate = LocalDate.now();
+            return Period.between(birthDate, currentDate).getYears();
+        }
+        return -1; // Return a placeholder value or handle this case accordingly
     }
 }
