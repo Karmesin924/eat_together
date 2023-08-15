@@ -11,6 +11,7 @@ const Matching = () => {
   const navigate = useNavigate();
   const [matchedUsers, setMatchedUsers] = useState([]);
   const [matchingComplete, setMatchingComplete] = useState(false);
+  const [matchingFailed, setMatchingFailed] = useState(false);
   const [roomPk, setRoomPk] = useState(null);
   const [isUserInList, setIsUserInList] = useState(false); // Added state to track if user is in the list
 
@@ -44,14 +45,17 @@ const Matching = () => {
       stompClient.subscribe('/topic/matching/start', (message) => {
         try {
           const data = JSON.parse(message.body);
+          console.log(data);
+          console.log(data.type);
 
           if (data.type === 'matching_completed') {
             setMatchingComplete(true);
-            setMatchedUsers(data.nickname);
+            setMatchedUsers(data.nickname.split(', ').map((nickname) => `${nickname}님`));
             setRoomPk(data.roomPk);
-            setIsUserInList(data.nickname.includes(nickname)); // Check if user is in the list
             stompClient.deactivate();
             console.log('매칭 완료 및 소켓 연결 해제');
+          } else if (data.type === 'matching_failed' && data.nickname === nickname) {
+            setMatchingFailed(true);
           }
         } catch (error) {
           console.error('Error parsing message:', error);
@@ -59,6 +63,7 @@ const Matching = () => {
       });
 
       stompClient.publish({
+        destination: '/app/matching/start',
         destination: '/app/matching/start',
         body: JSON.stringify(newFilters),
       });
@@ -69,7 +74,7 @@ const Matching = () => {
     return () => {
       stompClient.deactivate();
     };
-  }, []);
+  }, [nickname]); // useEffect dependency에 nickname 추가
 
   return (
     <div>
@@ -84,11 +89,7 @@ const Matching = () => {
           />
         }
       />
-      {matchingComplete && isUserInList ? (
-        <MatchComplete matchedUsers={matchedUsers} roomPk={roomPk} />
-      ) : (
-        <Loading />
-      )}
+      {matchingComplete && isUserInList ? <MatchComplete matchedUsers={matchedUsers} roomPk={roomPk} /> : <Loading />}
     </div>
   );
 };
@@ -99,19 +100,41 @@ const MatchComplete = ({ matchedUsers, roomPk }) => {
   return (
     <>
       <h1 className="mt-10 text-2xl font-bold text-center">
-        {matchedUsers.length > 0 ? (
-          `${matchedUsers.join(', ')}과 매칭이 완료되었습니다.`
+        {matchingComplete ? (
+          <>
+            {matchedUsers.join(', ')}과
+            <br />
+            매칭이 완료되었습니다.
+          </>
+        ) : matchingFailed ? (
+          <>
+            매칭에 실패하였습니다. <br />
+            다시 시도해주십시오.
+          </>
         ) : (
           '매칭이 완료되었습니다.'
         )}
       </h1>
       <div className="flex justify-center mt-5">
-        <MyButton
-          text="채팅 방으로 이동"
-          onClick={() => {
-            navigate(`/chat/${roomPk}/matching_chat/`);
-          }}
-        />
+        {matchingFailed ? (
+          <MyButton
+            text="같이 먹자 페이지로 이동하기"
+            onClick={() => {
+              navigate('/LetsEat');
+            }}
+          />
+        ) : (
+          <MyButton
+            text={matchingComplete ? '채팅 방으로 이동' : '매칭 취소'}
+            onClick={() => {
+              if (matchingComplete) {
+                navigate(`http://127.0.0.1:8000/chat/${roomPk}/matching_chat/`);
+              } else {
+                navigate(-1);
+              }
+            }}
+          />
+        )}
       </div>
     </>
   );

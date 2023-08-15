@@ -88,13 +88,16 @@ const LetsEat = () => {
       });
   }, [navigate]);
 
-  //현재 시간
+  //현재 시간(기본) => 사용자 선택 시간 수정시 저장
   useEffect(() => {
-    const now = new Date();
-    const hours = now.getHours().toString().padStart(2, '0');
-    const minutes = now.getMinutes().toString().padStart(2, '0');
-    const currentTime = hours + ':' + minutes;
-    setStartTime(currentTime);
+    if (!startTime) {
+      // startTime이 null이면 현재 시간이 기본 설정
+      const now = new Date();
+      const hours = now.getHours().toString().padStart(2, '0');
+      const minutes = now.getMinutes().toString().padStart(2, '0');
+      const currentTime = hours + ':' + minutes;
+      setStartTime(currentTime);
+    }
   }, []);
 
   useEffect(() => {
