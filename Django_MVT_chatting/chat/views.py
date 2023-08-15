@@ -97,7 +97,7 @@ def exit_matching_room(request, room_pk):
 class MatchingRoomNew(APIView):
     def post(self, request, format=None):
         data = request.data
-        user_names = data.get('user_nicknames', [])
+        user_names = sorted(data.get('user_nicknames', []))
 
         for user_name in user_names:
             try:
@@ -105,13 +105,19 @@ class MatchingRoomNew(APIView):
             except User.DoesNotExist:
                 return Response({'message': '해당 닉네임의 유저가 존재하지 않습니다. : '+user_name}, status=404)
 
-        room = MatchingRoom.objects.create(name=', '.join(user_names))
-        for user_name in user_names:
-            user = User.objects.get(username=user_name)
-            print(user.username)
-            room.register_user_in_room(user)
+        room_name = ', '.join(user_names)
+        try:
+            MatchingRoom.objects.get(name=room_name)
+            return Response({'message': '이미 같은 멤버로 생성된 방이 있습니다. : ' + room_name}, status=400)
 
-        return Response({'room_pk': room.pk}, status=201)
+        except MatchingRoom.DoesNotExist:
+            room = MatchingRoom.objects.create(name=', '.join(user_names))
+            for user_name in user_names:
+                user = User.objects.get(username=user_name)
+                print(user.username)
+                room.register_user_in_room(user)
+
+            return Response({'room_pk': room.pk}, status=201)
 
 
 @api_view(['GET'])

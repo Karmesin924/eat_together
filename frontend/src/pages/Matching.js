@@ -13,6 +13,7 @@ const Matching = () => {
   const [matchingComplete, setMatchingComplete] = useState(false);
   const [matchingFailed, setMatchingFailed] = useState(false);
   const [roomPk, setRoomPk] = useState(null);
+  const [isUserInList, setIsUserInList] = useState(false); // Added state to track if user is in the list
 
   const { nickname, people, gender, age, menu, startTime, conversation, latitude, longitude } = useContext(MyContext);
 
@@ -63,6 +64,7 @@ const Matching = () => {
 
       stompClient.publish({
         destination: '/app/matching/start',
+        destination: '/app/matching/start',
         body: JSON.stringify(newFilters),
       });
     };
@@ -87,6 +89,16 @@ const Matching = () => {
           />
         }
       />
+      {matchingComplete && isUserInList ? <MatchComplete matchedUsers={matchedUsers} roomPk={roomPk} /> : <Loading />}
+    </div>
+  );
+};
+
+const MatchComplete = ({ matchedUsers, roomPk }) => {
+  const navigate = useNavigate();
+
+  return (
+    <>
       <h1 className="mt-10 text-2xl font-bold text-center">
         {matchingComplete ? (
           <>
@@ -100,11 +112,7 @@ const Matching = () => {
             다시 시도해주십시오.
           </>
         ) : (
-          <>
-            매칭 중입니다.
-            <br />
-            5분 정도 소요될 수 있습니다.
-          </>
+          '매칭이 완료되었습니다.'
         )}
       </h1>
       <div className="flex justify-center mt-5">
@@ -128,8 +136,16 @@ const Matching = () => {
           />
         )}
       </div>
-    </div>
+    </>
   );
 };
+
+const Loading = () => (
+  <h1 className="mt-10 text-2xl font-bold text-center">
+    매칭 중입니다.
+    <br />
+    5분 정도 소요될 수 있습니다.
+  </h1>
+);
 
 export default Matching;
