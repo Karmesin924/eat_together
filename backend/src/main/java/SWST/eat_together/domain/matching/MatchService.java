@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.LocalTime;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -41,7 +42,7 @@ public class MatchService {
 
         for (MatchRequest request1 : matchQueue) {
             if (matchedRequests.contains(request1)) {
-                continue; // Skip already matched requests
+                continue;
             }
 
             List<MatchRequest> tempMatches = new ArrayList<>();
@@ -49,7 +50,7 @@ public class MatchService {
             for (MatchRequest request2 : matchQueue) {
                 if (request1 != request2 &&
                         ("any".equals(request1.getPeople()) || "any".equals(request2.getPeople()) || request1.getPeople().equals(request2.getPeople())) &&
-                        compareHours(request1.getStartTime(), request2.getStartTime()) &&
+                        isWithinOneHour(request1.getStartTime(), request2.getStartTime()) &&
                         checkDistance(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude())) {
                     System.out.println("실행");
                     int score = calculateMatchingScore(request1, request2);
@@ -63,11 +64,9 @@ public class MatchService {
             if (!tempMatches.isEmpty()) {
                 if ("any".equals(request1.getPeople())) {
                     matchingRequests.add(request1);
-                    matchingRequests.addAll(tempMatches);
-                    matchedRequests.addAll(tempMatches);
-                } else {
-                    Map<String, Integer> peopleFrequency = new HashMap<>();
+                    matchedRequests.add(request1);
 
+                    Map<String, Integer> peopleFrequency = new HashMap<>();
                     for (MatchRequest tempMatch : tempMatches) {
                         String people = tempMatch.getPeople();
                         peopleFrequency.put(people, peopleFrequency.getOrDefault(people, 0) + 1);
@@ -83,10 +82,8 @@ public class MatchService {
                         }
                     }
 
-                    int targetMatchCount = Math.min(highestFrequency, Integer.parseInt(request1.getPeople()) - 1);
-
-                    if (targetMatchCount > 0) {
-                        matchingRequests.add(request1);
+                    if (mostFrequentPeople != null) {
+                        int targetMatchCount = highestFrequency;
                         for (MatchRequest tempMatch : tempMatches) {
                             if (tempMatch.getPeople().equals(mostFrequentPeople) && targetMatchCount > 0) {
                                 matchingRequests.add(tempMatch);
@@ -94,6 +91,24 @@ public class MatchService {
                                 matchedRequests.add(tempMatch);
                             }
                         }
+                    }
+                } else {
+                    matchingRequests.add(request1);
+                    matchedRequests.add(request1); // Add the request1 to matchedRequests
+
+                    int targetMatchCount = Integer.parseInt(request1.getPeople());
+
+                    List<MatchRequest> specificPeopleMatches = new ArrayList<>();
+                    for (MatchRequest tempMatch : tempMatches) {
+                        if (tempMatch.getPeople().equals(request1.getPeople()) && targetMatchCount > 0) {
+                            specificPeopleMatches.add(tempMatch);
+                            targetMatchCount--;
+                            matchedRequests.add(tempMatch);
+                        }
+                    }
+
+                    if (specificPeopleMatches.size() == Integer.parseInt(request1.getPeople())) {
+                        matchingRequests.addAll(specificPeopleMatches);
                     }
                 }
             }
@@ -103,6 +118,7 @@ public class MatchService {
 
         return matchingRequests;
     }
+
 
     private int calculateMatchingScore(MatchRequest request1, MatchRequest request2) {
         int score = 0;
@@ -156,14 +172,14 @@ public class MatchService {
         return currentYear - birthYear;
     }
 
-    public boolean compareHours(String time1, String time2) {
-        String[] timeParts1 = time1.split(":");
-        String[] timeParts2 = time2.split(":");
-
-        System.out.println("timeParts1[0] = " + timeParts1[0]);
-        System.out.println("timeParts2[0] = " + timeParts2[0]);
-        return timeParts1[0].equals(timeParts2[0]);
-    }
+//    public boolean compareHours(String time1, String time2) {
+//        String[] timeParts1 = time1.split(":");
+//        String[] timeParts2 = time2.split(":");
+//
+//        System.out.println("timeParts1[0] = " + timeParts1[0]);
+//        System.out.println("timeParts2[0] = " + timeParts2[0]);
+//        return timeParts1[0].equals(timeParts2[0]);
+//    }
 
     public boolean checkDistance(double lat1, double lon1, double lat2, double lon2) {
         int earthRadiusInMeters = 6371000; // Earth's radius in meters
@@ -284,6 +300,14 @@ public class MatchService {
             // 큐에서 request 유저 제거
             // 제거 된 사람에게 type = "matching_failed" 전송
         }
+    }
+
+    private boolean isWithinOneHour(String time1, String time2) {
+        LocalTime startTime1 = LocalTime.parse(time1);
+        LocalTime startTime2 = LocalTime.parse(time2);
+
+        Duration duration = Duration.between(startTime1, startTime2).abs();
+        return duration.compareTo(Duration.ofHours(1)) <= 0;
     }
 }
 
