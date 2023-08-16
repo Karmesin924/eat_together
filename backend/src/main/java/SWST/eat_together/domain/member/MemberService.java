@@ -75,13 +75,13 @@ public class MemberService {
         System.out.println("Response Body: " + responseBody);
     }
 
-    public int getAgeFromNickname(String nickname) {
+    public String getGenderFromNickname(String nickname) {
         Member member = memberRepository.findByNickname(nickname);
-        if (member != null && member.getDate() != null) {
-            LocalDate birthDate = member.getDate().toLocalDate();
-            LocalDate currentDate = LocalDate.now();
-            return Period.between(birthDate, currentDate).getYears();
-        }
-        return -1; // Return a placeholder value or handle this case accordingly
+
+        return member.getGender();
     }
+
+
+
+
 }
