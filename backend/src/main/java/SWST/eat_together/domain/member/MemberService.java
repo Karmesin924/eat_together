@@ -6,9 +6,6 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.time.LocalDate;
-import java.time.Period;
-
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -45,7 +42,7 @@ public class MemberService {
         return "0";
     }
     public Member login(LoginDTO form){
-        Member member = new Member();
+        Member member;
         member = memberRepository.findByEmail(form.getEmail());
         if (member == null) {
             // 오류
@@ -74,14 +71,4 @@ public class MemberService {
         System.out.println("Response Status Code: " + statusCode);
         System.out.println("Response Body: " + responseBody);
     }
-
-    public String getGenderFromNickname(String nickname) {
-        Member member = memberRepository.findByNickname(nickname);
-
-        return member.getGender();
-    }
-
-
-
-
 }

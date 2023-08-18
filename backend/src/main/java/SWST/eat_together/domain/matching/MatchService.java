@@ -1,6 +1,7 @@
 package SWST.eat_together.domain.matching;
 
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -50,7 +51,7 @@ public class MatchService {
                     targetUrl,
                     HttpMethod.POST,
                     requestEntity,
-                    new ParameterizedTypeReference<Map<String, Object>>() {
+                    new ParameterizedTypeReference<>() {
                     }
             );
 
@@ -70,7 +71,7 @@ public class MatchService {
         return roomPk;
     }
 
-    public void completeMessageToFront(List<MatchRequest> matchedRequests) {
+    public void completeMessageToFront(@NotNull List<MatchRequest> matchedRequests) {
         if (!matchedRequests.isEmpty()) {
             int roomPk = interactionWithChat(matchedRequests);
 
@@ -82,9 +83,7 @@ public class MatchService {
                 userNicknames.add(request.getNickname());
             }
             message.setNickname(userNicknames);
-
             message.setRoomPk(roomPk);
-
             messagingTemplate.convertAndSend("/topic/matching/start", message.toJson());
         }
     }
@@ -100,4 +99,3 @@ public class MatchService {
         System.out.println("매칭 실패 메시지 전송: " + errorMessage);
     }
 }
-
