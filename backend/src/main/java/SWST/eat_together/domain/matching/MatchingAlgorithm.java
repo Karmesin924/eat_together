@@ -3,7 +3,6 @@ package SWST.eat_together.domain.matching;
 import SWST.eat_together.domain.member.Member;
 import SWST.eat_together.domain.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
@@ -20,15 +19,13 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class MatchingAlgorithm {
     private final MemberRepository memberRepository;
-    private final SimpMessagingTemplate messagingTemplate;
-
 
     //spring 서버가 실행되는 시점이 생성되는 큐 matchQueue. 서버 종료시 사라진다.
     private static Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(100);
 
     //새로운 스레드 생성. (시간 제한 처리용) -> 정기적으로 handleMatchRequestPeriodcally() 메서드를 실행하여 매칭 요청을 주기적으로 처리한다.
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-
+    private final MatchService matchService;
 
     public static void insertQueue(MatchRequest newRequest){
         System.out.println("***** 들어온 요청을 큐에 넣었습니다. *****");
@@ -37,14 +34,10 @@ public class MatchingAlgorithm {
     }
 
     public void startMatching() {
-        MatchService matchService = new MatchService(messagingTemplate);
-
-        System.out.println("***** MatchService.startMatching *****");
-
+        System.out.println("***** startMatching *****");
         List<MatchRequest> matchedRequests = new ArrayList<>();
 
-        //큐에 있는 요청을 하나씩 빼서 request1에 담고 매칭완료 리스트에 존재하는 요청일시
-        //반복문을 빠져나간다.
+        //큐에 있는 요청을 하나씩 빼서 request1에 담고 매칭완료 리스트에 존재하는 요청일시 반복문을 빠져나간다.
         for (MatchRequest request1 : matchQueue) {
             if (matchedRequests.contains(request1)) {
                 continue;
@@ -261,9 +254,7 @@ public class MatchingAlgorithm {
                 * Math.sin(dLon / 2) * Math.sin(dLon / 2);
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-
         double distance = earthRadiusInMeters * c;
-
         return distance <= 700;
     }
 
@@ -272,27 +263,20 @@ public class MatchingAlgorithm {
     //시간 경과 관련 메서드들
     @Async
     public void startMatchingAsync() {
-        System.out.println("***** MatchService.startMatching *****");
-
-        // 1초마다 handleMatchRequestPeriodically() 호출.
         scheduler.scheduleAtFixedRate(this::handleMatchRequestPeriodically, 0, 1, TimeUnit.SECONDS);
         scheduler.scheduleAtFixedRate(this::startMatching, 0, 1, TimeUnit.SECONDS);
     }
 
     private void handleMatchRequestPeriodically() {
-        MatchService matchService = new MatchService(messagingTemplate);
-
-        //해당 메소드가 호출된 시점의 시간을 currentTime 변수에 할당
+        System.out.println("***** handleMatchRequestPeriodically *****");
         Instant currentTime = Instant.now();
 
         for (MatchRequest request : matchQueue) {
-            // 만약 10초가 지난 요청일경우
             if (hasRequestExceededWaitingTime(request, currentTime)) {
                 // 조건 완화 후 요청 받은 시간 변경 메소드.
                 if (easeTheOption(request)) {
                     matchQueue.remove(request);
                     matchQueue.offer(request);
-                    //mmatchQueue.add(request);
                 } else {
                     matchService.failureMessageToFront(request);
                     matchQueue.remove(request);
@@ -302,12 +286,11 @@ public class MatchingAlgorithm {
     }
 
     private boolean hasRequestExceededWaitingTime(MatchRequest request, Instant currentTime) {
-        // 해당 요청이 들어온 시간과 현재 시간 사이에 10초가 지났는지 검증하는 메소드
         return Duration.between(request.getReceivedTimestamp(), currentTime).getSeconds() >= 10;
     }
 
     private boolean easeTheOption(MatchRequest request) {
-        System.out.println("MatchService.easeTheOption");
+        System.out.println("easeTheOption");
         System.out.println("request = " + request);
 
         if (!request.getMenu().equals("any")) {

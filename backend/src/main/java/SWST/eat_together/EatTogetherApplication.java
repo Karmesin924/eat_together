@@ -1,6 +1,5 @@
 package SWST.eat_together;
 
-import SWST.eat_together.domain.matching.MatchService;
 import SWST.eat_together.domain.matching.MatchingAlgorithm;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -11,11 +11,6 @@ public class MatchingCompletedMessage {
     private List<String> nickname;
     private int roomPk;
 
-//    @JsonValue
-//    public String toJson() {
-//        return "{\"type\":\"" + type + "\",\"nickname\":" + nickname + ",\"roomPk\":" + roomPk + "}";
-//    }
-
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
