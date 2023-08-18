@@ -20,7 +20,7 @@ public class MatchingAlgorithm {
     private static final int MAX_DISTANCE_METERS = 700;
     private final MatchService matchService;
 
-    private static Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
+    private static final Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
 
     public Queue<MatchRequest> getMatchQueue() {
         return matchQueue;
