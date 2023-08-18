@@ -16,8 +16,11 @@ import java.util.concurrent.ArrayBlockingQueue;
 public class MatchingAlgorithm {
     private final MemberRepository memberRepository;
 
-    private static Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(100);
+    private static final int QUEUE_CAPACITY = 100;
+    private static final int MAX_DISTANCE_METERS = 700;
     private final MatchService matchService;
+
+    private static Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
 
     public Queue<MatchRequest> getMatchQueue() {
         return matchQueue;
@@ -79,18 +82,15 @@ public class MatchingAlgorithm {
     }
 
     private boolean checkMatchableRequest(MatchRequest request1, MatchRequest request2) {
-        if((request1 != request2) && //비교하는 두 요청이 같지 않고,
+        return (request1 != request2) && //비교하는 두 요청이 같지 않고,
                 // 기준 요청의 people이 any이거나 서로의 people이 같고,
                 ("any".equals(request1.getPeople()) || request1.getPeople().equals(request2.getPeople())) &&
 
                 //서로의 시간 차이가 한시간 이내이고,
                 isWithinOneHour(request1.getStartTime(), request2.getStartTime()) &&
 
-                //서로의 거리가 700m 이내일 경우
-                checkDistance(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude())){
-            return true;
-        }
-        return false;
+                //서로의 거리가 MAX_DISTANCE_METERS 이내일 경우
+                checkDistance(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude());
     }
 
     private void caseOfRequest1PeopleIsAny(List<MatchRequest> matchedRequests, List<MatchRequest> overThreeScoreList, MatchRequest request1){
@@ -250,6 +250,6 @@ public class MatchingAlgorithm {
 
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = earthRadiusInMeters * c;
-        return distance <= 700;
+        return distance <= MAX_DISTANCE_METERS;
     }
 }

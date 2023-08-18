@@ -14,6 +14,7 @@ import java.util.Queue;
 public class MatchingTimeoutChecker {
     private final MatchingAlgorithm matchingAlgorithm;
     private final MatchService matchService;
+    private static final long WAITING_TIME_THRESHOLD_SECONDS = 10; //해당 초가 지나면 시간 초과로 인식, 기준 완화 실행
 
     @Scheduled(fixedRate = 1000)
     @Async
@@ -38,7 +39,7 @@ public class MatchingTimeoutChecker {
     }
 
     private boolean hasRequestExceededWaitingTime(MatchRequest request, Instant currentTime) {
-        return Duration.between(request.getReceivedTimestamp(), currentTime).getSeconds() >= 10;
+        return Duration.between(request.getReceivedTimestamp(), currentTime).getSeconds() >= WAITING_TIME_THRESHOLD_SECONDS;
     }
 
     private boolean easeTheOption(MatchRequest request) {
@@ -47,15 +48,18 @@ public class MatchingTimeoutChecker {
 
         if (!request.getMenu().equals("any")) {
             request.setMenu("any");
+            return true;
         } else if (!request.getAge().equals("any")) {
             request.setAge("any");
+            return true;
         } else if (!request.getGender().equals("any")) {
             request.setGender("any");
+            return true;
         } else if (!request.getConversation().equals("any")) {
             request.setConversation("any");
-        } else {
-            return false;
+            return true;
         }
-        return true;
+
+        return false;
     }
 }
