@@ -51,7 +51,7 @@ public class MatchService {
                     targetUrl,
                     HttpMethod.POST,
                     requestEntity,
-                    new ParameterizedTypeReference<Map<String, Object>>() {
+                    new ParameterizedTypeReference<>() {
                     }
             );
 
