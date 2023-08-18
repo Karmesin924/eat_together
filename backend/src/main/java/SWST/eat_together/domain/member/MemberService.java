@@ -1,7 +1,6 @@
 package SWST.eat_together.domain.member;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -10,11 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private MemberRepository memberRepository ;
-
-    @Autowired
-    public void setMemberService(MemberRepository memberRepository) {
-        this.memberRepository = memberRepository;}
+    private final MemberRepository memberRepository ;
 
     public String saveUser(SignUpDTO form) {
         if (memberRepository.existsByEmail(form.getEmail())) {

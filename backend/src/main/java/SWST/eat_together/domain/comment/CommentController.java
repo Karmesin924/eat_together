@@ -17,6 +17,7 @@ import static SWST.eat_together.domain.member.AuthUtil.checkLoggedInUserOr401;
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;
+
     @PostMapping("/{idx}/add")
     public ResponseEntity addComment(@PathVariable("idx") String idx, @RequestBody CommentDTO regiComment, HttpServletRequest request){
         System.out.println("idx = " + idx);
