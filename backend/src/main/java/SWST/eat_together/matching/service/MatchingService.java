@@ -1,5 +1,8 @@
-package SWST.eat_together.matching;
+package SWST.eat_together.matching.service;
 
+import SWST.eat_together.matching.algorithm.MatchedList;
+import SWST.eat_together.matching.algorithm.MatchingAlgorithm;
+import SWST.eat_together.matching.socket.MatchingRequest;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.ParameterizedTypeReference;
@@ -17,14 +20,14 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:3000")
 @Service
 @RequiredArgsConstructor
-public class MatchService {
+public class MatchingService {
     private final SimpMessagingTemplate messagingTemplate;
 
-    public void handleMatchRequest(MatchRequest newRequest) {
+    public void handleMatchRequest(MatchingRequest newRequest) {
         MatchingAlgorithm.insertQueue(newRequest);
     }
 
-    public int interactionWithChat(List<MatchRequest> matchedRequests) {
+    public int interactionWithChat(List<MatchingRequest> matchedRequests) {
         System.out.println("*****MatchService.interactionWithChat*****");
 
         int roomPk = 0;
@@ -34,7 +37,7 @@ public class MatchService {
         MatchedList messageToChat = new MatchedList();
 
         List<String> userNicknames = new ArrayList<>();
-        for (MatchRequest request : matchedRequests) {
+        for (MatchingRequest request : matchedRequests) {
             userNicknames.add(request.getNickname());
         }
         messageToChat.setUser_nicknames(userNicknames);
@@ -71,7 +74,7 @@ public class MatchService {
         return roomPk;
     }
 
-    public void completeMessageToFront(@NotNull List<MatchRequest> matchedRequests) {
+    public void completeMessageToFront(@NotNull List<MatchingRequest> matchedRequests) {
         if (!matchedRequests.isEmpty()) {
             int roomPk = interactionWithChat(matchedRequests);
 
@@ -79,7 +82,7 @@ public class MatchService {
             message.setType("matching_completed");
 
             List<String> userNicknames = new ArrayList<>();
-            for (MatchRequest request : matchedRequests) {
+            for (MatchingRequest request : matchedRequests) {
                 userNicknames.add(request.getNickname());
             }
             message.setNickname(userNicknames);
@@ -88,7 +91,7 @@ public class MatchService {
         }
     }
 
-    public void failureMessageToFront(MatchRequest request) {
+    public void failureMessageToFront(MatchingRequest request) {
         System.out.println("***** MatchService.handleMatchingFailure ***** ");
 
         MatchingFailedMessage errorMessage = new MatchingFailedMessage();

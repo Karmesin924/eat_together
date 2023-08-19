@@ -1,10 +1,10 @@
-package SWST.eat_together.matching;
+package SWST.eat_together.matching.socket;
 import lombok.Data;
 
 import java.time.Instant;
 
 @Data
-public class MatchRequest {
+public class MatchingRequest {
     private String type;
     private String nickname;
 

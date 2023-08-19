@@ -1,4 +1,4 @@
-package SWST.eat_together.matching;
+package SWST.eat_together.matching.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
@@ -14,7 +14,7 @@ public class MatchingFailedMessage {
             return objectMapper.writeValueAsString(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return ""; // 또는 적절한 오류 처리
+            return "";
         }
     }
 }
