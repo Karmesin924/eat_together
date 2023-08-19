@@ -31,14 +31,13 @@ public class MatchingAlgorithm {
         System.out.println("현재 큐 상태 = " + matchQueue);
     }
 
-    @Scheduled(fixedRate = 1000)
     public void startMatching() {
         System.out.println("***** startMatching *****");
         List<MatchRequest> matchedRequests = new ArrayList<>();
 
-        //큐에 있는 요청을 하나씩 빼서 request1에 담고 매칭완료 리스트에 존재하는 요청일시 반복문을 빠져나간다.
         for (MatchRequest request1 : matchQueue) {
             if (matchedRequests.contains(request1)) {
+                //매칭완료 리스트에 존재하는 요청일시 반복문을 패스한다.
                 continue;
             }
 
@@ -46,10 +45,9 @@ public class MatchingAlgorithm {
 
             List<MatchRequest> overThreeScoreList = new ArrayList<>();
 
-            //큐에 있는 요청을 하나씩 request2에 담고 매칭 가능 요청인지 검증.
+            //매칭 가능 요청인지 검증.
             for (MatchRequest request2 : matchQueue) {
                 if (checkMatchableRequest(request1, request2)) {
-                    //서로의 score 계산.
                     int score = calculateMatchingScore(request1, request2);
 
                     //request1과 request2의 score가 3 이상일 경우 overThreeScoreList에 추가
@@ -57,8 +55,9 @@ public class MatchingAlgorithm {
                         overThreeScoreList.add(request2);
                         System.out.println(request2.getNickname() + "님의 요청은 score 기준을 넘겼습니다.");
                         System.out.println("overThreeScoreList = " + overThreeScoreList);
-
-                    } else System.out.println(request2.getNickname() + "님의 요청은 score 기준을 넘기지 못했습니다.");
+                    } else {
+                        System.out.println(request2.getNickname() + "님의 요청은 score 기준을 넘기지 못했습니다.");
+                    }
                 }
             }
 
@@ -67,8 +66,6 @@ public class MatchingAlgorithm {
                 // requst1의 people이 any일 경우
                 if ("any".equals(request1.getPeople())) {
                     caseOfRequest1PeopleIsAny(matchedRequests, overThreeScoreList, request1);
-
-                // request1의 people 속성이 any가 아닌 경우
                 } else {
                     caseOfRequestPeopleIsNotAny(matchedRequests, overThreeScoreList, request1);
                 }
@@ -76,8 +73,6 @@ public class MatchingAlgorithm {
         }
 
         matchQueue.removeAll(matchedRequests);
-
-        //프론트엔드로 매칭 완료 메시지 전송.
         matchService.completeMessageToFront(matchedRequests);
     }
 

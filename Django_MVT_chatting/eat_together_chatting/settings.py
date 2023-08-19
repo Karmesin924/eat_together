@@ -32,7 +32,7 @@ SECRET_KEY = env('SECRET_KEY')  #.env 파일 사용
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'f37b-182-215-251-13.ngrok-free.app',
+    'd481-182-215-251-13.ngrok-free.app',
     '127.0.0.1'
 ]
 
@@ -162,4 +162,4 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-CSRF_TRUSTED_ORIGINS = ["https://f37b-182-215-251-13.ngrok-free.app"] #ngrok 설정
+CSRF_TRUSTED_ORIGINS = ["https://d481-182-215-251-13.ngrok-free.app"] #ngrok 설정

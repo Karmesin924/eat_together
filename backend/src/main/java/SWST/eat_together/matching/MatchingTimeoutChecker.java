@@ -1,8 +1,6 @@
 package SWST.eat_together.matching;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -16,10 +14,8 @@ public class MatchingTimeoutChecker {
     private final MatchService matchService;
     private static final long WAITING_TIME_THRESHOLD_SECONDS = 10; //해당 초가 지나면 시간 초과로 인식, 기준 완화 실행
 
-    @Scheduled(fixedRate = 1000)
-    @Async
-    public void handleMatchRequestPeriodically() {
-        System.out.println("***** handleMatchRequestPeriodically *****");
+    public void handleMatchRequest() {
+        System.out.println("***** handleMatchRequest *****");
         Instant currentTime = Instant.now();
 
         Queue<MatchRequest> matchQueue = matchingAlgorithm.getMatchQueue();
@@ -59,7 +55,6 @@ public class MatchingTimeoutChecker {
             request.setConversation("any");
             return true;
         }
-
         return false;
     }
 }
