@@ -1,5 +1,7 @@
 package SWST.eat_together.member;
 
+import SWST.eat_together.comment.Comment;
+import SWST.eat_together.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -28,7 +31,7 @@ public class Member {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "date")
+    @Column(name = "birth_date") // Update the column name to match the SQL schema
     private Date date;
 
     @Column(name = "password")
@@ -37,4 +40,9 @@ public class Member {
     @Column(name = "gender")
     private String gender;
 
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments;
+
+    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 }
