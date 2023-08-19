@@ -1,4 +1,4 @@
-package SWST.eat_together.matching;
+package SWST.eat_together.matching.socket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

@@ -1,9 +1,10 @@
-package SWST.eat_together.matching;
+package SWST.eat_together.matching.algorithm;
 
+import SWST.eat_together.matching.socket.MatchingRequest;
+import SWST.eat_together.matching.service.MatchingService;
 import SWST.eat_together.member.Member;
 import SWST.eat_together.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -18,24 +19,24 @@ public class MatchingAlgorithm {
 
     private static final int QUEUE_CAPACITY = 100;
     private static final int MAX_DISTANCE_METERS = 700;
-    private final MatchService matchService;
+    private final MatchingService matchingService;
 
-    private static final Queue<MatchRequest> matchQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
+    private static final Queue<MatchingRequest> matchQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
 
-    public Queue<MatchRequest> getMatchQueue() {
+    public Queue<MatchingRequest> getMatchQueue() {
         return matchQueue;
     }
 
-    public static void insertQueue(MatchRequest newRequest){
+    public static void insertQueue(MatchingRequest newRequest){
         matchQueue.offer(newRequest); // 들어온 요청을 큐에다 넣는다.
         System.out.println("현재 큐 상태 = " + matchQueue);
     }
 
     public void startMatching() {
         System.out.println("***** startMatching *****");
-        List<MatchRequest> matchedRequests = new ArrayList<>();
+        List<MatchingRequest> matchedRequests = new ArrayList<>();
 
-        for (MatchRequest request1 : matchQueue) {
+        for (MatchingRequest request1 : matchQueue) {
             if (matchedRequests.contains(request1)) {
                 //매칭완료 리스트에 존재하는 요청일시 반복문을 패스한다.
                 continue;
@@ -43,10 +44,10 @@ public class MatchingAlgorithm {
 
             System.out.println("[현재 기준 요청] : " + request1);
 
-            List<MatchRequest> overThreeScoreList = new ArrayList<>();
+            List<MatchingRequest> overThreeScoreList = new ArrayList<>();
 
             //매칭 가능 요청인지 검증.
-            for (MatchRequest request2 : matchQueue) {
+            for (MatchingRequest request2 : matchQueue) {
                 if (checkMatchableRequest(request1, request2)) {
                     int score = calculateMatchingScore(request1, request2);
 
@@ -73,10 +74,10 @@ public class MatchingAlgorithm {
         }
 
         matchQueue.removeAll(matchedRequests);
-        matchService.completeMessageToFront(matchedRequests);
+        matchingService.completeMessageToFront(matchedRequests);
     }
 
-    private boolean checkMatchableRequest(MatchRequest request1, MatchRequest request2) {
+    private boolean checkMatchableRequest(MatchingRequest request1, MatchingRequest request2) {
         return (request1 != request2) && //비교하는 두 요청이 같지 않고,
                 // 기준 요청의 people이 any이거나 서로의 people이 같고,
                 ("any".equals(request1.getPeople()) || request1.getPeople().equals(request2.getPeople())) &&
@@ -88,7 +89,7 @@ public class MatchingAlgorithm {
                 checkDistance(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude());
     }
 
-    private void caseOfRequest1PeopleIsAny(List<MatchRequest> matchedRequests, List<MatchRequest> overThreeScoreList, MatchRequest request1){
+    private void caseOfRequest1PeopleIsAny(List<MatchingRequest> matchedRequests, List<MatchingRequest> overThreeScoreList, MatchingRequest request1){
 
         matchedRequests.add(request1);
 
@@ -111,7 +112,7 @@ public class MatchingAlgorithm {
             } else {
                 int targetMatchCount = Integer.parseInt(mostFrequentPeople) - 1; // 매칭완료 리스트에 추가해야할 인원수
 
-                for (MatchRequest tempMatch : overThreeScoreList) {
+                for (MatchingRequest tempMatch : overThreeScoreList) {
                     if (tempMatch.getPeople().equals(mostFrequentPeople) && targetMatchCount > 0) {
                         matchedRequests.add(tempMatch);
                         targetMatchCount--;
@@ -122,12 +123,12 @@ public class MatchingAlgorithm {
         matchQueue.removeAll(matchedRequests);
     }
 
-    private String findMostFrequentPeople(List<MatchRequest> overThreeScoreList) {
+    private String findMostFrequentPeople(List<MatchingRequest> overThreeScoreList) {
         // overThreeScoreList에 있는 모든 요청중 제일 빈도가 큰 people을 구하는 로직.
 
         //리스트를 해시맵 형태로 변환한다.
         Map<String, Integer> peopleFrequency = new HashMap<>();
-        for (MatchRequest tempMatch : overThreeScoreList) {
+        for (MatchingRequest tempMatch : overThreeScoreList) {
             String people = tempMatch.getPeople();
             peopleFrequency.put(people, peopleFrequency.getOrDefault(people, 0) + 1);
         }
@@ -147,12 +148,12 @@ public class MatchingAlgorithm {
         return mostFrequentPeople;
     }
 
-    private void caseOfRequestPeopleIsNotAny(List<MatchRequest> matchedRequests, List<MatchRequest> overThreeScoreList, MatchRequest request1){
+    private void caseOfRequestPeopleIsNotAny(List<MatchingRequest> matchedRequests, List<MatchingRequest> overThreeScoreList, MatchingRequest request1){
         matchedRequests.add(request1);
 
         int targetMatchCount = Integer.parseInt(request1.getPeople());
 
-        for (MatchRequest tempMatch : overThreeScoreList) {
+        for (MatchingRequest tempMatch : overThreeScoreList) {
             //특정 인원 수와 일치하는 요청들을 찾음.
             if (tempMatch.getPeople().equals(request1.getPeople()) && targetMatchCount > 0) {
                 matchedRequests.add(tempMatch);
@@ -161,7 +162,7 @@ public class MatchingAlgorithm {
         }
     }
 
-    private int calculateMatchingScore(MatchRequest request1, MatchRequest request2) {
+    private int calculateMatchingScore(MatchingRequest request1, MatchingRequest request2) {
         System.out.println("***** 해당 비교 요청은 최소 충족 요건에 부합합니다. score 계산을 시작합니다. *****");
 
         int score = 0;
