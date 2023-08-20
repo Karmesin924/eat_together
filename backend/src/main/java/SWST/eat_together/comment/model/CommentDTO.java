@@ -1,4 +1,4 @@
-package SWST.eat_together.comment;
+package SWST.eat_together.comment.model;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

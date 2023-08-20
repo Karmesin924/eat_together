@@ -1,4 +1,4 @@
-package SWST.eat_together.post;
+package SWST.eat_together.post.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

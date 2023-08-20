@@ -1,10 +1,10 @@
-package SWST.eat_together.matching.message;
+package SWST.eat_together.matching.model.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
 @Data
-public class MatchingAlreadyExistMessage {
+public class MatchingFailedMessage {
     private String type;
     private String nickname;
 

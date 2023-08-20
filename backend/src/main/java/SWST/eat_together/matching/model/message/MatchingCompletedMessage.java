@@ -1,12 +1,15 @@
-package SWST.eat_together.matching.message;
+package SWST.eat_together.matching.model.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
-public class MatchingFailedMessage {
+public class MatchingCompletedMessage {
     private String type;
-    private String nickname;
+    private List<String> nickname;
+    private int roomPk;
 
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();

@@ -1,9 +1,9 @@
 package SWST.eat_together.matching.socket;
 
-import SWST.eat_together.matching.algorithm.MatchedList;
-import SWST.eat_together.matching.message.MatchingAlreadyExistMessage;
-import SWST.eat_together.matching.message.MatchingCompletedMessage;
-import SWST.eat_together.matching.message.MatchingFailedMessage;
+import SWST.eat_together.matching.model.MatchedList;
+import SWST.eat_together.matching.model.message.MatchingCompletedMessage;
+import SWST.eat_together.matching.model.message.MatchingFailedMessage;
+import SWST.eat_together.matching.model.MatchingRequest;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.ParameterizedTypeReference;
@@ -51,7 +51,7 @@ public class SendingMessage {
     }
 
     public void alreadyExistMessageToFront(MatchingRequest request){
-        MatchingAlreadyExistMessage matchingAlreadyExistMessage = new MatchingAlreadyExistMessage();
+        MatchingFailedMessage matchingAlreadyExistMessage = new MatchingFailedMessage();
         matchingAlreadyExistMessage.setType("matching_already_exist");
         matchingAlreadyExistMessage.setNickname(request.getNickname());
         messagingTemplate.convertAndSend("/topic/matching/start", matchingAlreadyExistMessage.toJson());

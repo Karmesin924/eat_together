@@ -1,6 +1,7 @@
 package SWST.eat_together.post;
 
 import SWST.eat_together.member.Member;
+import SWST.eat_together.post.model.RegiPostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
