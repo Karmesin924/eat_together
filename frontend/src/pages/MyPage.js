@@ -45,10 +45,9 @@ const MyPage = () => {
   const onClickLogout = () => {
     axios
       .post("/users/logout", null, { withCredentials: true })
-      .then((response) => {
-        console.log(response.data);
+      .then(() => {
         alert("로그아웃 되었습니다.");
-        navigate("/SignIn"); // 로그아웃 성공 시 이동할 경로를 설정해주세요
+        navigate("/SignIn");
       })
       .catch((error) => {
         alert("로그아웃에 실패하였습니다.");

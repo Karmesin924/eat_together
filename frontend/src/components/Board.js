@@ -32,7 +32,7 @@ const Board = ({
         );
       })
       .catch((err) => {
-        console.log("채팅 페이지로 이동에 실패했습니다.", err);
+        alert("채팅 페이지로 이동에 실패했습니다.", err);
       });
   };
 
