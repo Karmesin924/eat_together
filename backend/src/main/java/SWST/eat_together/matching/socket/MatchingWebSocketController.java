@@ -1,6 +1,6 @@
 package SWST.eat_together.matching.socket;
 
-import SWST.eat_together.matching.service.MatchingService;
+import SWST.eat_together.matching.algorithm.MatchingAlgorithm;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -12,7 +12,7 @@ import java.time.Instant;
 @RequiredArgsConstructor
 public class MatchingWebSocketController {
 
-    private final MatchingService matchingService;
+    private final MatchingAlgorithm matchingAlgorithm;
 
     @MessageMapping("/matching/start")
     @SendTo("/topic/matching/start")
@@ -20,8 +20,6 @@ public class MatchingWebSocketController {
         matchingRequest.setReceivedTimestamp(Instant.now());
         System.out.println("matchRequest = " + matchingRequest);
 
-        // 요청이 들어왔을 시 매칭 로직 수행
-        String message = matchingService.handleMatchRequest(matchingRequest);
-        System.out.println("message = " + message);
+        matchingAlgorithm.insertQueue(matchingRequest);
     }
 }

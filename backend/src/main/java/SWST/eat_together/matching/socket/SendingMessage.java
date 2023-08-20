@@ -1,14 +1,15 @@
-package SWST.eat_together.matching.service;
+package SWST.eat_together.matching.socket;
 
 import SWST.eat_together.matching.algorithm.MatchedList;
-import SWST.eat_together.matching.algorithm.MatchingAlgorithm;
-import SWST.eat_together.matching.socket.MatchingRequest;
+import SWST.eat_together.matching.message.MatchingAlreadyExistMessage;
+import SWST.eat_together.matching.message.MatchingCompletedMessage;
+import SWST.eat_together.matching.message.MatchingFailedMessage;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,14 +19,44 @@ import java.util.Map;
 
 
 @CrossOrigin(origins = "http://localhost:3000")
-@Service
+@Component
 @RequiredArgsConstructor
-public class MatchingService {
+public class SendingMessage {
     private final SimpMessagingTemplate messagingTemplate;
 
-    public String handleMatchRequest(MatchingRequest newRequest) {
-        String message = MatchingAlgorithm.insertQueue(newRequest);
-        return message;
+    public void completeMessageToFront(@NotNull List<MatchingRequest> matchedRequests) {
+        if (!matchedRequests.isEmpty()) {
+            int roomPk = interactionWithChat(matchedRequests);
+
+            MatchingCompletedMessage message = new MatchingCompletedMessage();
+            message.setType("matching_completed");
+
+            List<String> userNicknames = new ArrayList<>();
+            for (MatchingRequest request : matchedRequests) {
+                userNicknames.add(request.getNickname());
+            }
+            message.setNickname(userNicknames);
+            message.setRoomPk(roomPk);
+            messagingTemplate.convertAndSend("/topic/matching/start", message.toJson());
+        }
+    }
+
+    public void failureMessageToFront(MatchingRequest request) {
+        MatchingFailedMessage errorMessage = new MatchingFailedMessage();
+        errorMessage.setType("matching_failed");
+        errorMessage.setNickname(request.getNickname());
+        messagingTemplate.convertAndSend("/topic/matching/start", errorMessage.toJson());
+
+        System.out.println("매칭 실패 메시지 전송: " + errorMessage);
+    }
+
+    public void alreadyExistMessageToFront(MatchingRequest request){
+        MatchingAlreadyExistMessage matchingAlreadyExistMessage = new MatchingAlreadyExistMessage();
+        matchingAlreadyExistMessage.setType("matching_already_exist");
+        matchingAlreadyExistMessage.setNickname(request.getNickname());
+        messagingTemplate.convertAndSend("/topic/matching/start", matchingAlreadyExistMessage.toJson());
+
+        System.out.println("이미 매칭 존재: " + matchingAlreadyExistMessage);
     }
 
     public int interactionWithChat(List<MatchingRequest> matchedRequests) {
@@ -75,31 +106,4 @@ public class MatchingService {
         return roomPk;
     }
 
-    public void completeMessageToFront(@NotNull List<MatchingRequest> matchedRequests) {
-        if (!matchedRequests.isEmpty()) {
-            int roomPk = interactionWithChat(matchedRequests);
-
-            MatchingCompletedMessage message = new MatchingCompletedMessage();
-            message.setType("matching_completed");
-
-            List<String> userNicknames = new ArrayList<>();
-            for (MatchingRequest request : matchedRequests) {
-                userNicknames.add(request.getNickname());
-            }
-            message.setNickname(userNicknames);
-            message.setRoomPk(roomPk);
-            messagingTemplate.convertAndSend("/topic/matching/start", message.toJson());
-        }
-    }
-
-    public void failureMessageToFront(MatchingRequest request) {
-        System.out.println("***** MatchService.handleMatchingFailure ***** ");
-
-        MatchingFailedMessage errorMessage = new MatchingFailedMessage();
-        errorMessage.setType("matching_failed");
-        errorMessage.setNickname(request.getNickname());
-        messagingTemplate.convertAndSend("/topic/matching/start", errorMessage.toJson());
-
-        System.out.println("매칭 실패 메시지 전송: " + errorMessage);
-    }
 }
