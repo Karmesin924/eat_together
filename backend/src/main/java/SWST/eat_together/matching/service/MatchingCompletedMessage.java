@@ -17,7 +17,7 @@ public class MatchingCompletedMessage {
             return objectMapper.writeValueAsString(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return ""; //
+            return "";
         }
     }
 }

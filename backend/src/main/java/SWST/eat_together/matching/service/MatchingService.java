@@ -23,8 +23,9 @@ import java.util.Map;
 public class MatchingService {
     private final SimpMessagingTemplate messagingTemplate;
 
-    public void handleMatchRequest(MatchingRequest newRequest) {
-        MatchingAlgorithm.insertQueue(newRequest);
+    public String handleMatchRequest(MatchingRequest newRequest) {
+        String message = MatchingAlgorithm.insertQueue(newRequest);
+        return message;
     }
 
     public int interactionWithChat(List<MatchingRequest> matchedRequests) {

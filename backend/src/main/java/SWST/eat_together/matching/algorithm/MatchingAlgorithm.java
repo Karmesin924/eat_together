@@ -27,9 +27,17 @@ public class MatchingAlgorithm {
         return matchQueue;
     }
 
-    public static void insertQueue(MatchingRequest newRequest){
-        matchQueue.offer(newRequest); // 들어온 요청을 큐에다 넣는다.
+    public static String insertQueue(MatchingRequest newRequest){
+        for (MatchingRequest existingRequest : matchQueue) {
+            if (existingRequest.getNickname().equals(newRequest.getNickname())) {
+                return "이미 매칭중인 유저입니다";
+            }
+        }
+
+        matchQueue.offer(newRequest);
         System.out.println("현재 큐 상태 = " + matchQueue);
+
+        return newRequest.getNickname() + " 님이 추가되었습니다";
     }
 
     public void startMatching() {

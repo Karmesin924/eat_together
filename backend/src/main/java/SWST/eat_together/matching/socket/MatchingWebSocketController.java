@@ -21,6 +21,7 @@ public class MatchingWebSocketController {
         System.out.println("matchRequest = " + matchingRequest);
 
         // 요청이 들어왔을 시 매칭 로직 수행
-        matchingService.handleMatchRequest(matchingRequest);
+        String message = matchingService.handleMatchRequest(matchingRequest);
+        System.out.println("message = " + message);
     }
 }
