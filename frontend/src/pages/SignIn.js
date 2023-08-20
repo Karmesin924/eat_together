@@ -21,9 +21,6 @@ function SignIn() {
     e.preventDefault();
     try {
       const data = { email: inputEmail, password: inputPassword };
-      console.log("click SignIn");
-      console.log("ID : ", inputEmail);
-      console.log("PW : ", inputPassword);
       axios
         .post("/users/login", data, {
           headers: {
@@ -31,22 +28,17 @@ function SignIn() {
           },
         })
         .then((res) => {
-          console.log(res);
-
           if (res.status === 404) {
             alert("입력하신 이메일과 비밀번호가 일치하지 않습니다.");
           } else if (res.status === 200) {
             alert("로그인 성공!");
             navigate("/MyPage");
           }
-          // 작업 완료 되면 페이지 이동(새로고침)
           document.location.href = "/";
         })
         .catch((ex) => {
           alert("로그인 요청이 실패했습니다.");
-          console.log("login request fail: " + ex);
-        })
-        .finally(() => console.log("login request end"));
+        });
     } catch (e) {
       console.log(e);
     }

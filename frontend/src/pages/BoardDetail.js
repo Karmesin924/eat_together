@@ -44,16 +44,11 @@ const BoardDetail = () => {
   }, [getBoard]);
 
   useEffect(() => {
-    axios
-      .get("/users/validate")
-      .then((res) => {
-        const fetchedNickname = res.data.nickname;
-        setCurrentNickname(fetchedNickname);
-        setIsLoggedIn(true);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    axios.get("/users/validate").then((res) => {
+      const fetchedNickname = res.data.nickname;
+      setCurrentNickname(fetchedNickname);
+      setIsLoggedIn(true);
+    });
   }, [currentNickname]);
 
   return (
