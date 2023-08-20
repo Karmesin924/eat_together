@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.service;
+package SWST.eat_together.matching.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;

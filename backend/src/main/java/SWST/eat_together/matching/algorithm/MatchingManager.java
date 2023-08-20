@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.service;
+package SWST.eat_together.matching.algorithm;
 
 import SWST.eat_together.matching.algorithm.MatchingTimeoutChecker;
 import SWST.eat_together.matching.algorithm.MatchingAlgorithm;
@@ -15,6 +15,7 @@ public class MatchingManager {
 
     @Scheduled(fixedRate = 1000)
     private void checkForMatches() {
+        System.out.println("매칭 실행 중 . . .");
         matchingAlgorithm.startMatching();
         matchingTimeoutChecker.handleMatchRequest();
     }

@@ -1,7 +1,7 @@
 package SWST.eat_together.matching.algorithm;
 
 import SWST.eat_together.matching.socket.MatchingRequest;
-import SWST.eat_together.matching.service.MatchingService;
+import SWST.eat_together.matching.socket.SendingMessage;
 import SWST.eat_together.member.Member;
 import SWST.eat_together.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,24 +16,30 @@ import java.util.concurrent.ArrayBlockingQueue;
 @Component
 public class MatchingAlgorithm {
     private final MemberRepository memberRepository;
+    private final SendingMessage sendingMessage;
 
     private static final int QUEUE_CAPACITY = 100;
     private static final int MAX_DISTANCE_METERS = 700;
-    private final MatchingService matchingService;
 
-    private static final Queue<MatchingRequest> matchQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
+    private final Queue<MatchingRequest> matchQueue = new ArrayBlockingQueue<>(QUEUE_CAPACITY);
 
     public Queue<MatchingRequest> getMatchQueue() {
         return matchQueue;
     }
 
-    public static void insertQueue(MatchingRequest newRequest){
-        matchQueue.offer(newRequest); // 들어온 요청을 큐에다 넣는다.
+    public void insertQueue(MatchingRequest newRequest){
+        for (MatchingRequest existingRequest : matchQueue) {
+            if (existingRequest.getNickname().equals(newRequest.getNickname())) {
+                sendingMessage.alreadyExistMessageToFront(newRequest);
+                return;
+            }
+        }
+
+        matchQueue.offer(newRequest);
         System.out.println("현재 큐 상태 = " + matchQueue);
     }
 
     public void startMatching() {
-        System.out.println("***** startMatching *****");
         List<MatchingRequest> matchedRequests = new ArrayList<>();
 
         for (MatchingRequest request1 : matchQueue) {
@@ -74,7 +80,7 @@ public class MatchingAlgorithm {
         }
 
         matchQueue.removeAll(matchedRequests);
-        matchingService.completeMessageToFront(matchedRequests);
+        sendingMessage.completeMessageToFront(matchedRequests);
     }
 
     private boolean checkMatchableRequest(MatchingRequest request1, MatchingRequest request2) {

@@ -1,15 +1,12 @@
-package SWST.eat_together.matching.service;
+package SWST.eat_together.matching.message;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class MatchingCompletedMessage {
+public class MatchingAlreadyExistMessage {
     private String type;
-    private List<String> nickname;
-    private int roomPk;
+    private String nickname;
 
     public String toJson() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -17,7 +14,7 @@ public class MatchingCompletedMessage {
             return objectMapper.writeValueAsString(this);
         } catch (Exception e) {
             e.printStackTrace();
-            return ""; //
+            return "";
         }
     }
 }

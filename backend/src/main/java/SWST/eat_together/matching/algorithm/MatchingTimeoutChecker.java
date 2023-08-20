@@ -1,7 +1,7 @@
 package SWST.eat_together.matching.algorithm;
 
 import SWST.eat_together.matching.socket.MatchingRequest;
-import SWST.eat_together.matching.service.MatchingService;
+import SWST.eat_together.matching.socket.SendingMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +13,10 @@ import java.util.Queue;
 @Component
 public class MatchingTimeoutChecker {
     private final MatchingAlgorithm matchingAlgorithm;
-    private final MatchingService matchingService;
+    private final SendingMessage sendingMessage;
     private static final long WAITING_TIME_THRESHOLD_SECONDS = 10; //해당 초가 지나면 시간 초과로 인식, 기준 완화 실행
 
     public void handleMatchRequest() {
-        System.out.println("***** handleMatchRequest *****");
         Instant currentTime = Instant.now();
 
         Queue<MatchingRequest> matchQueue = matchingAlgorithm.getMatchQueue();
@@ -29,7 +28,7 @@ public class MatchingTimeoutChecker {
                     matchQueue.remove(request);
                     matchQueue.offer(request);
                 } else {
-                    matchingService.failureMessageToFront(request);
+                    sendingMessage.failureMessageToFront(request);
                     matchQueue.remove(request);
                 }
             }

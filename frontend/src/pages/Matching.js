@@ -56,7 +56,9 @@ const Matching = () => {
             setMatchingFailed(true);
             stompClient.deactivate();
             console.log('매칭 실패 및 소켓 연결 해제');
-          }
+          } else if (data.type === 'matching_already_exist' && data.nickname === nickname) {
+            alert('이미 매칭 중입니다');
+          } console.log('이미 매칭 중');
         } catch (error) {
           console.error('Error parsing message:', error);
         }
