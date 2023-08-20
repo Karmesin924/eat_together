@@ -1,6 +1,7 @@
 package SWST.eat_together.matching.socket;
 
 import SWST.eat_together.matching.algorithm.MatchingAlgorithm;
+import SWST.eat_together.matching.model.MatchingRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;

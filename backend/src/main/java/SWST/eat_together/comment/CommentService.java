@@ -1,5 +1,7 @@
 package SWST.eat_together.comment;
 
+import SWST.eat_together.comment.model.CommentDTO;
+import SWST.eat_together.comment.model.CommentDetailDTO;
 import SWST.eat_together.member.Member;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

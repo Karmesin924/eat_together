@@ -1,6 +1,6 @@
 package SWST.eat_together.matching.algorithm;
 
-import SWST.eat_together.matching.socket.MatchingRequest;
+import SWST.eat_together.matching.model.MatchingRequest;
 import SWST.eat_together.matching.socket.SendingMessage;
 import SWST.eat_together.member.Member;
 import SWST.eat_together.member.MemberRepository;

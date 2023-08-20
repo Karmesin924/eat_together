@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.socket;
+package SWST.eat_together.matching.model;
 import lombok.Data;
 
 import java.time.Instant;

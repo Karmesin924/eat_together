@@ -1,5 +1,7 @@
 package SWST.eat_together.member;
 
+import SWST.eat_together.member.model.LoginDTO;
+import SWST.eat_together.member.model.SignUpDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.algorithm;
+package SWST.eat_together.matching.model;
 
 import lombok.Data;
 
