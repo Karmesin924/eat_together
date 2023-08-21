@@ -6,6 +6,7 @@ import MyHeader from '../components/MyHeader';
 import MyContext from '../components/MyContext';
 import { useContext } from 'react';
 import SockJS from 'sockjs-client';
+import axios from 'axios';
 
 const Matching = () => {
   const navigate = useNavigate();
@@ -28,6 +29,31 @@ const Matching = () => {
     startTime,
     nickname,
   };
+
+  //비로그인 방지
+  useEffect(() => {
+    let isMounted = true;
+    const source = axios.CancelToken.source();
+
+    axios
+      .get('/users/validate', { cancelToken: source.token })
+      .then((res) => {
+        if (isMounted && res.status !== 404) {
+        }
+      })
+      .catch((error) => {
+        if (axios.isCancel(error)) {
+          return;
+        }
+        alert('잘못된 접근입니다. 로그인 후 사용해 주세요.');
+        navigate('/SignIn');
+      });
+
+    return () => {
+      isMounted = false;
+      source.cancel('Request canceled');
+    };
+  }, [navigate]);
 
   // 페이지 이탈 시 경고 이벤트 : beforeunload
   const handleBeforeUnload = (event) => {
