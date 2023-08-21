@@ -5,7 +5,7 @@ import SWST.eat_together.matching.socket.SendingMessage;
 import SWST.eat_together.member.Member;
 import SWST.eat_together.member.MemberRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.time.Duration;
 import java.time.LocalTime;
@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 @RequiredArgsConstructor
-@Component
+@Service
 public class MatchingAlgorithm {
     private final MemberRepository memberRepository;
     private final SendingMessage sendingMessage;
@@ -25,18 +25,6 @@ public class MatchingAlgorithm {
 
     public Queue<MatchingRequest> getMatchQueue() {
         return matchQueue;
-    }
-
-    public void insertQueue(MatchingRequest newRequest){
-        for (MatchingRequest existingRequest : matchQueue) {
-            if (existingRequest.getNickname().equals(newRequest.getNickname())) {
-                sendingMessage.alreadyExistMessageToFront(newRequest);
-                return;
-            }
-        }
-
-        matchQueue.offer(newRequest);
-        System.out.println("현재 큐 상태 = " + matchQueue);
     }
 
     public void startMatching() {
@@ -253,5 +241,30 @@ public class MatchingAlgorithm {
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = earthRadiusInMeters * c;
         return distance <= MAX_DISTANCE_METERS;
+    }
+
+    public void insertQueue(MatchingRequest newRequest){
+        for (MatchingRequest existingRequest : matchQueue) {
+            if (existingRequest.getNickname().equals(newRequest.getNickname())) {
+                sendingMessage.alreadyExistMessageToFront(newRequest);
+                return;
+            }
+        }
+
+        matchQueue.offer(newRequest);
+        System.out.println("현재 큐 상태 = " + matchQueue);
+    }
+
+    public void removeQueue(MatchingRequest matchingRequest) {
+        String nickname = matchingRequest.getNickname();
+        MatchingRequest removeRequest = null;
+        for (MatchingRequest request : matchQueue) {
+            if (request.getNickname().equals(nickname)) {
+                removeRequest = request;
+                break;
+            }
+        }
+        matchQueue.remove(removeRequest);
+        System.out.println("현재 큐 상태 = " + matchQueue);
     }
 }

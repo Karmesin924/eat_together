@@ -18,9 +18,16 @@ public class MatchingWebSocketController {
     @MessageMapping("/matching/start")
     @SendTo("/topic/matching/start")
     public void receiveMatching(MatchingRequest matchingRequest) {
-        matchingRequest.setReceivedTimestamp(Instant.now());
         System.out.println("matchRequest = " + matchingRequest);
+        System.out.println(matchingRequest.getType());
+        if (matchingRequest.getType().equals("matching_start")) {
+            matchingRequest.setReceivedTimestamp(Instant.now());
+            System.out.println("matchRequest = " + matchingRequest);
+            matchingAlgorithm.insertQueue(matchingRequest);
 
-        matchingAlgorithm.insertQueue(matchingRequest);
+        } else if (matchingRequest.getType().equals("matching_cancelled")) {
+            System.out.println("matchRequest = " + matchingRequest);
+            matchingAlgorithm.removeQueue(matchingRequest);
+        }
     }
 }
