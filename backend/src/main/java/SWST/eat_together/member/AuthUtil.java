@@ -15,7 +15,6 @@ public class AuthUtil {
             return Not_logged_in;
         }
 
-        String email = loginMember.getEmail();
-        return email;
+        return loginMember.getEmail();
     }
 }

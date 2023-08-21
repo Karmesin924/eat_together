@@ -1,4 +1,4 @@
-package SWST.eat_together;
+package SWST.eat_together.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

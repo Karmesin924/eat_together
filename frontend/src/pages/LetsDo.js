@@ -78,7 +78,7 @@ const LetsDo = () => {
           <MyButton
             text={"뒤로가기"}
             onClick={() => {
-              navigate(-1);
+              navigate("/");
             }}
           />
         }

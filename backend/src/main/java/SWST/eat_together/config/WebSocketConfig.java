@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.socket;
+package SWST.eat_together.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -18,8 +18,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws") // WebSocket 연결 시 사용할 endpoint 수정
-                .setAllowedOrigins("http://localhost:3000") // 프론트엔드 주소 설정
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:3000")
                 .withSockJS();
     }
 }
