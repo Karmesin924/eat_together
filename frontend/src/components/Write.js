@@ -15,44 +15,35 @@ const Write = () => {
   const isEditMode = location.state && location.state.isEditMode;
 
   useEffect(() => {
-    // 서버에서 유저 정보를 가져와서 닉네임 고정
-    const fetchUserNickname = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get("/users/validate");
-        const { nickname } = response.data;
-        setNickname(nickname);
-        setLoading(false);
+        if (!isEditMode) {
+          const response = await axios.get("/users/validate");
+          const { nickname } = response.data;
+          setNickname(nickname);
+          setLoading(false);
+        } else {
+          if (id) {
+            const response = await axios.get(`/posts/${id}`);
+            const { title, contents, nickname } = response.data;
+            setTitle(title);
+            setContents(contents);
+            setNickname(nickname);
+          }
+        }
       } catch (error) {
-        if (error.response && error.response.status === 404) {
+        setLoading(false);
+        if (!isEditMode) {
           alert("글을 쓰기 위해서 로그인이 필요합니다!");
           navigate("/SignIn");
         } else {
-          setLoading(false);
+          alert("글을 불러올 수 없습니다, 잠시 후에 시도해주세요.");
         }
       }
     };
 
-    fetchUserNickname();
-  }, [navigate]);
-
-  useEffect(() => {
-    // 수정 모드인 경우 기존 글의 내용을 불러옴
-    if (isEditMode && id) {
-      const fetchPost = async () => {
-        try {
-          const response = await axios.get(`/posts/${id}`);
-          const { title, contents, nickname } = response.data;
-          setTitle(title);
-          setContents(contents);
-          setNickname(nickname);
-        } catch (error) {
-          alert("글을 불러올 수 없습니다, 잠시 후에 시도해주세요.");
-        }
-      };
-
-      fetchPost();
-    }
-  }, [isEditMode, id]);
+    fetchData();
+  }, [id, isEditMode, navigate]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
