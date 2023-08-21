@@ -15,30 +15,6 @@ const Write = () => {
   const isEditMode = location.state && location.state.isEditMode;
 
   useEffect(() => {
-    let isMounted = true;
-    const source = axios.CancelToken.source();
-
-    axios
-      .get("/users/validate", { cancelToken: source.token })
-      .then((res) => {
-        if (isMounted && res.status !== 404) {
-        }
-      })
-      .catch((error) => {
-        if (axios.isCancel(error)) {
-          return;
-        }
-        alert("글을 작성하시려면 먼저 로그인해주세요!");
-        navigate("/SignIn");
-      });
-
-    return () => {
-      isMounted = false;
-      source.cancel("Request canceled");
-    };
-  }, [navigate]);
-
-  useEffect(() => {
     // 서버에서 유저 정보를 가져와서 닉네임 고정
     const fetchUserNickname = async () => {
       try {
