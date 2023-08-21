@@ -62,6 +62,20 @@ public class MatchingUtil {
         }
     }
 
+    public void caseOfRequest1PeopleIsNotAny(List<MatchingRequest> matchedRequests, List<MatchingRequest> overThreeScoreList, MatchingRequest request1){
+        matchedRequests.add(request1);
+
+        int targetMatchCount = Integer.parseInt(request1.getPeople());
+
+        for (MatchingRequest tempMatch : overThreeScoreList) {
+            //특정 인원 수와 일치하는 요청들을 찾음.
+            if (tempMatch.getPeople().equals(request1.getPeople()) && targetMatchCount > 0) {
+                matchedRequests.add(tempMatch);
+                targetMatchCount--;
+            }
+        }
+    }
+
     public String findMostFrequentPeople(List<MatchingRequest> overThreeScoreList) {
         // overThreeScoreList에 있는 모든 요청중 제일 빈도가 큰 people을 구하는 로직.
 
@@ -85,20 +99,6 @@ public class MatchingUtil {
             }
         }
         return mostFrequentPeople;
-    }
-
-    public void caseOfRequestPeopleIsNotAny(List<MatchingRequest> matchedRequests, List<MatchingRequest> overThreeScoreList, MatchingRequest request1){
-        matchedRequests.add(request1);
-
-        int targetMatchCount = Integer.parseInt(request1.getPeople());
-
-        for (MatchingRequest tempMatch : overThreeScoreList) {
-            //특정 인원 수와 일치하는 요청들을 찾음.
-            if (tempMatch.getPeople().equals(request1.getPeople()) && targetMatchCount > 0) {
-                matchedRequests.add(tempMatch);
-                targetMatchCount--;
-            }
-        }
     }
 
     public int calculateMatchingScore(MatchingRequest request1, MatchingRequest request2) {

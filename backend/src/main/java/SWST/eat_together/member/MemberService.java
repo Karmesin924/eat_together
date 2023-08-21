@@ -4,6 +4,7 @@ import SWST.eat_together.member.model.LoginDTO;
 import SWST.eat_together.member.model.SignUpDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,13 +26,15 @@ public class MemberService {
         String DjangoApiUrl = "http://127.0.0.1:8000/accounts/signup/";
         signUpRequest(DjangoApiUrl, form.getNickname(), form.getEmail(), form.getPassword());
 
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(form.getPassword());
 
         Member member = new Member();
         member.setEmail(form.getEmail());
         member.setName(form.getName());
         member.setNickname(form.getNickname());
         member.setDate(form.getBirthDate());
-        member.setPassword(form.getPassword());
+        member.setPassword(encodedPassword); // 암호화된 비밀번호 저장
         member.setGender(form.getGender());
 
         memberRepository.save(member);
@@ -39,15 +42,15 @@ public class MemberService {
         return "0";
     }
     public Member login(LoginDTO form){
-        Member member;
-        member = memberRepository.findByEmail(form.getEmail());
+        Member member = memberRepository.findByEmail(form.getEmail());
         if (member == null) {
             // 오류
             System.out.println("회원정보 없음");
             return null;
         }
 
-        if (member.getPassword().equals(form.getPassword()))
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if (passwordEncoder.matches(form.getPassword(), member.getPassword()))
             return member;
 
         return null;

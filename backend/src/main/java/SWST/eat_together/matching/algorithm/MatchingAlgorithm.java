@@ -57,7 +57,7 @@ public class MatchingAlgorithm {
                     matchingUtil.caseOfRequest1PeopleIsAny(matchedRequests, overThreeScoreList, request1);
                     matchQueue.removeAll(matchedRequests);
                 } else {
-                    matchingUtil.caseOfRequestPeopleIsNotAny(matchedRequests, overThreeScoreList, request1);
+                    matchingUtil.caseOfRequest1PeopleIsNotAny(matchedRequests, overThreeScoreList, request1);
                 }
             }
         }
