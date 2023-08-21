@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Board from "../components/Board";
@@ -23,33 +23,35 @@ const BoardDetail = () => {
   });
   const [author, setAuthor] = useState(false);
 
-  const getBoard = useCallback(async () => {
-    try {
-      const boardData = await axios.get(`/posts/${id}`);
-      const selectedBoard = boardData.data;
-      const author = selectedBoard.author || false;
-
-      setBoard(selectedBoard || {});
-      setAuthor(author);
-      setLoading(false);
-    } catch (err) {
-      alert("게시글을 가져오는데 실패했습니다.", err);
-      setLoading(false);
-    }
-  }, [id]);
-
   useEffect(() => {
     setLoading(true);
-    getBoard();
-  }, [getBoard]);
 
-  useEffect(() => {
-    axios.get("/users/validate").then((res) => {
-      const fetchedNickname = res.data.nickname;
-      setCurrentNickname(fetchedNickname);
-      setIsLoggedIn(true);
-    });
-  }, [currentNickname]);
+    const fetchBoardAndUser = async () => {
+      try {
+        const boardResponse = await axios.get(`/posts/${id}`);
+        const selectedBoard = boardResponse.data;
+        const author = selectedBoard.author || false;
+
+        setBoard(selectedBoard || {});
+        setAuthor(author);
+        setLoading(false);
+      } catch (boardErr) {
+        alert("게시글을 가져오는데 실패했습니다.", boardErr);
+        setLoading(false);
+      }
+
+      try {
+        const userResponse = await axios.get("/users/validate");
+        const fetchedNickname = userResponse.data.nickname;
+        setCurrentNickname(fetchedNickname);
+        setIsLoggedIn(true);
+      } catch (userErr) {
+        console.log("닉네임 불러오기 오류");
+      }
+    };
+
+    fetchBoardAndUser();
+  }, [id]);
 
   return (
     <div>
