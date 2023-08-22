@@ -1,6 +1,7 @@
 package SWST.eat_together.board;
 
 import SWST.eat_together.post.Post;
+import SWST.eat_together.post.model.PostDetailDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -24,16 +25,16 @@ public class BoardController {
         int pageSize = 10;
         int pageNumber = page - 1;
 
-        Page<Post> postPage = boardService.getPostsByPage(pageNumber, pageSize);
+        Page<PostDetailDTO> postPage = boardService.getPostsByPage(pageNumber, pageSize);
 
         if (postPage.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
 
-        List<Post> board = postPage.getContent();
-        long totalPosts = boardService.count()/10+1;
+        List<PostDetailDTO> board = postPage.getContent();
+        long totalPages = (boardService.count() + pageSize - 1) / pageSize; // 총 페이지 수 계산
         Map<String, Object> response = new HashMap<>();
-        response.put("totalPages", totalPosts);
+        response.put("totalPages", totalPages);
         response.put("data", board);
 
         return ResponseEntity.ok(response);

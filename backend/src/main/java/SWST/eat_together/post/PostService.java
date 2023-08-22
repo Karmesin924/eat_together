@@ -4,6 +4,9 @@ import SWST.eat_together.member.Member;
 import SWST.eat_together.post.model.PostDetailDTO;
 import SWST.eat_together.post.model.RegiPostDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
@@ -69,5 +72,16 @@ public class PostService {
         post.setContents(contents);
         postRepository.save(post);
         return 0;
+    }
+
+    public Page<PostDetailDTO> getPostsByPage(int pageNumber, int pageSize, String currentUserEmail) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
+        Page<Post> postPage = postRepository.findAll(pageRequest);
+
+        return postPage.map(post -> new PostDetailDTO(post, currentUserEmail));
+    }
+
+    public long count() {
+        return postRepository.count();
     }
 }
