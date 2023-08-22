@@ -1,7 +1,9 @@
 package SWST.eat_together.post;
 
+import SWST.eat_together.member.Member;
 import lombok.*;
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -25,8 +27,9 @@ public class Post {
     private String nickname;
 
     @Column(name = "created_date")
-    private String createdDate;
+    private LocalDateTime createdDate;
 
-    @Column(name = "email")
-    private String email;
+    @ManyToOne
+    @JoinColumn(name = "user_nickname", referencedColumnName = "nickname")
+    private Member user;
 }

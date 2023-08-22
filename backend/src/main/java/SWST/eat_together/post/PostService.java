@@ -5,25 +5,24 @@ import SWST.eat_together.post.model.PostDetailDTO;
 import SWST.eat_together.post.model.RegiPostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
 
-    SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' HH:mm:ss zzz");
 
     public void addPost(Member member, RegiPostDTO regiPost){
         Post post = new Post();
 
         post.setTitle(regiPost.getTitle());
         post.setContents(regiPost.getContents());
-        post.setEmail(member.getEmail());
+        post.setUser(member);
 
-        Date currentDate = new Date(System.currentTimeMillis());
-        post.setCreatedDate(formatter.format(currentDate));
+        post.setCreatedDate(LocalDateTime.now());
         post.setNickname(member.getNickname());
 
         try {
@@ -37,10 +36,8 @@ public class PostService {
 
         Post post=postRepository.findById(id);
 
-        PostDetailDTO postDetail = new PostDetailDTO();
+        PostDetailDTO postDetail = new PostDetailDTO(post, email);
 
-        postDetail.setId(post.getId());
-        postDetail.setEmail(post.getEmail());
         postDetail.setNickname(post.getNickname());
         postDetail.setCreatedDate(post.getCreatedDate());
         postDetail.setTitle(post.getTitle());
@@ -48,7 +45,7 @@ public class PostService {
 
         postDetail.setAuthor(false);
 
-        if (email != null && post.getEmail().equals(email)) {
+        if (email != null && post.getUser().getEmail().equals(email)) {
             postDetail.setAuthor(true);
         }
 
@@ -58,7 +55,7 @@ public class PostService {
     public Integer delete(int id, String email) {
         Post post=postRepository.findById(id);
 
-        if (!email.equals(post.getEmail()))
+        if (!email.equals(post.getUser().getEmail()))
             return -1;
         postRepository.delete(post);
 
@@ -68,7 +65,7 @@ public class PostService {
     public Integer edit(int id, String email, String title, String contents) {
         Post post=postRepository.findById(id);
 
-        if (!email.equals(post.getEmail()))
+        if (!email.equals(post.getUser().getEmail()))
             return -1;
 
         post.setTitle(title);
