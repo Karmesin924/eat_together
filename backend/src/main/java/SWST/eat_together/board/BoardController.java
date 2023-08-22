@@ -22,20 +22,13 @@ public class BoardController {
 
     @GetMapping("/{page}")
     public ResponseEntity<Map<String, Object>> getBoard(@PathVariable("page") int page) {
+        System.out.println("page = " + page);
         int pageSize = 10;
-        int pageNumber = page - 1;
+        Map<String, Object> response = boardService.getBoardByPage(page, pageSize);
 
-        Page<PostDetailDTO> postPage = boardService.getPostsByPage(pageNumber, pageSize);
-
-        if (postPage.isEmpty()) {
+        if (response == null) {
             return ResponseEntity.notFound().build();
         }
-
-        List<PostDetailDTO> board = postPage.getContent();
-        long totalPages = (boardService.count() + pageSize - 1) / pageSize; // 총 페이지 수 계산
-        Map<String, Object> response = new HashMap<>();
-        response.put("totalPages", totalPages);
-        response.put("data", board);
 
         return ResponseEntity.ok(response);
     }
