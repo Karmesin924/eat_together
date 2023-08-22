@@ -253,8 +253,8 @@ const SignUp = () => {
               <input
                 type="radio"
                 id="male"
-                value="man"
-                checked={gender === "man"}
+                value="male"
+                checked={gender === "male"}
                 onChange={onChangeGender}
               />
               남성
@@ -263,8 +263,8 @@ const SignUp = () => {
               <input
                 type="radio"
                 id="female"
-                value="woman"
-                checked={gender === "woman"}
+                value="female"
+                checked={gender === "female"}
                 onChange={onChangeGender}
               />
               여성

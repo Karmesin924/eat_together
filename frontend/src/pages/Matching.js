@@ -63,7 +63,7 @@ const Matching = () => {
 
   // 뒤로 가기 버튼을 눌렀을 시 beforeunload 이벤트
   const handleGoBack = () => {
-    const isConfirmed = window.confirm('매칭이 취소됩니다. 이 페이지에서 나가시겠습니까?');
+    const isConfirmed = window.confirm('페이지를 벗어나도 매칭 요청은 유지됩니다. 이 페이지에서 나가시겠습니까?');
     if (isConfirmed) {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       navigate('/LetsEat');
@@ -196,7 +196,7 @@ const Loading = () => (
   <h1 className="mt-10 text-2xl font-bold text-center">
     매칭 중입니다.
     <br />
-    5분 정도 소요될 수 있습니다.
+    잠시만 기다려 주세요.
   </h1>
 );
 

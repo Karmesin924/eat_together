@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.socket;
+package SWST.eat_together.matching.communication;
 
 import SWST.eat_together.matching.algorithm.MatchingAlgorithm;
 import SWST.eat_together.matching.model.MatchingRequest;

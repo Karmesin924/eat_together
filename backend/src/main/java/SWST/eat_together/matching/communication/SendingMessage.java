@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.socket;
+package SWST.eat_together.matching.communication;
 
 import SWST.eat_together.matching.model.MatchedList;
 import SWST.eat_together.matching.model.message.MatchingCompletedMessage;
@@ -78,7 +78,6 @@ public class SendingMessage {
 
         HttpEntity<MatchedList> requestEntity = new HttpEntity<>(messageToChat, headers);
 
-        // 대상 서버 URL 설정
         String targetUrl = "http://127.0.0.1:8000/chat/new_matching_room/";
 
         // HTTP POST 요청 보내기

@@ -1,7 +1,7 @@
 package SWST.eat_together.matching.algorithm;
 
 import SWST.eat_together.matching.model.MatchingRequest;
-import SWST.eat_together.matching.socket.SendingMessage;
+import SWST.eat_together.matching.communication.SendingMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
