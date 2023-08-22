@@ -17,33 +17,42 @@ const Write = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (!isEditMode) {
-          const response = await axios.get("/users/validate");
-          const { nickname } = response.data;
-          setNickname(nickname);
-          setLoading(false);
-        } else {
-          if (id) {
-            const response = await axios.get(`/posts/${id}`);
-            const { title, contents, nickname } = response.data;
-            setTitle(title);
-            setContents(contents);
-            setNickname(nickname);
-          }
-        }
+        const response = await axios.get("/users/validate");
+        const { nickname } = response.data;
+        setNickname(nickname);
+        setLoading(false);
       } catch (error) {
         setLoading(false);
-        if (!isEditMode) {
-          alert("글을 쓰기 위해서 로그인이 필요합니다!");
-          navigate("/SignIn");
-        } else {
-          alert("글을 불러올 수 없습니다, 잠시 후에 시도해주세요.");
-        }
       }
     };
 
     fetchData();
-  }, [id, isEditMode, navigate]);
+  }, []);
+
+  useEffect(() => {
+    if (isEditMode && id) {
+      const fetchPostData = async () => {
+        try {
+          const response = await axios.get(`/posts/${id}`);
+          const { title, contents, nickname } = response.data;
+          setTitle(title);
+          setContents(contents);
+          setNickname(nickname);
+        } catch (error) {
+          alert("글을 불러오는데 오류가 발생했습니다.");
+        }
+      };
+
+      fetchPostData();
+    }
+  }, [isEditMode, id]);
+
+  useEffect(() => {
+    if (!isEditMode && !loading && !nickname) {
+      alert("글을 쓰기 위해서 로그인이 필요합니다!");
+      navigate("/SignIn");
+    }
+  }, [isEditMode, loading, nickname]);
 
   const handleTitleChange = (e) => {
     setTitle(e.target.value);
