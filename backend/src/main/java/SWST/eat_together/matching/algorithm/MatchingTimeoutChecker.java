@@ -9,6 +9,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Queue;
 
+import static SWST.eat_together.matching.algorithm.MatchingAlgorithm.anyValue;
+
 @RequiredArgsConstructor
 @Component
 public class MatchingTimeoutChecker {
@@ -22,9 +24,9 @@ public class MatchingTimeoutChecker {
         Queue<MatchingRequest> matchQueue = matchingAlgorithm.getMatchQueue();
 
         for (MatchingRequest request : matchQueue) {
-            if (hasRequestExceededWaitingTime(request, currentTime)) {
-                // 조건 완화 후 요청 받은 시간 변경 메소드.
+            if (hasRequestExceededWaitingTime(request, currentTime)) {  //시간 초과 시 실행
                 if (easeTheOption(request)) {
+                    System.out.println("시간 초과. 조건 완화 완료 : " + request);
                     matchQueue.remove(request);
                     matchQueue.offer(request);
                 } else {
@@ -40,20 +42,18 @@ public class MatchingTimeoutChecker {
     }
 
     private boolean easeTheOption(MatchingRequest request) {
-        System.out.println("easeTheOption");
-        System.out.println("request = " + request);
 
-        if (!request.getMenu().equals("any")) {
-            request.setMenu("any");
+        if (!request.getMenu().equals(anyValue)) {
+            request.setMenu(anyValue);
             return true;
-        } else if (!request.getAge().equals("any")) {
-            request.setAge("any");
+        } else if (!request.getAge().equals(anyValue)) {
+            request.setAge(anyValue);
             return true;
-        } else if (!request.getGender().equals("any")) {
-            request.setGender("any");
+        } else if (!request.getGender().equals(anyValue)) {
+            request.setGender(anyValue);
             return true;
-        } else if (!request.getConversation().equals("any")) {
-            request.setConversation("any");
+        } else if (!request.getConversation().equals(anyValue)) {
+            request.setConversation(anyValue);
             return true;
         }
         return false;

@@ -38,6 +38,8 @@ public class SendingMessage {
             message.setNickname(userNicknames);
             message.setRoomPk(roomPk);
             messagingTemplate.convertAndSend("/topic/matching/start", message.toJson());
+
+            System.out.println("매칭 완료: " + message);
         }
     }
 
@@ -60,7 +62,7 @@ public class SendingMessage {
     }
 
     public int interactionWithChat(List<MatchingRequest> matchedRequests) {
-        System.out.println("*****MatchService.interactionWithChat*****");
+        System.out.println("매칭 완료, 채팅 서버 접속 시도.");
 
         int roomPk = 0;
         HttpHeaders headers = new HttpHeaders();
