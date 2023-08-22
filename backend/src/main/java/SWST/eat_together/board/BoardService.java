@@ -17,8 +17,9 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class BoardService {
     private final PostRepository postRepository;
+    private static final int pageSize = 10;
 
-    public Map<String, Object> getBoardByPage(int pageNumber, int pageSize) {
+    public Map<String, Object> getBoardByPage(int pageNumber) {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by("id").descending());
         Page<Post> postPage = postRepository.findAll(pageRequest);
 
