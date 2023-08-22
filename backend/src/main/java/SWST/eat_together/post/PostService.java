@@ -38,6 +38,7 @@ public class PostService {
         postDetail.setCreatedDate(post.getCreatedDate());
         postDetail.setTitle(post.getTitle());
         postDetail.setContents(post.getContents());
+        postDetail.setNickname(post.getUser().getNickname());
 
         postDetail.setAuthor(false);
 

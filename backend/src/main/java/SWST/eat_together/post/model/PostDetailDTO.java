@@ -11,9 +11,11 @@ import org.springframework.beans.BeanUtils;
 public class PostDetailDTO extends Post {
     private boolean isAuthor;
     private String email;
+    private String nickname;
 
     public PostDetailDTO(Post post, String currentUserEmail) {
         this.isAuthor = post.getUser().getEmail().equals(currentUserEmail);
-        BeanUtils.copyProperties(post, this); // 엔티티의 필드를 DTO로 복사
+        BeanUtils.copyProperties(post, this);
         this.email = post.getUser().getEmail();
+        this.nickname = post.getUser().getNickname();
     }}

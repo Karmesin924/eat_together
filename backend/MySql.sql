@@ -12,7 +12,7 @@ CREATE TABLE `user_info` (
                              `gender` varchar(10) DEFAULT NULL,
                              PRIMARY KEY (`id`),
                              KEY `idx_nickname` (`nickname`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `post_info` (
                              `id` int NOT NULL AUTO_INCREMENT,
@@ -23,7 +23,7 @@ CREATE TABLE `post_info` (
                              PRIMARY KEY (`id`),
                              KEY `user_nickname` (`user_nickname`),
                              CONSTRAINT `post_info_ibfk_1` FOREIGN KEY (`user_nickname`) REFERENCES `user_info` (`nickname`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE `comment_info` (
                                 `id` int NOT NULL AUTO_INCREMENT,
@@ -36,6 +36,6 @@ CREATE TABLE `comment_info` (
                                 KEY `user_nickname` (`user_nickname`),
                                 CONSTRAINT `comment_info_ibfk_1` FOREIGN KEY (`post_id`) REFERENCES `post_info` (`id`) ON DELETE CASCADE,
                                 CONSTRAINT `comment_info_ibfk_2` FOREIGN KEY (`user_nickname`) REFERENCES `user_info` (`nickname`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
