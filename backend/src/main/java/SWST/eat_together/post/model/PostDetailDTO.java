@@ -18,4 +18,11 @@ public class PostDetailDTO extends Post {
         BeanUtils.copyProperties(post, this);
         this.email = post.getUser().getEmail();
         this.nickname = post.getUser().getNickname();
-    }}
+    }
+
+    public PostDetailDTO(Post post) {
+        this.email = post.getUser().getEmail();
+        this.nickname = post.getUser().getNickname();
+        BeanUtils.copyProperties(post, this, "user");
+    }
+}
