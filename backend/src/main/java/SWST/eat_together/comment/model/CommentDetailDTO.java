@@ -1,9 +1,16 @@
 package SWST.eat_together.comment.model;
 
-import SWST.eat_together.comment.Comment;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
-public class CommentDetailDTO extends Comment {
+public class CommentDetailDTO {
+    private Long id;
+    private Long postId;
+    private String contents;
+    private String nickname;
+    private LocalDateTime createdDate;
+    private String email;
     private boolean isAuthor;
 }
