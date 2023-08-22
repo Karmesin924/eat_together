@@ -1,4 +1,4 @@
-package SWST.eat_together.matching.socket;
+package SWST.eat_together.matching.communication;
 
 import SWST.eat_together.matching.model.MatchedList;
 import SWST.eat_together.matching.model.message.MatchingCompletedMessage;
@@ -38,6 +38,8 @@ public class SendingMessage {
             message.setNickname(userNicknames);
             message.setRoomPk(roomPk);
             messagingTemplate.convertAndSend("/topic/matching/start", message.toJson());
+
+            System.out.println("매칭 완료: " + message);
         }
     }
 
@@ -60,7 +62,7 @@ public class SendingMessage {
     }
 
     public int interactionWithChat(List<MatchingRequest> matchedRequests) {
-        System.out.println("*****MatchService.interactionWithChat*****");
+        System.out.println("매칭 완료, 채팅 서버 접속 시도.");
 
         int roomPk = 0;
         HttpHeaders headers = new HttpHeaders();
@@ -76,7 +78,6 @@ public class SendingMessage {
 
         HttpEntity<MatchedList> requestEntity = new HttpEntity<>(messageToChat, headers);
 
-        // 대상 서버 URL 설정
         String targetUrl = "http://127.0.0.1:8000/chat/new_matching_room/";
 
         // HTTP POST 요청 보내기

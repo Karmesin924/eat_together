@@ -10,27 +10,24 @@ import java.time.Duration;
 import java.time.LocalTime;
 import java.util.*;
 
+import static SWST.eat_together.matching.algorithm.MatchingAlgorithm.anyValue;
+
 @RequiredArgsConstructor
 @Component
 public class MatchingUtil {
 
     private final MemberRepository memberRepository;
     private static final int MAX_DISTANCE_METERS = 700;
+    private static final int maxAgeDifference  = 2;
 
     public boolean checkMatchableRequest(MatchingRequest request1, MatchingRequest request2) {
-        return (request1 != request2) && //비교하는 두 요청이 같지 않고,
-                // 기준 요청의 people이 any이거나 서로의 people이 같고,
-                ("any".equals(request1.getPeople()) || request1.getPeople().equals(request2.getPeople())) &&
-
-                //서로의 시간 차이가 한시간 이내이고,
+        return (request1 != request2) &&    //비교대상이 나 자신이 아님, 기준 요청의 people이 any이거나 서로의 people이 같음, 시간/ 거리 조건 만족 시.
+                (anyValue.equals(request1.getPeople()) || request1.getPeople().equals(request2.getPeople())) &&
                 isWithinOneHour(request1.getStartTime(), request2.getStartTime()) &&
-
-                //서로의 거리가 MAX_DISTANCE_METERS 이내일 경우
                 checkDistance(request1.getLatitude(), request1.getLongitude(), request2.getLatitude(), request2.getLongitude());
     }
 
     public void caseOfRequest1PeopleIsAny(List<MatchingRequest> matchedRequests, List<MatchingRequest> overThreeScoreList, MatchingRequest request1){
-
         matchedRequests.add(request1);
 
         //가장 빈도수 높은 희망 인원 수 구하기
@@ -38,16 +35,12 @@ public class MatchingUtil {
 
         // 가장 빈도가 높은 인원 값을 key로 가진 key값만큼의 개수(-1)의요청들을 MathedRequests에 추가한다.
         if (mostFrequentPeople != null) {
-
-            if (mostFrequentPeople.equals("any")){
-
+            if (mostFrequentPeople.equals(anyValue)){
                 if (overThreeScoreList.size() < 4) {
-                    System.out.println("mostFrequentPeople은 any이며 overTreeScoreList.size는 " + overThreeScoreList.size() + "입니다.");
-
                     matchedRequests.addAll(overThreeScoreList);
-                    System.out.println("matchedRequests = " + matchedRequests);
-
-                } else matchedRequests.addAll(overThreeScoreList.subList(0 , 3));
+                } else {
+                    matchedRequests.addAll(overThreeScoreList.subList(0 , 3));
+                }
 
             } else {
                 int targetMatchCount = Integer.parseInt(mostFrequentPeople) - 1; // 매칭완료 리스트에 추가해야할 인원수
@@ -68,7 +61,7 @@ public class MatchingUtil {
         int targetMatchCount = Integer.parseInt(request1.getPeople());
 
         for (MatchingRequest tempMatch : overThreeScoreList) {
-            //특정 인원 수와 일치하는 요청들을 찾음.
+            //인원 수와 일치하는 요청들을 찾음.
             if (tempMatch.getPeople().equals(request1.getPeople()) && targetMatchCount > 0) {
                 matchedRequests.add(tempMatch);
                 targetMatchCount--;
@@ -79,17 +72,14 @@ public class MatchingUtil {
     public String findMostFrequentPeople(List<MatchingRequest> overThreeScoreList) {
         // overThreeScoreList에 있는 모든 요청중 제일 빈도가 큰 people을 구하는 로직.
 
-        //리스트를 해시맵 형태로 변환한다.
         Map<String, Integer> peopleFrequency = new HashMap<>();
         for (MatchingRequest tempMatch : overThreeScoreList) {
             String people = tempMatch.getPeople();
             peopleFrequency.put(people, peopleFrequency.getOrDefault(people, 0) + 1);
         }
 
-        System.out.println("peopleFrequency = " + peopleFrequency);
-
-        String mostFrequentPeople = null;   //만약 2명을 선택한 인원이 3명으로 제일 많았다면 해당 값은 2
-        int highestFrequency = 0;           //만약 2명을 선택한 인원이 3명으로 제일 많았다면 해당 값은 3
+        String mostFrequentPeople = null;
+        int highestFrequency = 0;
 
         // 가장 빈도가 높은 인원 값을 찾는다. (highestFrequency)
         for (Map.Entry<String, Integer> entry : peopleFrequency.entrySet()) {
@@ -102,38 +92,32 @@ public class MatchingUtil {
     }
 
     public int calculateMatchingScore(MatchingRequest request1, MatchingRequest request2) {
-        System.out.println("***** 해당 비교 요청은 최소 충족 요건에 부합합니다. score 계산을 시작합니다. *****");
-
         int score = 0;
 
-        // request1의 메뉴가 any이거나 서로의 메뉴가 같을 경우 ++
-        if (request1.getMenu().equals("any") || request1.getMenu().equals(request2.getMenu())) {
+        if (request1.getMenu().equals(anyValue) || request1.getMenu().equals(request2.getMenu())) {
             score++;
         }
 
-        // request1의 age가 any일 경우 ++
-        if (request1.getAge().equals("any")) {
+        if (request1.getAge().equals(anyValue)) {  // request1의 age가 any일 경우 ++
             score++;
-        } //만약 request1의 age가 peer일 경우 서로의 나이 차이차가 2이하일 경우에만 ++
-        else if (request1.getAge().equals("peer")) {
+        }
+        else if (request1.getAge().equals("peer")) {    //만약 request1의 age가 peer일 경우 서로의 나이 차이차가 maxAgeDifference 이하일 경우에만 ++
             int ageDifference = calculateAgeDifference(request1.getNickname(), request2.getNickname());
-            if (ageDifference <= 2) {
+            if (ageDifference <= maxAgeDifference) {
                 score++;
             }
         }
 
-        //request1의 gender이 any이면 ++
-        if (request1.getGender().equals("any")){
+        if (request1.getGender().equals(anyValue)){    //request1의 gender이 any이면 ++
             score++;
-        } //혹은 requst1의 gender이 same일경우 request2과 성별이 같을 경우 ++
-        else if (request1.getGender().equals("same")){
+        }
+        else if (request1.getGender().equals("same")){  //혹은 requst1의 gender이 same일경우 request2과 성별이 같을 경우 ++
             if (memberRepository.findByNickname(request1.getNickname()).getGender().equals(memberRepository.findByNickname(request2.getNickname()).getGender())){
                 score ++;
             }
         }
 
-        //request1의 conversation이 any이거나 서로의 conversation이 같을 경우 ++
-        if (request1.getConversation().equals("any") || request1.getConversation().equals(request2.getConversation())) {
+        if (request1.getConversation().equals(anyValue) || request1.getConversation().equals(request2.getConversation())) {
             score++;
         }
 
