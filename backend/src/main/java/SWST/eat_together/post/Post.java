@@ -23,9 +23,6 @@ public class Post {
     @Column(name = "content")
     private String contents;
 
-    @Column(name = "nickname")
-    private String nickname;
-
     @Column(name = "created_date")
     private LocalDateTime createdDate;
 

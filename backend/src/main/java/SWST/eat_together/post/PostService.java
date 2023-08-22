@@ -6,14 +6,11 @@ import SWST.eat_together.post.model.RegiPostDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd 'at' HH:mm:ss zzz");
 
     public void addPost(Member member, RegiPostDTO regiPost){
         Post post = new Post();
@@ -23,7 +20,6 @@ public class PostService {
         post.setUser(member);
 
         post.setCreatedDate(LocalDateTime.now());
-        post.setNickname(member.getNickname());
 
         try {
             postRepository.save(post);
@@ -38,7 +34,7 @@ public class PostService {
 
         PostDetailDTO postDetail = new PostDetailDTO(post, email);
 
-        postDetail.setNickname(post.getNickname());
+        postDetail.setUser(post.getUser());
         postDetail.setCreatedDate(post.getCreatedDate());
         postDetail.setTitle(post.getTitle());
         postDetail.setContents(post.getContents());
