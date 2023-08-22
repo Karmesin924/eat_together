@@ -40,19 +40,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'com.fasterxml.jackson.core:jackson-databind'
 
+	//mysql-connector
+	runtimeOnly 'com.mysql:mysql-connector-j'
 
 	//test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-	//mysql-connector
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	runtimeOnly 'com.mysql:mysql-connector-j'
-
+	//소켓
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'
 	implementation 'org.webjars:sockjs-client:1.0.2'
 	implementation 'org.webjars:stomp-websocket:2.3.3'
 
+	//스프링 시큐리티
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 
+	// BCryptPasswordEncoder 의존성 추가
+	implementation 'org.springframework.security:spring-security-core'
 
 }
 

@@ -1,9 +1,7 @@
 package SWST.eat_together.member;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
 
-@Component
 public class AuthUtil {
     public static final String Not_logged_in = "401";
     public static String checkLoggedInUserOr401(HttpSession session) {
@@ -17,7 +15,6 @@ public class AuthUtil {
             return Not_logged_in;
         }
 
-        String email = loginMember.getEmail();
-        return email;
+        return loginMember.getEmail();
     }
 }

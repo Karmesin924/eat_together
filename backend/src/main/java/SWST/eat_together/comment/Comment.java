@@ -1,10 +1,14 @@
 package SWST.eat_together.comment;
 
+import SWST.eat_together.member.Member;
+import SWST.eat_together.post.Post;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -18,18 +22,17 @@ public class Comment {
     @Column(name = "id")
     private Long Id;
 
-    @Column(name = "post_id")
-    private Long postId;
-
     @Column(name = "content")
     private String contents;
 
-    @Column(name = "nickname")
-    private String nickname;
-
     @Column(name = "created_date")
-    private String createdDate;
+    private LocalDateTime createdDate;
 
-    @Column(name = "email")
-    private String email;
+    @ManyToOne
+    @JoinColumn(name = "user_nickname", referencedColumnName = "nickname")
+    private Member user;
+
+    @ManyToOne
+    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    private Post post;
 }

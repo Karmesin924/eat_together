@@ -37,13 +37,13 @@ public class PostController {
     public ResponseEntity<Post> detail(@PathVariable("idx") String id, HttpServletRequest request) {
         String email = checkLoggedInUserOr401(request.getSession(false));
 
+        System.out.println("id = " + id);
         Post post = postService.detail(Integer.parseInt(id), email);
 
         if (post == null) {
             return ResponseEntity.notFound().build();
         }
 
-        System.out.println("post = " + post.getId());
         return ResponseEntity.ok(post);
     }
     
