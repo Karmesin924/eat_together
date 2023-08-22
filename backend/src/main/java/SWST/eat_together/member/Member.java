@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.sql.Date;
 
 @Data
@@ -14,7 +15,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Entity
 @Table(name = "user_info")
-public class Member {
+public class Member implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +29,7 @@ public class Member {
     @Column(name = "nickname")
     private String nickname;
 
-    @Column(name = "date")
+    @Column(name = "birth_date")
     private Date date;
 
     @Column(name = "password")
