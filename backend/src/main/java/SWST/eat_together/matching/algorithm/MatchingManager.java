@@ -13,7 +13,7 @@ public class MatchingManager {
 
     @Scheduled(fixedRate = 1000)
     private void checkForMatches() {
-        System.out.println("매칭 실행 중 . . .");
+        // System.out.println("매칭 실행 중 . . ."); //필요시 주석 해제
         matchingAlgorithm.startMatching();
         matchingTimeoutChecker.handleMatchRequest();
     }

@@ -9,19 +9,36 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 public class BoardService {
     private final PostRepository postRepository;
+    private static final int pageSize = 10;
 
-    public Page<PostDetailDTO> getPostsByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by("id").descending());
+    public Map<String, Object> getBoardByPage(int pageNumber) {
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, pageSize, Sort.by("id").descending());
         Page<Post> postPage = postRepository.findAll(pageRequest);
 
-        return postPage.map(post -> new PostDetailDTO(post));
+        if (postPage.isEmpty()) {
+            return null;
+        }
+
+        List<PostDetailDTO> board = postPage.map(post -> new PostDetailDTO(post)).getContent();
+        long totalPages = (countTotalPages(pageSize));
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("totalPages", totalPages);
+        response.put("data", board);
+
+        return response;
     }
 
-    public long count() {
-        return postRepository.count();
+    private long countTotalPages(int pageSize) {
+        long totalPosts = postRepository.count();
+        return (totalPosts + pageSize - 1) / pageSize;
     }
 }
