@@ -21,7 +21,7 @@ function App() {
   const [gender, setGender] = useState('any');
   const [age, setAge] = useState('any');
   const [menu, setMenu] = useState('any');
-  const [conversation, setConversation] = useState('Normal');
+  const [conversation, setConversation] = useState('any');
 
   const [startTime, setStartTime] = useState('');
 

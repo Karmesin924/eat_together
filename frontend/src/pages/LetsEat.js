@@ -189,7 +189,7 @@ const LetsEat = () => {
               <span className=" text-red-500 font-semibold">{toKorean(menu)}</span>
             </p>
             <p>
-              <span className="font-bold">대화빈도: </span>
+              <span className="font-bold">대화: </span>
               <span className=" text-red-500 font-semibold">{toKorean(conversation)}</span>
             </p>
             <div className="mt-2 text-center">
