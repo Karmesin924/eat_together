@@ -6,7 +6,7 @@
 ## 📅 개발 기간
 - 2023.06~2023.08
 
-## 👥 참가자
+## 🧑‍💻 참가자
 | 이름  | 역할 | GitHub                                          |
 | ----- | ---- | ---------------------------------------------- |
 | 남동우 | 팀장 | [@udonehn](https://github.com/udonehn) |
@@ -67,7 +67,7 @@
   5. `python manage.py runserver` 를 입력해 서버를 실행합니다.
 
 
-### ERD
+## 🗃 ERD
 
 * 메인 DB
 ![eat_together_db](https://github.com/udonehn/eat_together/assets/104974751/d33be321-9181-4aca-a8cf-47ad0a609925)
@@ -77,7 +77,7 @@
 ![main](https://github.com/udonehn/eat_together/assets/104974751/ff94cb4e-9d60-441a-87d2-9b12b73e59f2)
 
 
-## 📸 기능 설명
+## 📸 스크린샷
 * 메인 페이지
 ![메인 페이지](https://github.com/udonehn/eat_together/assets/104974751/d12cd622-9083-4578-8f73-8a499e10bb01)
 
