@@ -173,7 +173,7 @@ const FilterDetail = () => {
               </label>
             </div>
             <div className="flex flex-row text-lg font-medium items-center gap-2">
-              <p className=" text-xl font-bold p-5 pr-1">나이대</p>
+              <p className=" text-xl font-bold p-5"> 나이 </p>
               <label
                 className={`flex h-auto rounded-2xl cursor-pointer m-0 border-2 border-project bg-orange-100${
                   filters.age === "any"
@@ -357,10 +357,25 @@ const FilterDetail = () => {
             <div className="flex flex-row text-lg font-medium items-center">
               <p className=" text-xl font-bold p-5">
                 대화
-                <br />
-                빈도
               </p>
               <div className="flex flex-wrap gap-2">
+              <label
+                  className={`flex h-auto rounded-2xl cursor-pointer m-0 border-2 border-project bg-orange-100${
+                    filters.conversation === "any"
+                      ? "border-none bg-project text-white"
+                      : ""
+                  }`}
+                >
+                  <input
+                    className="hidden"
+                    type="checkbox"
+                    value="any"
+                    name="conversation"
+                    checked={filters.conversation === "any"}
+                    onChange={handleCheckboxChange}
+                  />
+                  <span className="ml-1 mr-1">상관없음</span>
+                </label>
                 <label
                   className={`flex h-auto rounded-2xl cursor-pointer m-0 border-2 border-project bg-orange-100${
                     filters.conversation === "Little"
